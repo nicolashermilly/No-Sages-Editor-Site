@@ -200,6 +200,10 @@ section.block{padding:80px 0;border-top:1px solid var(--line)}
   background:rgba(30,41,59,.4);
 }
 .pill b{color:var(--text);font-weight:500}
+/* verticale a venir (prochainement) */
+.pill.soon{border-color:rgba(79,70,229,.4);background:rgba(79,70,229,.1)}
+.pill.soon b{color:var(--violet-light)}
+.pill .soon-tag{margin-left:8px;color:var(--violet-light);opacity:.85}
 
 /* ---------- numbered list (fonctions cœur) ---------- */
 .fnlist{

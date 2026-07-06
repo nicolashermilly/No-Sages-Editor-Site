@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Socle de traitement des documents entrants (tronc commun) — No Sage's Editor</title>
+<meta name="description" content="Vue macro : un socle transverse (capture, extraction OCR/vision, rapprochement, validation, archivage) qui coiffe cheque, bon de livraison, facture d'achat, note de frais et facture electronique. Tronc commun Anim'Gest et Cockpit'Gest.">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B;
+    --surface-2:#172033;
+    --line:rgba(148,163,184,.14);
+    --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+    --maxw:1120px; --readw:70ch;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .doc-tag{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .doc-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--grad)}
+  @media(max-width:620px){ .doc-tag .lbl-full{display:none} }
+  .hero{padding-block:clamp(48px,8vw,86px) clamp(28px,4vw,40px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.06;
+    font-size:clamp(2.05rem,5.4vw,3.35rem); margin:18px 0 0; max-width:20ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:60ch; margin:20px 0 0; font-size:clamp(1.06rem,2.2vw,1.2rem); color:var(--text-muted)}
+  .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; padding:0; list-style:none}
+  .meta li{display:flex; flex-direction:column; gap:3px; padding:10px 15px; border:1px solid var(--line);
+    border-radius:11px; background:rgba(30,41,59,.4)}
+  .meta .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim)}
+  .meta .v{font-family:var(--display); font-weight:600; font-size:.95rem}
+  .meta .v.hot{color:var(--cyan-light)}
+  .readout{margin-top:38px; border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); box-shadow:0 24px 60px -34px rgba(0,0,0,.8)}
+  .readout-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .readout-head .who{display:flex; align-items:center; gap:9px; color:var(--text-muted)}
+  .readout-head .who b{color:var(--text); font-weight:500}
+  .readout-head .who .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .readout-head .status{color:var(--cyan-light)}
+  .readout-body{display:grid; grid-template-columns:1fr; gap:2px; padding:16px 18px; font-family:var(--mono); font-size:.9rem}
+  .fld{display:grid; grid-template-columns:14ch 1fr auto; gap:12px; align-items:baseline; padding:6px 0}
+  .fld .key{color:var(--text-dim)}
+  .fld .dots{border-bottom:1px dotted var(--line-strong); transform:translateY(-3px)}
+  .fld .val{color:var(--text); text-align:right; white-space:nowrap}
+  .fld .val.amt{color:var(--cyan-light); font-weight:500}
+  @media(max-width:560px){ .fld{grid-template-columns:1fr auto} .fld .dots{display:none} }
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,52px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2rem); margin:0; line-height:1.15}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+  .ticks{list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .ticks li{position:relative; padding:7px 0 7px 26px; color:var(--text-muted); border-bottom:1px solid var(--line)}
+  .ticks li:last-child{border-bottom:none}
+  .ticks li::before{content:""; position:absolute; left:0; top:15px; width:9px; height:9px; border-radius:2px; background:var(--grad)}
+  .ticks li b{color:var(--text); font-weight:600}
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 8px}
+  .card.ag{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card.cg{box-shadow:inset 3px 0 0 var(--violet)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.ag .role{color:var(--cyan-light)}
+  .card.cg .role{color:var(--violet-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card p{color:var(--text-muted); margin:0 0 14px; font-size:.98rem}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:5px 0 5px 18px; font-size:.94rem; color:var(--text-muted)}
+  .card ul li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  .flow{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; color:var(--text-muted)}
+  .flow .pill{padding:8px 14px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.pay{color:var(--violet-light); border-color:rgba(129,140,248,.4)}
+  .flow .pill.ben{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .link{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+  .table-title{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 10px}
+  .tbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:var(--readw)}
+  table{width:100%; border-collapse:collapse; font-size:.95rem}
+  thead th{font-family:var(--mono); font-weight:500; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); text-align:left; padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+  thead th.num, td.num{text-align:right; font-family:var(--mono)}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text-muted)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td.lbl{color:var(--text); font-weight:500}
+  tbody tr.tot td{background:rgba(30,41,59,.5); color:var(--text); font-weight:600}
+  .state{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .state.ok{color:var(--cyan-light); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3)}
+  .state.part{color:var(--violet-light); background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3)}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; max-width:var(--readw)}
+  .chip{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; padding:8px 13px; border:1px solid var(--line-strong);
+    border-radius:999px; background:rgba(30,41,59,.5); color:var(--text-muted)}
+  .chip .n{color:var(--cyan-light); margin-right:7px}
+  .rules{counter-reset:r; list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .rules li{counter-increment:r; position:relative; padding:14px 0 14px 52px; border-bottom:1px solid var(--line); color:var(--text)}
+  .rules li:last-child{border-bottom:none}
+  .rules li::before{content:counter(r,decimal-leading-zero); position:absolute; left:0; top:14px;
+    font-family:var(--mono); font-size:.8rem; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    border:1px solid var(--line-strong); border-radius:8px; width:34px; height:26px; display:grid; place-items:center}
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,40px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band h2{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch}
+  .band p{color:var(--text-muted); max-width:66ch; margin:0 0 14px}
+  .band .sigline{display:flex; align-items:center; gap:10px; margin-top:20px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .band .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .band .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px; font-size:.86rem; color:var(--text-dim)}
+  .foot-inner .brand{font-size:.92rem}
+  .foot-meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase}
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .rise{animation:none; opacity:1; transform:none} }
+  /* --- specifique note macro : le pipeline en etages --- */
+  .pipe{list-style:none;margin:8px 0 0;padding:0;max-width:var(--readw);counter-reset:p}
+  .pipe li{counter-increment:p;position:relative;display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--line)}
+  .pipe li:last-child{border-bottom:none}
+  .pipe .st{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:var(--mono);font-weight:500;
+    border:1px solid var(--line-strong);background:rgba(30,41,59,.5);color:transparent;background-image:var(--grad);-webkit-background-clip:text;background-clip:text}
+  .pipe .st-b{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:var(--mono);font-weight:600;
+    background:var(--grad);color:#0F172A}
+  .pipe .body h4{font-family:var(--display);font-weight:600;font-size:1.05rem;margin:2px 0 4px}
+  .pipe .body p{margin:0;color:var(--text-muted);font-size:.96rem}
+  .pipe .tag{display:inline-block;margin-left:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 8px;border-radius:999px;vertical-align:middle}
+  .pipe .tag.tronc{color:var(--cyan-light);background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3)}
+  .pipe .tag.prod{color:var(--violet-light);background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.3)}
+  .matrix{border:1px solid var(--line);border-radius:14px;overflow:hidden;max-width:100%;overflow-x:auto}
+  .matrix table{min-width:640px}
+  .matrix td.c{text-align:center;font-family:var(--mono);font-size:.9rem}
+  .matrix td.c.y{color:var(--cyan-light)}
+  .matrix td.c.n{color:var(--text-dim)}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <div class="doc-tag"><span class="dot" aria-hidden="true"></span><span class="lbl-full">Note de cadrage · Socle documents entrants · Macro · </span>v1.0</div>
+  </div>
+</header>
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Tronc commun · Anim'Gest × Cockpit'Gest · Vue macro</p>
+      <h1 class="rise d2">Un seul socle pour tous les <span class="accent">documents entrants</span>.</h1>
+      <p class="lede rise d3">Chèque, bon de livraison, facture d'achat, note de frais, facture électronique : cinq documents, un même parcours. Lire, rapprocher, valider, agir, archiver. Plutôt que cinq chantiers verticaux, un socle transverse conçu une fois, décliné par adaptateurs.</p>
+
+      <ul class="meta rise d3">
+        <li><span class="k">Version</span><span class="v">1.0</span></li>
+        <li><span class="k">Statut</span><span class="v">Cadrage macro</span></li>
+        <li><span class="k">Portée</span><span class="v hot">Socle transverse</span></li>
+        <li><span class="k">Périmètre</span><span class="v">Tronc + 2 produits</span></li>
+      </ul>
+
+      <div class="readout rise d4" role="img" aria-label="Synthèse du socle documents entrants">
+        <div class="readout-head">
+          <span class="who">socle <b>documents entrants</b> <span class="at">@</span> tronc commun</span>
+          <span class="status">5 domaines coiffés</span>
+        </div>
+        <div class="readout-body">
+          <div class="fld"><span class="key">Capture</span><span class="dots"></span><span class="val">Image / PDF / e-facture</span></div>
+          <div class="fld"><span class="key">Extraction</span><span class="dots"></span><span class="val">OCR / vision / parseur</span></div>
+          <div class="fld"><span class="key">Contrôle</span><span class="dots"></span><span class="val">Rapprochement + validation</span></div>
+          <div class="fld"><span class="key">Aboutissement</span><span class="dots"></span><span class="val amt">Action métier + archivage</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enote">
+    <div class="wrap">
+      <div class="band rise d1" style="margin-top:clamp(24px,4vw,40px)">
+        <p class="eyebrow" style="color:var(--cyan-light)">Note de l'éditeur</p>
+        <p style="color:var(--text); font-size:clamp(1.06rem,2vw,1.22rem); line-height:1.6; max-width:62ch; margin:16px 0 0">En cadrant les chantiers un par un — chèque, puis livraison, puis facture — le même besoin revenait à chaque fois : lire un document, le rapprocher, le faire valider par un humain. Ce n'est pas une coïncidence, c'est une architecture. Cette note prend de la hauteur : elle décrit le socle commun qui traite tout document entrant, et montre que nos cinq chantiers n'en sont que des déclinaisons. On construit le socle une fois, on décline le reste.</p>
+        <div class="sigline" style="margin-top:24px"><span>éditeur</span><span class="at">@</span><span>tronc commun · No Sage's Editor</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Le constat</h2></div>
+      <div class="prose">
+        <p class="lead-in">Cinq chantiers cadrés séparément partagent le même squelette.</p>
+        <p>Le chèque à encaisser, le bon de livraison du fournisseur, la facture d'achat, la note de frais, la facture électronique reçue : tous sont des <strong>documents qui entrent</strong> dans l'entreprise et qu'il faut traiter. En les cadrant un par un, un motif s'est imposé — chacun suit exactement la même séquence : on <em>capture</em> le document, on en <em>extrait</em> les données, on les <em>rapproche</em> à l'existant, un humain <em>valide</em>, une <em>action métier</em> se déclenche, et le document est <em>archivé</em>.</p>
+        <p>Traiter ces cinq chantiers comme des projets indépendants reviendrait à <strong>construire cinq fois le même moteur</strong>, avec cinq variantes de bugs. La bonne échelle n'est pas le document : c'est le <strong>parcours</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Le parcours commun</h2></div>
+      <p class="prose lead-in">Six étages, du document brut à l'action comptable. Les mêmes pour tous.</p>
+      <ol class="pipe">
+        <li><span class="st-b">1</span><div class="body"><h4>Capture <span class="tag tronc">tronc</span></h4><p>Le document entre : photo, PDF, ou fichier électronique structuré. Import unifié, quelle que soit la source.</p></div></li>
+        <li><span class="st-b">2</span><div class="body"><h4>Extraction <span class="tag tronc">tronc</span></h4><p>OCR / vision pour les documents image (le cœur qui manque aujourd'hui), ou parseur pour les documents déjà structurés (Factur-X). Sortie : des données normalisées.</p></div></li>
+        <li><span class="st-b">3</span><div class="body"><h4>Rapprochement <span class="tag tronc">tronc</span> <span class="tag prod">+ règles</span></h4><p>Lier le document à l'existant : le BL à sa commande, la facture à ses BL, le chèque à ses factures. Moteur générique, règles par type de document.</p></div></li>
+        <li><span class="st-b">4</span><div class="body"><h4>Validation manuelle <span class="tag tronc">tronc</span></h4><p>La machine propose, l'humain confirme. Aucune écriture sans validation explicite. Règle absolue, identique partout.</p></div></li>
+        <li><span class="st-b">5</span><div class="body"><h4>Action métier <span class="tag prod">produit</span></h4><p>Le seul étage vraiment spécifique : réception + stock (BL), écriture comptable (facture, chèque), remboursement (note de frais). Chaque domaine branche son action.</p></div></li>
+        <li><span class="st-b">6</span><div class="body"><h4>Archivage <span class="tag tronc">tronc</span></h4><p>Le document est classé en GED, traçable, opposable. Mécanisme unique pour tous.</p></div></li>
+      </ol>
+      <div class="prose" style="margin-top:20px">
+        <p><strong>Cinq étages sur six sont communs.</strong> Seul l'étage 5 (l'action métier) change d'un document à l'autre. C'est toute la démonstration : le socle est massivement mutualisable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Les cinq domaines, une seule matrice</h2></div>
+      <p class="prose lead-in">Chaque chantier déjà cadré est une instance du même parcours. La preuve en tableau :</p>
+      <div class="matrix">
+        <table>
+          <thead><tr><th>Document</th><th>Capture</th><th>Extraction</th><th>Rapprochement</th><th>Action métier (étage 5)</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Chèque</td><td class="c y">image</td><td class="c y">OCR</td><td class="c y">→ factures</td><td>Règlement + tiers-payeur</td></tr>
+            <tr><td class="lbl">Bon de livraison</td><td class="c y">image/PDF</td><td class="c y">OCR</td><td class="c y">→ commande</td><td>Réception + entrée stock</td></tr>
+            <tr><td class="lbl">Facture d'achat</td><td class="c y">image/PDF</td><td class="c y">OCR</td><td class="c y">→ BL + commande</td><td>Écriture comptable (achat)</td></tr>
+            <tr><td class="lbl">Note de frais</td><td class="c y">image</td><td class="c y">OCR</td><td class="c n">— (aucune)</td><td>Remboursement + charge</td></tr>
+            <tr><td class="lbl">Facture électronique</td><td class="c y">Factur-X</td><td class="c y">parseur XML</td><td class="c y">→ BL + commande</td><td>Écriture comptable (achat)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Une seule colonne varie réellement : l'action métier. La note de frais n'a même pas de rapprochement (pas de commande en amont). La facture électronique remplace l'OCR par un parseur XML — mais le reste du parcours est identique. <strong>Ce ne sont pas cinq projets. C'est un socle et cinq adaptateurs.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Le mur commun : l'extraction</h2></div>
+      <div class="prose">
+        <p class="lead-in">Un obstacle revient dans les cinq chantiers, et il est technique : lire un document image.</p>
+        <p>Le moteur de génération de contenu (Eliot) est aujourd'hui <strong>texte seul</strong> : il ne sait pas ingérer une image ou un PDF pour en extraire des données. Or les cinq documents (sauf la facture électronique, déjà structurée) arrivent en image. L'<strong>extraction visuelle</strong> — transformer une photo de chèque, de BL, de justificatif en données exploitables — est le seul étage qui n'a aucun appui existant.</p>
+        <p>C'est précisément pourquoi il doit être <strong>construit dans le socle, une seule fois</strong> : ce serait une erreur de le coder pour le chèque, puis de le refaire pour le BL, puis pour la facture d'achat. Le seam d'extraction visuelle est <em>le</em> cœur transverse à bâtir en premier.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Tronc commun : construit une fois, partagé deux fois</h2></div>
+      <p class="prose lead-in">Le socle n'est pas propre à un produit : Anim'Gest et Cockpit'Gest le partagent.</p>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Anim'Gest · avance</p>
+          <h3>Terrain d'expérience</h3>
+          <p>Anim'Gest a déjà travaillé l'OCR (chèques, justificatifs) et la facturation électronique. Son existant nourrit la conception du socle.</p>
+          <ul>
+            <li>Pipeline OCR déjà amorcé (à constater)</li>
+            <li>Expérience du rapprochement et des statuts</li>
+            <li>Source d'inspiration pour le seam d'extraction</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Cockpit'Gest · socle récent</p>
+          <h3>Chaîne aval prête</h3>
+          <p>Cockpit'Gest a déjà l'aval (réception, stock, GED, comptabilité de vente). Il lui manque surtout l'amont : capture et extraction.</p>
+          <ul>
+            <li>Réception + stock + GED réutilisables</li>
+            <li>Eliot présent mais texte seul (extraction à ouvrir)</li>
+            <li>Comptabilité versionnée (hors procédure stockée)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Le même mur (extraction visuelle) se dresse dans les deux produits. Le construire une fois, dans le tronc, agnostique, évite de le résoudre deux fois. C'est la même discipline que pour la charte ou les notes de frais : un cœur commun, des adaptateurs par produit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Ce qui est socle, ce qui est adaptateur</h2></div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Socle tronc (construit une fois)</p>
+          <h3>Le moteur transverse</h3>
+          <ul>
+            <li>Capture unifiée (image / PDF / structuré)</li>
+            <li>Extraction : seam vision (OCR) + parseur (Factur-X)</li>
+            <li>Moteur de rapprochement générique</li>
+            <li>Cycle de validation manuelle</li>
+            <li>Archivage GED</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Adaptateur par document (léger)</p>
+          <h3>La déclinaison</h3>
+          <ul>
+            <li>Mapping des données extraites vers le document</li>
+            <li>Règles de rapprochement propres au type</li>
+            <li>Action métier (réception, compta, remboursement)</li>
+            <li>Écran dédié</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Un nouveau type de document entrant, demain, ne sera plus un chantier : ce sera un <strong>adaptateur</strong>. Le coût du premier document est élevé (il construit le socle) ; le coût des suivants s'effondre. C'est là tout l'intérêt de la vue macro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Ce que ça change dans l'ordre des travaux</h2></div>
+      <div class="prose">
+        <p class="lead-in">La priorité n'est plus « quel document », mais « quel étage du socle ».</p>
+        <p>Certains étages du socle existent déjà côté Cockpit (rapprochement possible sur les commandes, GED, chaîne réception/stock, comptabilité de vente). L'étage manquant et structurant, c'est l'<strong>extraction visuelle</strong>. Deux voies se dégagent :</p>
+      </div>
+      <ul class="ticks">
+        <li><b>Livrer d'abord sans extraction</b> — le rapprochement et l'action métier fonctionnent avec une saisie manuelle des lignes. Un bon de livraison peut être créé, rapproché, validé et générer une réception <em>sans OCR</em>. L'extraction n'est qu'une accélération de saisie ajoutée ensuite&nbsp;;</li>
+        <li><b>Construire le seam d'extraction en parallèle</b> — comme brique tronc, en s'inspirant de l'existant Anim'Gest, sans bloquer les premiers livrables&nbsp;;</li>
+        <li><b>Puis brancher l'extraction</b> sur chaque adaptateur — le socle prêt, chaque document gagne l'OCR sans le réinventer.</li>
+      </ul>
+      <div class="prose" style="margin-top:18px">
+        <p>Autrement dit : on avance le métier tout de suite (rapprochement, validation, action) là où l'aval est déjà prêt, et on bâtit le socle d'extraction en fond, une fois, pour tous. Le concret n'attend pas ; le socle ne se code pas cinq fois.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <h2>Cinq documents, un socle, des adaptateurs.</h2>
+        <p>Le chèque, le bon de livraison, la facture d'achat, la note de frais et la facture électronique ne sont pas cinq projets : ce sont cinq visages d'un même parcours — capturer, extraire, rapprocher, valider, agir, archiver. En construisant ce socle une fois, dans le tronc, partagé par Anim'Gest et Cockpit'Gest, chaque nouveau document devient une simple déclinaison. C'est la vue d'ensemble qui transforme une pile de chantiers en une architecture.</p>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>tronc commun · Socle documents entrants</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" width="30" height="30" role="img" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <span class="foot-meta">Note de cadrage · Socle documents entrants · v1.0 — <span id="yr">2026</span></span>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

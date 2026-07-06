@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Note de cadrage — OCR Eliot : chèques &amp; dissociation payeur / bénéficiaire — No Sage's Editor</title>
+<meta name="description" content="Note de cadrage du tronc commun Anim'Gest / Cockpit'Gest : extension de l'OCR Eliot à la lecture des chèques et dissociation entre tiers payeur et bénéficiaire.">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B;
+    --surface-2:#172033;
+    --line:rgba(148,163,184,.14);
+    --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+
+    --maxw:1120px; --readw:70ch;
+    --r:16px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+
+  /* ---------- Nav ---------- */
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .doc-tag{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .doc-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--grad)}
+  @media(max-width:620px){ .doc-tag .lbl-full{display:none} }
+
+  /* ---------- Hero ---------- */
+  .hero{padding-block:clamp(48px,8vw,86px) clamp(28px,4vw,40px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.06;
+    font-size:clamp(2.05rem,5.4vw,3.35rem); margin:18px 0 0; max-width:20ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:60ch; margin:20px 0 0; font-size:clamp(1.06rem,2.2vw,1.2rem); color:var(--text-muted)}
+
+  .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; padding:0; list-style:none}
+  .meta li{display:flex; flex-direction:column; gap:3px; padding:10px 15px; border:1px solid var(--line);
+    border-radius:11px; background:rgba(30,41,59,.4)}
+  .meta .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim)}
+  .meta .v{font-family:var(--display); font-weight:600; font-size:.95rem}
+  .meta .v.hot{color:var(--cyan-light)}
+
+  /* ---------- OCR readout (signature) ---------- */
+  .readout{margin-top:38px; border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); box-shadow:0 24px 60px -34px rgba(0,0,0,.8)}
+  .readout-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .readout-head .who{display:flex; align-items:center; gap:9px; color:var(--text-muted)}
+  .readout-head .who b{color:var(--text); font-weight:500}
+  .readout-head .who .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .readout-head .status{color:var(--cyan-light)}
+  .readout-body{display:grid; grid-template-columns:1fr; gap:2px; padding:16px 18px; font-family:var(--mono); font-size:.9rem}
+  .fld{display:grid; grid-template-columns:12ch 1fr auto; gap:12px; align-items:baseline; padding:6px 0}
+  .fld .key{color:var(--text-dim)}
+  .fld .dots{border-bottom:1px dotted var(--line-strong); transform:translateY(-3px)}
+  .fld .val{color:var(--text); text-align:right; white-space:nowrap}
+  .fld .val.amt{color:var(--cyan-light); font-weight:500}
+  .fld .flag{grid-column:1 / -1; justify-self:start; margin-top:2px; font-size:.66rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--violet-light); border:1px solid rgba(129,140,248,.35); border-radius:999px; padding:2px 9px}
+  .readout-foot{border-top:1px solid var(--line); padding:13px 18px; display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:.74rem; color:var(--text-muted)}
+  .readout-foot .arrow{color:var(--cyan-light)}
+  .readout-foot .no{color:var(--violet-light)}
+  @media(max-width:560px){ .fld{grid-template-columns:1fr auto} .fld .dots{display:none} }
+
+  /* ---------- Sections ---------- */
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,52px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2rem); margin:0; line-height:1.15}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+
+  /* lists */
+  .ticks{list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .ticks li{position:relative; padding:7px 0 7px 26px; color:var(--text-muted); border-bottom:1px solid var(--line)}
+  .ticks li:last-child{border-bottom:none}
+  .ticks li::before{content:""; position:absolute; left:0; top:15px; width:9px; height:9px; border-radius:2px;
+    background:var(--grad)}
+  .ticks li b{color:var(--text); font-weight:600}
+
+  /* two-column facts */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 8px}
+  .card.ag{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card.cg{box-shadow:inset 3px 0 0 var(--violet)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.ag .role{color:var(--cyan-light)}
+  .card.cg .role{color:var(--violet-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card p{color:var(--text-muted); margin:0 0 14px; font-size:.98rem}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:5px 0 5px 18px; font-size:.94rem; color:var(--text-muted)}
+  .card ul li::before{content:"—"; position:absolute; left:0; color:var(--text-dim)}
+
+  .flow{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; color:var(--text-muted)}
+  .flow .pill{padding:8px 14px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.pay{color:var(--violet-light); border-color:rgba(129,140,248,.4)}
+  .flow .pill.ben{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .link{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+
+  /* tables */
+  .table-title{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 10px}
+  .tbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:var(--readw)}
+  table{width:100%; border-collapse:collapse; font-size:.95rem}
+  thead th{font-family:var(--mono); font-weight:500; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); text-align:left; padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+  thead th.num, td.num{text-align:right; font-family:var(--mono)}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text-muted)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td.lbl{color:var(--text); font-weight:500}
+  tbody tr.tot td{background:rgba(30,41,59,.5); color:var(--text); font-weight:600}
+  .state{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .state.ok{color:var(--cyan-light); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3)}
+  .state.part{color:var(--violet-light); background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3)}
+
+  .due{display:flex; align-items:baseline; justify-content:space-between; gap:14px; max-width:var(--readw);
+    margin-top:14px; padding:16px 20px; border:1px solid var(--line-strong); border-radius:14px; background:rgba(30,41,59,.4)}
+  .due .k{font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .due .v{font-family:var(--display); font-weight:700; font-size:1.5rem; color:var(--text)}
+
+  /* chips (impacts) */
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; max-width:var(--readw)}
+  .chip{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; padding:8px 13px; border:1px solid var(--line-strong);
+    border-radius:999px; background:rgba(30,41,59,.5); color:var(--text-muted)}
+  .chip .n{color:var(--cyan-light); margin-right:7px}
+
+  /* numbered rules */
+  .rules{counter-reset:r; list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .rules li{counter-increment:r; position:relative; padding:14px 0 14px 52px; border-bottom:1px solid var(--line); color:var(--text)}
+  .rules li:last-child{border-bottom:none}
+  .rules li::before{content:counter(r,decimal-leading-zero); position:absolute; left:0; top:14px;
+    font-family:var(--mono); font-size:.8rem; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    border:1px solid var(--line-strong); border-radius:8px; width:34px; height:26px; display:grid; place-items:center}
+
+  /* conclusion band */
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,40px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band h2{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch}
+  .band p{color:var(--text-muted); max-width:66ch; margin:0 0 14px}
+  .band .sigline{display:flex; align-items:center; gap:10px; margin-top:20px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .band .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .band .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+
+  /* editor's note */
+  .enote{padding-block:clamp(24px,4vw,40px)}
+  .enote-card{position:relative; overflow:hidden; border:1px solid var(--line-strong); border-radius:var(--r);
+    background:linear-gradient(180deg,rgba(30,41,59,.62),rgba(2,6,23,.4)); padding:clamp(24px,4vw,38px);
+    box-shadow:0 24px 60px -40px rgba(0,0,0,.8)}
+  .enote-card::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .enote .eyebrow{color:var(--cyan-light)}
+  .enote .msg{color:var(--text); font-size:clamp(1.06rem,2vw,1.22rem); line-height:1.6; max-width:62ch; margin:16px 0 0}
+  .enote .msg .name-hl{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .enote .sign{display:flex; align-items:center; gap:13px; margin-top:24px}
+  .enote .sign svg{width:38px; height:38px; flex:none}
+  .enote .sign .who{display:flex; flex-direction:column; line-height:1.3}
+  .enote .sign .who b{font-family:var(--display); font-weight:600; color:var(--text); letter-spacing:-.01em}
+  .enote .sign .who span{font-family:var(--mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-top:2px}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px;
+    font-size:.86rem; color:var(--text-dim)}
+  .foot-inner .brand{font-size:.92rem}
+  .foot-meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase}
+
+  /* entrance */
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .rise{animation:none; opacity:1; transform:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <div class="doc-tag"><span class="dot" aria-hidden="true"></span><span class="lbl-full">Note de cadrage · </span>v1.0</div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Tronc commun · Anim'Gest × Cockpit'Gest</p>
+      <h1 class="rise d2">OCR Eliot : lecture des chèques et dissociation payeur / <span class="accent">bénéficiaire</span>.</h1>
+      <p class="lede rise d3">Étendre le moteur Eliot à la lecture des chèques, et acter un principe métier structurant pour tout le B&nbsp;to&nbsp;C : celui qui paie n'est pas toujours celui qui bénéficie. Une brique générique, réutilisable par l'ensemble des logiciels du groupe.</p>
+
+      <ul class="meta rise d3">
+        <li><span class="k">Version</span><span class="v">1.0</span></li>
+        <li><span class="k">Statut</span><span class="v">À cadrer</span></li>
+        <li><span class="k">Priorité</span><span class="v hot">Élevée</span></li>
+        <li><span class="k">Périmètre</span><span class="v">Tronc commun</span></li>
+      </ul>
+
+      <div class="readout rise d4" role="img" aria-label="Exemple de lecture OCR d'un chèque par le moteur Eliot">
+        <div class="readout-head">
+          <span class="who">lecture <b>Eliot</b> <span class="at">@</span> chèque</span>
+          <span class="status">✓ règlement créé</span>
+        </div>
+        <div class="readout-body">
+          <div class="fld"><span class="key">banque</span><span class="dots"></span><span class="val">Crédit Agricole</span></div>
+          <div class="fld"><span class="key">n° chèque</span><span class="dots"></span><span class="val">0 004 521</span></div>
+          <div class="fld"><span class="key">date</span><span class="dots"></span><span class="val">14/03/2026</span></div>
+          <div class="fld"><span class="key">montant</span><span class="dots"></span><span class="val amt">1&nbsp;000,00&nbsp;€</span></div>
+          <div class="fld"><span class="key">titulaire</span><span class="dots"></span><span class="val">M. le parrain</span>
+            <span class="flag">→ tiers payeur</span></div>
+        </div>
+        <div class="readout-foot">
+          <span class="no">✕ aucun rapprochement automatique sur le nom.</span>
+          <span class="arrow">L'affectation reste manuelle.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enote">
+    <div class="wrap">
+      <div class="enote-card rise d1">
+        <p class="eyebrow">Note de l'éditeur</p>
+        <p class="msg">Célia, merci pour cette demande — elle est <strong>validée</strong> et inscrite à notre feuille de route pour un développement à venir. C'est précisément ce genre de retour, venu directement du terrain, qui fait grandir nos outils : une brique importante, née de votre métier et <span class="name-hl">co-construite avec vous</span>, jamais à votre place. Au plaisir de la voir prendre forme, ensemble.</p>
+        <div class="sign">
+          <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+            <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+          </svg>
+          <div class="who">
+            <b>Nicolas Hermilly</b>
+            <span>Fondateur · No Sage's Editor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s1">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Contexte</h2></div>
+      <div class="prose">
+        <p class="lead-in">Le tronc commun d'Anim'Gest et Cockpit'Gest mutualise progressivement les composants métier, pour constituer un socle réutilisable par l'ensemble des logiciels édités par No Sage's Editor.</p>
+        <p>Une première brique existe déjà autour de l'<strong>OCR Eliot</strong> : la lecture automatisée des notes de frais. L'étape suivante étend ce moteur à la <strong>lecture des chèques</strong>, pour en faciliter l'intégration et la comptabilisation.</p>
+        <p>Cette évolution ne répond pas qu'à Anim'Gest. C'est une fonction transverse pour tous les métiers <strong>B to C</strong>, où le titulaire du moyen de paiement est très souvent différent du bénéficiaire réel de la prestation. Cette réalité doit être prise en compte <em>dès la conception</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s2">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Constat métier</h2></div>
+      <div class="prose">
+        <p>Dans les métiers B to C, la personne qui règle une prestation n'est pas toujours celle qui en bénéficie. Le système ne peut donc pas considérer que le titulaire du chèque est le titulaire de la facture. <strong>Cette distinction est le principe fondamental de l'évolution.</strong></p>
+      </div>
+      <div class="split">
+        <div class="card cg">
+          <p class="role">Qui règle — le payeur</p>
+          <ul>
+            <li>un parent, un grand-parent</li>
+            <li>un parrain, une marraine</li>
+            <li>un conjoint, un proche</li>
+            <li>une entreprise, un comité d'entreprise</li>
+            <li>une collectivité, une association</li>
+            <li>un organisme financeur</li>
+          </ul>
+        </div>
+        <div class="card ag">
+          <p class="role">Qui bénéficie — le bénéficiaire</p>
+          <ul>
+            <li>un enfant</li>
+            <li>un licencié, un adhérent</li>
+            <li>un élève, un patient</li>
+            <li>un client</li>
+            <li>un propriétaire d'animal</li>
+            <li>toute personne bénéficiant de la prestation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s3">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Problématique</h2></div>
+      <div class="prose">
+        <p>Un rapprochement automatique fondé sur le seul nom du titulaire du chèque serait inadapté. Aucune correspondance ne peut être garantie entre le titulaire du compte bancaire, le nom porté sur le chèque, le bénéficiaire de la prestation et le titulaire des factures.</p>
+        <p>Le système doit donc <strong>constater un règlement indépendamment de l'identité du bénéficiaire</strong>, puis laisser l'utilisateur l'affecter librement aux factures concernées.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s4">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Objectifs</h2></div>
+      <p class="prose lead-in">Permettre à l'OCR Eliot de&nbsp;:</p>
+      <ul class="ticks">
+        <li>lire automatiquement les informations d'un chèque&nbsp;;</li>
+        <li>créer un règlement dans le logiciel&nbsp;;</li>
+        <li>identifier le titulaire du chèque comme <b>tiers payeur</b>&nbsp;;</li>
+        <li>distinguer ce tiers payeur du <b>bénéficiaire</b> de la prestation&nbsp;;</li>
+        <li>permettre l'<b>affectation manuelle</b> du règlement&nbsp;;</li>
+        <li>gérer un règlement sur une ou plusieurs factures&nbsp;;</li>
+        <li>gérer les <b>règlements partiels</b>&nbsp;;</li>
+        <li>conserver tous les mécanismes actuels de suivi des créances.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="s5">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Fonctionnement attendu</h2></div>
+      <div class="prose">
+        <p>Après lecture OCR, le système extrait notamment le numéro du chèque, la banque, la date, le montant et le titulaire du compte. Ces informations créent automatiquement un règlement, et le titulaire du chèque est enregistré comme <strong>tiers payeur</strong>.</p>
+        <p>En revanche, <em>aucune tentative de rapprochement automatique</em> n'est faite sur son identité. L'utilisateur accède ensuite à une interface pour sélectionner librement une facture, plusieurs factures, ou un bénéficiaire différent du tiers payeur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s6">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Nouveau modèle fonctionnel</h2></div>
+      <div class="prose"><p>Le système distingue désormais deux notions indépendantes. Le tiers payeur trace le paiement&nbsp;; il ne modifie jamais le titulaire des factures.</p></div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Le bénéficiaire</p>
+          <h3>Titulaire juridique</h3>
+          <p>La personne qui bénéficie de la prestation. Elle reste&nbsp;:</p>
+          <ul>
+            <li>titulaire de la facture</li>
+            <li>débiteur de la créance</li>
+            <li>destinataire des relances</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Le tiers payeur</p>
+          <h3>Traçabilité du paiement</h3>
+          <p>La personne ou l'organisme ayant réellement payé — parent, entreprise, association, collectivité, comité d'entreprise, financeur…</p>
+          <ul>
+            <li>information de traçabilité</li>
+            <li>conservé pour consultation</li>
+            <li>ne change pas le titulaire de la facture</li>
+          </ul>
+        </div>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill pay">Tiers payeur</span>
+        <span class="link">— paiement →</span>
+        <span class="pill ben">Bénéficiaire = titulaire facture</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s7">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Gestion des règlements</h2></div>
+      <p class="prose lead-in">Le système autorise une ventilation totalement libre. Un règlement pourra&nbsp;:</p>
+      <ul class="ticks">
+        <li>solder <b>totalement</b> une facture&nbsp;;</li>
+        <li>régler <b>partiellement</b> une facture&nbsp;;</li>
+        <li>être <b>réparti</b> sur plusieurs factures&nbsp;;</li>
+        <li>être <b>complété</b> ultérieurement par d'autres règlements.</li>
+      </ul>
+      <p class="prose" style="margin-top:16px">Inversement, une facture pourra recevoir plusieurs règlements successifs — au plus près des pratiques réelles du B to C.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="s8">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">08</span><h2>Cas d'usage</h2></div>
+      <div class="prose">
+        <p>Un parrain offre l'année d'équitation de sa filleule. Le chèque est établi <strong>au nom du parrain</strong>&nbsp;; les factures concernent <strong>exclusivement la filleule</strong>. Les noms sont totalement différents. Eliot lit le chèque — <strong>1&nbsp;000,00&nbsp;€</strong> — et crée le règlement.</p>
+      </div>
+
+      <p class="table-title">Factures existantes</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Facture</th><th class="num">Montant</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Licence</td><td class="num">100,00&nbsp;€</td></tr>
+            <tr><td class="lbl">Abonnement annuel</td><td class="num">50,00&nbsp;€</td></tr>
+            <tr><td class="lbl">Cours annuels</td><td class="num">1&nbsp;250,00&nbsp;€</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="table-title">Ventilation choisie par l'utilisateur</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Facture</th><th class="num">Affectation</th><th>État</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Licence</td><td class="num">100,00&nbsp;€</td><td><span class="state ok">Payée</span></td></tr>
+            <tr><td class="lbl">Abonnement</td><td class="num">50,00&nbsp;€</td><td><span class="state ok">Payée</span></td></tr>
+            <tr><td class="lbl">Cours annuels</td><td class="num">850,00&nbsp;€</td><td><span class="state part">Règlement partiel</span></td></tr>
+            <tr class="tot"><td>Total affecté</td><td class="num">1&nbsp;000,00&nbsp;€</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="due">
+        <span class="k">Montant restant dû — cours annuels</span>
+        <span class="v">400,00&nbsp;€</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s9">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Gestion des relances</h2></div>
+      <div class="prose">
+        <p>Le règlement partiel n'interrompt pas le cycle de gestion des créances. Le solde restant continue d'être visible dans les impayés, pris en compte dans les balances âgées, intégré aux relances automatiques et soumis aux pénalités si elles sont activées.</p>
+        <p>Le système raisonne donc sur le <strong>solde restant dû</strong>, jamais sur le montant initial de la facture.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s10">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Données OCR à exploiter</h2></div>
+      <p class="prose lead-in">Eliot extrait, lorsque l'information est disponible&nbsp;:</p>
+      <ul class="ticks">
+        <li>banque émettrice&nbsp;;</li>
+        <li>numéro du chèque&nbsp;;</li>
+        <li>date&nbsp;;</li>
+        <li>montant&nbsp;;</li>
+        <li>titulaire du compte&nbsp;;</li>
+        <li>le cas échéant, le numéro de compte ou les informations utiles au rapprochement bancaire.</li>
+      </ul>
+      <p class="prose" style="margin-top:16px">Ces données servent à créer le règlement, tracer le paiement et préparer le rapprochement bancaire ultérieur.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="s11">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">11</span><h2>Règles de gestion</h2></div>
+      <ol class="rules">
+        <li>Le titulaire du chèque devient le <strong>tiers payeur</strong>.</li>
+        <li>Le tiers payeur peut être totalement différent du bénéficiaire.</li>
+        <li>Aucun rapprochement automatique sur le seul nom du payeur.</li>
+        <li>Un règlement peut être réparti sur plusieurs factures.</li>
+        <li>Une facture peut recevoir plusieurs règlements.</li>
+        <li>Les règlements partiels sont gérés nativement.</li>
+        <li>Les relances portent uniquement sur le solde restant dû.</li>
+        <li>Le bénéficiaire demeure le titulaire juridique de la facture.</li>
+        <li>Le tiers payeur est conservé pour la traçabilité comptable.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="s12">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">12</span><h2>Impacts fonctionnels</h2></div>
+      <p class="prose">Composants du tronc commun à adapter — conçus de manière <strong>générique</strong>, pour être réutilisables par toutes les solutions du socle&nbsp;:</p>
+      <div class="chips">
+        <span class="chip"><span class="n">01</span>Moteur OCR Eliot</span>
+        <span class="chip"><span class="n">02</span>Modèle de gestion des règlements</span>
+        <span class="chip"><span class="n">03</span>Écran de ventilation</span>
+        <span class="chip"><span class="n">04</span>Historique des règlements</span>
+        <span class="chip"><span class="n">05</span>Suivi des créances</span>
+        <span class="chip"><span class="n">06</span>Relances automatiques</span>
+        <span class="chip"><span class="n">07</span>Rapprochement bancaire</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s13">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">13</span><h2>Bénéfices attendus</h2></div>
+      <ul class="ticks">
+        <li>Mutualisation du moteur OCR Eliot.</li>
+        <li>Réduction des saisies manuelles.</li>
+        <li>Gestion fidèle des situations réelles du B to C.</li>
+        <li>Prise en charge native des <b>tiers payeurs</b>.</li>
+        <li>Traçabilité complète des règlements et ventilation libre des paiements.</li>
+        <li>Gestion native des règlements partiels, mécanismes de relance conservés.</li>
+        <li>Réutilisation immédiate dans tous les logiciels No Sage's Editor.</li>
+        <li>Évolution pérenne du tronc commun, sans développement spécifique par métier.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="s14">
+    <div class="wrap">
+      <div class="band">
+        <h2>Une notion métier structurante, pas seulement une lecture OCR.</h2>
+        <p>Cette évolution dépasse la lecture des chèques : elle introduit la <strong>dissociation entre bénéficiaire et tiers payeur</strong> pour l'ensemble des applications B to C. Intégrée directement dans le tronc commun, elle dote No Sage's Editor d'une architecture assez générique pour la formation, le sport, les loisirs, l'événementiel, la santé, les services à la personne, les associations — partout où un tiers finance une prestation.</p>
+        <p>À la clé : une meilleure expérience utilisateur, une traçabilité renforcée des paiements, et une brique réutilisable immédiatement dans toutes les solutions présentes et futures du groupe.</p>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>tronc commun</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" width="30" height="30" role="img" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <span class="foot-meta">Note de cadrage · OCR Eliot · Tronc commun · v1.0 — <span id="yr">2026</span></span>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reception BL (tronc commun) — No Sage's Editor</title>
+<meta name="description" content="Cadrage tronc commun du bon de livraison : OCR, rapprochement commande, validation manuelle, pour Anim'Gest puis Cockpit'Gest.">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B;
+    --surface-2:#172033;
+    --line:rgba(148,163,184,.14);
+    --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+    --maxw:1120px; --readw:70ch;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .doc-tag{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .doc-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--grad)}
+  @media(max-width:620px){ .doc-tag .lbl-full{display:none} }
+  .hero{padding-block:clamp(48px,8vw,86px) clamp(28px,4vw,40px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.06;
+    font-size:clamp(2.05rem,5.4vw,3.35rem); margin:18px 0 0; max-width:20ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:60ch; margin:20px 0 0; font-size:clamp(1.06rem,2.2vw,1.2rem); color:var(--text-muted)}
+  .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; padding:0; list-style:none}
+  .meta li{display:flex; flex-direction:column; gap:3px; padding:10px 15px; border:1px solid var(--line);
+    border-radius:11px; background:rgba(30,41,59,.4)}
+  .meta .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim)}
+  .meta .v{font-family:var(--display); font-weight:600; font-size:.95rem}
+  .meta .v.hot{color:var(--cyan-light)}
+  .readout{margin-top:38px; border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); box-shadow:0 24px 60px -34px rgba(0,0,0,.8)}
+  .readout-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .readout-head .who{display:flex; align-items:center; gap:9px; color:var(--text-muted)}
+  .readout-head .who b{color:var(--text); font-weight:500}
+  .readout-head .who .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .readout-head .status{color:var(--cyan-light)}
+  .readout-body{display:grid; grid-template-columns:1fr; gap:2px; padding:16px 18px; font-family:var(--mono); font-size:.9rem}
+  .fld{display:grid; grid-template-columns:14ch 1fr auto; gap:12px; align-items:baseline; padding:6px 0}
+  .fld .key{color:var(--text-dim)}
+  .fld .dots{border-bottom:1px dotted var(--line-strong); transform:translateY(-3px)}
+  .fld .val{color:var(--text); text-align:right; white-space:nowrap}
+  .fld .val.amt{color:var(--cyan-light); font-weight:500}
+  @media(max-width:560px){ .fld{grid-template-columns:1fr auto} .fld .dots{display:none} }
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,52px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2rem); margin:0; line-height:1.15}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+  .ticks{list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .ticks li{position:relative; padding:7px 0 7px 26px; color:var(--text-muted); border-bottom:1px solid var(--line)}
+  .ticks li:last-child{border-bottom:none}
+  .ticks li::before{content:""; position:absolute; left:0; top:15px; width:9px; height:9px; border-radius:2px; background:var(--grad)}
+  .ticks li b{color:var(--text); font-weight:600}
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 8px}
+  .card.ag{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card.cg{box-shadow:inset 3px 0 0 var(--violet)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.ag .role{color:var(--cyan-light)}
+  .card.cg .role{color:var(--violet-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card p{color:var(--text-muted); margin:0 0 14px; font-size:.98rem}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:5px 0 5px 18px; font-size:.94rem; color:var(--text-muted)}
+  .card ul li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  .flow{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; color:var(--text-muted)}
+  .flow .pill{padding:8px 14px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.pay{color:var(--violet-light); border-color:rgba(129,140,248,.4)}
+  .flow .pill.ben{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .link{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+  .table-title{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 10px}
+  .tbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:var(--readw)}
+  table{width:100%; border-collapse:collapse; font-size:.95rem}
+  thead th{font-family:var(--mono); font-weight:500; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); text-align:left; padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+  thead th.num, td.num{text-align:right; font-family:var(--mono)}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text-muted)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td.lbl{color:var(--text); font-weight:500}
+  tbody tr.tot td{background:rgba(30,41,59,.5); color:var(--text); font-weight:600}
+  .state{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .state.ok{color:var(--cyan-light); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3)}
+  .state.part{color:var(--violet-light); background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3)}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; max-width:var(--readw)}
+  .chip{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; padding:8px 13px; border:1px solid var(--line-strong);
+    border-radius:999px; background:rgba(30,41,59,.5); color:var(--text-muted)}
+  .chip .n{color:var(--cyan-light); margin-right:7px}
+  .rules{counter-reset:r; list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .rules li{counter-increment:r; position:relative; padding:14px 0 14px 52px; border-bottom:1px solid var(--line); color:var(--text)}
+  .rules li:last-child{border-bottom:none}
+  .rules li::before{content:counter(r,decimal-leading-zero); position:absolute; left:0; top:14px;
+    font-family:var(--mono); font-size:.8rem; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    border:1px solid var(--line-strong); border-radius:8px; width:34px; height:26px; display:grid; place-items:center}
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,40px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band h2{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch}
+  .band p{color:var(--text-muted); max-width:66ch; margin:0 0 14px}
+  .band .sigline{display:flex; align-items:center; gap:10px; margin-top:20px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .band .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .band .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px; font-size:.86rem; color:var(--text-dim)}
+  .foot-inner .brand{font-size:.92rem}
+  .foot-meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase}
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .rise{animation:none; opacity:1; transform:none} }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <div class="doc-tag"><span class="dot" aria-hidden="true"></span><span class="lbl-full">Note de cadrage · A1 · Tronc commun · </span>v1.0</div>
+  </div>
+</header>
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Tronc commun · Achats · Chantier A1</p>
+      <h1 class="rise d2">Le bon de livraison, lu puis <span class="accent">rapproché</span>.</h1>
+      <p class="lede rise d3">Un document, deux produits, une même discipline. Le BL devient une pièce à part entière : l'OCR en extrait les lignes, le moteur les rapproche à la commande, l'opérateur valide avant que le stock ne bouge. Conçu pour le tronc, instancié dans Anim'Gest puis Cockpit'Gest.</p>
+
+      <ul class="meta rise d3">
+        <li><span class="k">Version</span><span class="v">1.0</span></li>
+        <li><span class="k">Statut</span><span class="v">À cadrer · INV requis</span></li>
+        <li><span class="k">Priorité</span><span class="v hot">Post-bêta</span></li>
+        <li><span class="k">Périmètre</span><span class="v">Tronc + 2 produits</span></li>
+      </ul>
+
+      <div class="readout rise d4" role="img" aria-label="Synthèse du chantier A1">
+        <div class="readout-head">
+          <span class="who">chantier <b>A1 · Réception BL</b> <span class="at">@</span> tronc commun</span>
+          <span class="status">✓ cadrage</span>
+        </div>
+        <div class="readout-body">
+          <div class="fld"><span class="key">Document</span><span class="dots"></span><span class="val">Bon de livraison</span></div>
+          <div class="fld"><span class="key">Entrée</span><span class="dots"></span><span class="val">OCR (moteur Eliot)</span></div>
+          <div class="fld"><span class="key">Rapprochement</span><span class="dots"></span><span class="val">Commande d'achat</span></div>
+          <div class="fld"><span class="key">Garde</span><span class="dots"></span><span class="val amt">Validation manuelle</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enote">
+    <div class="wrap">
+      <div class="band rise d1" style="margin-top:clamp(24px,4vw,40px)">
+        <p class="eyebrow" style="color:var(--cyan-light)">Note de l'éditeur</p>
+        <p style="color:var(--text); font-size:clamp(1.06rem,2vw,1.22rem); line-height:1.6; max-width:62ch; margin:16px 0 0">Cette note traite le bon de livraison comme un concept commun aux deux produits. Le cœur — lire, rapprocher, valider — est agnostique et vit dans le tronc ; seuls le mapping et le branchement diffèrent d'un produit à l'autre. On cadre une fois, on instancie deux fois.</p>
+        <div class="sigline" style="margin-top:24px"><span>éditeur</span><span class="at">@</span><span>tronc commun · No Sage's Editor</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>L'intention</h2></div>
+      <div class="prose">
+        <p class="lead-in">Le bon de livraison passe d'une trace implicite à un document source, dans les deux produits.</p>
+        <p>Quand un fournisseur livre, il joint un <strong>bon de livraison</strong> qui liste ce qui est réellement arrivé. Aujourd'hui, ni Anim'Gest ni Cockpit'Gest ne gèrent le BL comme une pièce : la réception est saisie à la main. A1 introduit le BL comme <strong>document lu par la machine</strong> : on le photographie ou on l'importe, l'<strong>OCR</strong> en extrait les lignes, et un moteur propose <strong>à quelle commande</strong> il correspond.</p>
+        <p>L'opérateur <em>voit le rapprochement proposé, le corrige si besoin, et le valide</em>. Ce n'est qu'à cette validation que la réception — et donc l'entrée de stock — est générée. La machine prépare ; l'humain engage. Le même principe, la même brique, pour les deux produits.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Les deux produits</h2></div>
+      <p class="prose lead-in">Même concept, deux points de départ. L'INV de chaque côté confirmera l'existant.</p>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Anim'Gest · premier</p>
+          <h3>Terrain le plus riche</h3>
+          <p>Anim'Gest porte déjà un flux fournisseur et un pipeline OCR (constaté sur les chèques). Le BL s'y grefferait sur l'existant.</p>
+          <ul>
+            <li>Commande fournisseur présente (à confirmer INV)</li>
+            <li>OCR déjà en place (à réutiliser)</li>
+            <li>Attention : compta en procédure stockée opaque</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Cockpit'Gest · second</p>
+          <h3>Socle Achats récent</h3>
+          <p>Cockpit'Gest a livré commande + réception + stock (C4). Le BL s'insère en amont de la réception existante.</p>
+          <ul>
+            <li>Commande / réception / stock livrés</li>
+            <li>Moteur Eliot agnostique disponible</li>
+            <li>Compta versionnée, hors procédure stockée</li>
+          </ul>
+        </div>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill ben">Anim'Gest</span><span class="link">— même brique tronc →</span><span class="pill pay">Cockpit'Gest</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Le flux (partagé)</h2></div>
+      <div class="prose">
+        <p class="lead-in">Quatre temps, identiques dans les deux produits.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill pay">BL reçu</span><span class="link">— OCR →</span><span class="pill ben">Lignes extraites</span><span class="link">— rapproché →</span><span class="pill pay">Commande</span><span class="link">— validé →</span><span class="pill ben">Réception + stock</span>
+      </div>
+      <div class="prose" style="margin-top:8px">
+        <p><strong>1. Capture</strong> — le BL est importé (photo/PDF). <strong>2. Extraction</strong> — l'OCR lit les lignes (référence, quantité livrée) et l'entête (fournisseur, date, numéro BL fournisseur). <strong>3. Rapprochement</strong> — le moteur propose la commande et associe chaque ligne du BL à une ligne de commande. <strong>4. Validation</strong> — l'opérateur confirme ou ajuste ; le BL validé génère la réception.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Les variantes à couvrir</h2></div>
+      <p class="prose lead-in">Un BL n'est pas toujours simple. Le cadrage prévoit :</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Cas</th><th>Description</th><th>Effet</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">BL simple</td><td>Un BL couvre une commande, quantités complètes</td><td><span class="state ok">Réception totale</span></td></tr>
+            <tr><td class="lbl">BL partiel</td><td>Le BL ne livre qu'une partie de la commande</td><td><span class="state part">Reste attendu</span></td></tr>
+            <tr><td class="lbl">Multi-BL</td><td>Plusieurs BL pour une même commande (livraisons échelonnées)</td><td><span class="state part">Cumul progressif</span></td></tr>
+            <tr><td class="lbl">Bon de retour</td><td>Marchandise renvoyée au fournisseur (total/partiel)</td><td><span class="state ok">Contre-passe stock</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Le <strong>multi-BL sur plusieurs commandes</strong> (un BL couvrant des lignes de commandes différentes) est le cas le plus complexe. <em>Reco</em> : le sortir de la v1 (P1), pour ne pas alourdir le rapprochement initial. À confirmer selon le besoin réel de chaque produit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Ce qui est tronc, ce qui est produit</h2></div>
+      <p class="prose">La frontière d'extraction, posée dès le cadrage :</p>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Tronc commun</p>
+          <h3>Se lève tel quel</h3>
+          <ul>
+            <li>Modèle BL + lignes (concept agnostique)</li>
+            <li>Moteur de rapprochement BL &rarr; commande</li>
+            <li>Cœur OCR Eliot (extraction)</li>
+            <li>Écran de rapprochement (générique)</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Produit</p>
+          <h3>Se réinstancie</h3>
+          <ul>
+            <li>Adaptateur OCR &rarr; BL (mapping produit)</li>
+            <li>Branchement à la réception du produit</li>
+            <li>Conventions de nommage / préfixes</li>
+            <li>Archivage GED propre au produit</li>
+          </ul>
+        </div>
+      </div>
+      <div class="chips" style="margin-top:20px">
+        <span class="chip"><span class="n">01</span>Table bon_livraison + lignes</span>
+        <span class="chip"><span class="n">02</span>Lien BL &rarr; commande</span>
+        <span class="chip"><span class="n">03</span>Adaptateur OCR (Eliot)</span>
+        <span class="chip"><span class="n">04</span>Écran de rapprochement</span>
+        <span class="chip"><span class="n">05</span>Génération réception</span>
+        <span class="chip"><span class="n">06</span>Bon de retour</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Règles de gestion</h2></div>
+      <ol class="rules">
+        <li><strong>Validation manuelle</strong> — le rapprochement proposé par l'OCR n'engage rien ; seule la confirmation de l'opérateur génère la réception et l'entrée de stock. Vrai dans les deux produits.</li>
+        <li><strong>Rapprochement traçable</strong> — chaque ligne de BL est liée à une ligne de commande ; on sait toujours quel BL a servi quelle ligne, en quelle quantité.</li>
+        <li><strong>Cohérence quantités</strong> — la quantité livrée cumulée ne peut dépasser la commande sans alerte ; le sur-livré est signalé, jamais écrit en silence.</li>
+        <li><strong>Snapshot</strong> — les lignes de BL figent référence et libellé à la réception (immuables ensuite).</li>
+        <li><strong>OCR isolé</strong> — le cœur d'extraction reste agnostique (tronc) ; le mapping vers le BL de chaque produit vit dans l'adaptateur.</li>
+        <li><strong>Retour = contre-passation</strong> — un bon de retour génère un mouvement de stock inverse traçable, jamais une suppression du mouvement d'origine.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>INV préalable — bloquant des deux côtés</h2></div>
+      <div class="prose">
+        <p class="lead-in">On constate avant de concevoir — dans chaque produit, séparément.</p>
+        <p>Deux inventaires read-only, un par produit, à mener avant tout build. Ils partagent les mêmes questions, mais chaque base a son existant.</p>
+      </div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">INV Anim'Gest</p>
+          <h3>Dans le projet dédié</h3>
+          <ul>
+            <li>Commande / réception existantes ?</li>
+            <li>OCR : le pipeline existant est-il réutilisable ?</li>
+            <li>GED : archivage d'un upload ?</li>
+            <li>Compta : impact procédure stockée</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">INV Cockpit'Gest</p>
+          <h3>CC-READ, base de dev</h3>
+          <ul>
+            <li>Réception actuelle : structure, compteurs</li>
+            <li>Couplage BL / réception : seul chemin ou coexistence ?</li>
+            <li>Point de greffe OCR (Eliot)</li>
+            <li>GED, numérotation du BL</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Chaque RECAP recalera le modèle (section 05) pour son produit et tranchera le couplage BL / réception. <strong>Aucun build avant ces constats.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <h2>Un maillon commun, instancié deux fois.</h2>
+        <p>A1 pose le bon de livraison comme document source : lu par la machine, rapproché automatiquement, validé par une personne avant que le stock ne bouge. Conçu tronc, il se lève une fois et s'instancie dans les deux produits — et sert de fondation à A2, la facture d'achat, qui ne se rapproche qu'à des BL qui existent.</p>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>tronc commun · Achats A1</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" width="30" height="30" role="img" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <span class="foot-meta">Note de cadrage · A1 Reception BL · v1.0 — <span id="yr">2026</span></span>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

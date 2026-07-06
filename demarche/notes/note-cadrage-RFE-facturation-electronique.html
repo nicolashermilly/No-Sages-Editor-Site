@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facturation electronique (RFE, tronc commun) — No Sage's Editor</title>
+<meta name="description" content="Cadrage tronc commun de la reforme facturation electronique : reception 2026, emission 2027, formats Factur-X/UBL/CII, abstraction plateforme agreee, pour Anim'Gest et Cockpit'Gest.">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B;
+    --surface-2:#172033;
+    --line:rgba(148,163,184,.14);
+    --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+    --maxw:1120px; --readw:70ch;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .doc-tag{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .doc-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--grad)}
+  @media(max-width:620px){ .doc-tag .lbl-full{display:none} }
+  .hero{padding-block:clamp(48px,8vw,86px) clamp(28px,4vw,40px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.06;
+    font-size:clamp(2.05rem,5.4vw,3.35rem); margin:18px 0 0; max-width:20ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:60ch; margin:20px 0 0; font-size:clamp(1.06rem,2.2vw,1.2rem); color:var(--text-muted)}
+  .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; padding:0; list-style:none}
+  .meta li{display:flex; flex-direction:column; gap:3px; padding:10px 15px; border:1px solid var(--line);
+    border-radius:11px; background:rgba(30,41,59,.4)}
+  .meta .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim)}
+  .meta .v{font-family:var(--display); font-weight:600; font-size:.95rem}
+  .meta .v.hot{color:var(--cyan-light)}
+  .readout{margin-top:38px; border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); box-shadow:0 24px 60px -34px rgba(0,0,0,.8)}
+  .readout-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .readout-head .who{display:flex; align-items:center; gap:9px; color:var(--text-muted)}
+  .readout-head .who b{color:var(--text); font-weight:500}
+  .readout-head .who .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .readout-head .status{color:var(--cyan-light)}
+  .readout-body{display:grid; grid-template-columns:1fr; gap:2px; padding:16px 18px; font-family:var(--mono); font-size:.9rem}
+  .fld{display:grid; grid-template-columns:14ch 1fr auto; gap:12px; align-items:baseline; padding:6px 0}
+  .fld .key{color:var(--text-dim)}
+  .fld .dots{border-bottom:1px dotted var(--line-strong); transform:translateY(-3px)}
+  .fld .val{color:var(--text); text-align:right; white-space:nowrap}
+  .fld .val.amt{color:var(--cyan-light); font-weight:500}
+  @media(max-width:560px){ .fld{grid-template-columns:1fr auto} .fld .dots{display:none} }
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,52px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2rem); margin:0; line-height:1.15}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+  .ticks{list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .ticks li{position:relative; padding:7px 0 7px 26px; color:var(--text-muted); border-bottom:1px solid var(--line)}
+  .ticks li:last-child{border-bottom:none}
+  .ticks li::before{content:""; position:absolute; left:0; top:15px; width:9px; height:9px; border-radius:2px; background:var(--grad)}
+  .ticks li b{color:var(--text); font-weight:600}
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 8px}
+  .card.ag{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card.cg{box-shadow:inset 3px 0 0 var(--violet)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.ag .role{color:var(--cyan-light)}
+  .card.cg .role{color:var(--violet-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card p{color:var(--text-muted); margin:0 0 14px; font-size:.98rem}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:5px 0 5px 18px; font-size:.94rem; color:var(--text-muted)}
+  .card ul li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  .flow{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; color:var(--text-muted)}
+  .flow .pill{padding:8px 14px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.pay{color:var(--violet-light); border-color:rgba(129,140,248,.4)}
+  .flow .pill.ben{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .link{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+  .table-title{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 10px}
+  .tbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:var(--readw)}
+  table{width:100%; border-collapse:collapse; font-size:.95rem}
+  thead th{font-family:var(--mono); font-weight:500; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); text-align:left; padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+  thead th.num, td.num{text-align:right; font-family:var(--mono)}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text-muted)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td.lbl{color:var(--text); font-weight:500}
+  tbody tr.tot td{background:rgba(30,41,59,.5); color:var(--text); font-weight:600}
+  .state{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .state.ok{color:var(--cyan-light); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3)}
+  .state.part{color:var(--violet-light); background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3)}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; max-width:var(--readw)}
+  .chip{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; padding:8px 13px; border:1px solid var(--line-strong);
+    border-radius:999px; background:rgba(30,41,59,.5); color:var(--text-muted)}
+  .chip .n{color:var(--cyan-light); margin-right:7px}
+  .rules{counter-reset:r; list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .rules li{counter-increment:r; position:relative; padding:14px 0 14px 52px; border-bottom:1px solid var(--line); color:var(--text)}
+  .rules li:last-child{border-bottom:none}
+  .rules li::before{content:counter(r,decimal-leading-zero); position:absolute; left:0; top:14px;
+    font-family:var(--mono); font-size:.8rem; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    border:1px solid var(--line-strong); border-radius:8px; width:34px; height:26px; display:grid; place-items:center}
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,40px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band h2{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch}
+  .band p{color:var(--text-muted); max-width:66ch; margin:0 0 14px}
+  .band .sigline{display:flex; align-items:center; gap:10px; margin-top:20px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .band .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .band .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px; font-size:.86rem; color:var(--text-dim)}
+  .foot-inner .brand{font-size:.92rem}
+  .foot-meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase}
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .rise{animation:none; opacity:1; transform:none} }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <div class="doc-tag"><span class="dot" aria-hidden="true"></span><span class="lbl-full">Note de cadrage · RFE · Tronc commun · </span>v1.0</div>
+  </div>
+</header>
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Tronc commun · Facturation electronique</p>
+      <h1 class="rise d2">La facture <span class="accent">electronique</span>, obligation partagee.</h1>
+      <p class="lede rise d3">La reforme impose de recevoir des factures electroniques structurees dès septembre 2026, d'en emettre ensuite. Un chantier reglementaire commun aux deux produits, bati sur un socle tronc : formats, statuts, et raccordement a une plateforme agreee.</p>
+
+      <ul class="meta rise d3">
+        <li><span class="k">Version</span><span class="v">1.1</span></li>
+        <li><span class="k">Statut</span><span class="v">Recadre post-INV Cockpit</span></li>
+        <li><span class="k">Priorite</span><span class="v hot">Legale · echeance</span></li>
+        <li><span class="k">Perimetre</span><span class="v">Tronc + 2 produits</span></li>
+      </ul>
+
+      <div class="readout rise d4" role="img" aria-label="Synthese du chantier RFE">
+        <div class="readout-head">
+          <span class="who">chantier <b>RFE · facture electronique</b> <span class="at">@</span> tronc commun</span>
+          <span class="status">echeance 09/2026</span>
+        </div>
+        <div class="readout-body">
+          <div class="fld"><span class="key">V1</span><span class="dots"></span><span class="val">Reception e-facture</span></div>
+          <div class="fld"><span class="key">V2</span><span class="dots"></span><span class="val">Emission structuree</span></div>
+          <div class="fld"><span class="key">Format</span><span class="dots"></span><span class="val">Factur-X / UBL / CII</span></div>
+          <div class="fld"><span class="key">Transport</span><span class="dots"></span><span class="val amt">Plateforme agreee (PA)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enote">
+    <div class="wrap">
+      <div class="band rise d1" style="margin-top:clamp(24px,4vw,40px)">
+        <p class="eyebrow" style="color:var(--cyan-light)">Note de l'editeur</p>
+        <p style="color:var(--text); font-size:clamp(1.06rem,2vw,1.22rem); line-height:1.6; max-width:62ch; margin:16px 0 0">Contrairement aux autres chantiers, celui-ci n'est pas un choix : c'est une obligation legale avec une echeance. La bonne nouvelle, c'est que les deux produits sont deja partiellement prets — Anim'Gest est avance, et le schema de Cockpit'Gest porte deja les colonnes dormantes de la reforme. On cable un socle commun, on branche une plateforme, on respecte le calendrier.</p>
+        <div class="sigline" style="margin-top:24px"><span>editeur</span><span class="at">@</span><span>tronc commun · No Sage's Editor</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>L'obligation, en clair</h2></div>
+      <div class="prose">
+        <p class="lead-in">Recevoir des factures electroniques structurees devient obligatoire pour toutes les entreprises assujetties a la TVA.</p>
+        <p>La reforme (RFE) remplace la facture papier ou le PDF simple par une <strong>facture structuree</strong> — des donnees lisibles par les logiciels, transmises via une <strong>plateforme agreee</strong>. Un PDF envoye par e-mail ne sera plus une facture conforme entre entreprises francaises. Deux echeances : <strong>reception</strong> obligatoire pour tous au 1er septembre 2026, <strong>emission</strong> par etapes (grandes entreprises 2026, TPE/PME 2027).</p>
+        <p>Pour la cible de No Sage's Editor (TPE/PME), cela signifie : <strong>recevoir</strong> des e-factures dès 2026 (V1 de ce chantier), <strong>emettre</strong> ensuite (V2). Le non-respect expose a une amende par facture — l'enjeu est donc concret et date.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Les trois briques de la reforme</h2></div>
+      <p class="prose lead-in">Toute solution conforme repose sur trois piliers :</p>
+      <ul class="ticks">
+        <li><b>Le format structure</b> — Factur-X (hybride PDF + XML), UBL ou CII, conformes a la norme europeenne EN 16931. Factur-X est le plus accessible : un PDF lisible avec un XML embarque&nbsp;;</li>
+        <li><b>La plateforme agreee (PA, ex-PDP)</b> — l'intermediaire obligatoire qui transmet la facture au destinataire et les donnees a l'administration. Chaque entreprise designe la sienne&nbsp;;</li>
+        <li><b>Le e-reporting</b> — la transmission a l'administration des donnees de transaction et de paiement, pour les operations hors e-invoicing (B2C, international).</li>
+      </ul>
+      <div class="prose" style="margin-top:18px">
+        <p>Point d'architecture cle : la solution ne parle pas a <em>toutes</em> les PA, elle se raccorde a <strong>la PA choisie par chaque tenant</strong> (Pennylane pour l'un, SuperPDP pour l'autre...). D'ou la necessite d'une <strong>abstraction PA</strong> : une interface commune, des adaptateurs par plateforme.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Les deux produits</h2></div>
+      <p class="prose lead-in">Anim'Gest est le plus avance ; Cockpit'Gest a deja anticipe dans son schema. La cible est un socle commun.</p>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Anim'Gest · avance</p>
+          <h3>Deja engage</h3>
+          <p>Anim'Gest a deja avance sur l'e-invoicing (statuts, format). Il sert de reference d'experience.</p>
+          <ul>
+            <li>Socle e-invoicing amorce (a constater INV)</li>
+            <li>Experience du format structure</li>
+            <li>Compta en procedure stockee : point d'attention</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Cockpit'Gest · pret dans le schema</p>
+          <h3>Colonnes dormantes en place</h3>
+          <p>Le schema facture de Cockpit porte deja les champs de la reforme, poses mais non cables.</p>
+          <ul>
+            <li>FAC_RFE_STATUT (cycle e-invoicing)</li>
+            <li>FAC_FORMAT_ELEC (PDF/FACTURX/UBL/CII)</li>
+            <li>FAC_SIREN_CLIENT, FAC_CAT_OPERATION, FAC_TVA_DEBITS</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Ni l'un ni l'autre ne part de zero. L'enjeu : <strong>ne pas dupliquer</strong> deux implementations, mais converger vers un <strong>module tronc</strong> (format, statuts, abstraction PA) que les deux produits consomment. Anim inspire, Cockpit cable ses dormantes sur le meme socle.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>V1 — Reception (echeance 2026)</h2></div>
+      <div class="prose">
+        <p class="lead-in">La premiere obligation, universelle : savoir recevoir une e-facture.</p>
+        <p>Recevoir une facture Factur-X (ou UBL/CII) via la PA du tenant, en <strong>extraire les donnees structurees</strong> (le XML fait foi), les presenter pour <strong>validation</strong>, et alimenter la comptabilite. C'est le pendant entrant : la ou A1/A2 (Achats) traitent BL et factures papier par OCR, la RFE traite la facture <em>nativement structuree</em> — pas besoin d'OCR, le XML est deja exploitable.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill ben">PA (tenant)</span><span class="link">— recoit →</span><span class="pill pay">Factur-X / UBL / CII</span><span class="link">— extrait XML →</span><span class="pill ben">Facture fournisseur</span><span class="link">— valide →</span><span class="pill pay">Compta</span>
+      </div>
+      <div class="prose" style="margin-top:8px">
+        <p>Lien avec les Achats : une e-facture recue rejoint le <strong>rapprochement de A2</strong> (facture d'achat vs BL vs commande). La RFE fournit la facture structuree ; A2 la rapproche. Les deux chantiers se rejoignent sur la facture fournisseur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>V2 — Emission (echeance 2027)</h2></div>
+      <div class="prose">
+        <p class="lead-in">Emettre ses factures de vente au format structure, via la PA.</p>
+        <p>Generer la facture de vente en <strong>Factur-X</strong> (PDF/A-3 + XML EN 16931), avec les <strong>nouvelles mentions obligatoires</strong> (categorie d'operation, option TVA sur les debits, SIREN client), et la <strong>transmettre via la PA</strong> du tenant. Le cycle de statuts e-invoicing (deposee, transmise, acceptee, refusee...) suit la facture — precisement ce que porte FAC_RFE_STATUT.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill pay">Facture vente</span><span class="link">— genere Factur-X →</span><span class="pill ben">PDF/A-3 + XML</span><span class="link">— transmet →</span><span class="pill pay">PA</span><span class="link">— statuts →</span><span class="pill ben">Suivi RFE</span>
+      </div>
+      <div class="prose" style="margin-top:8px">
+        <p>Les colonnes dormantes de Cockpit (FAC_FORMAT_ELEC, FAC_PA_REF, FAC_PA_DATE, FAC_RFE_STATUT) sont exactement les receptacles de ce flux. V2 les <strong>cable</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>L'abstraction Plateforme Agreee</h2></div>
+      <div class="prose">
+        <p class="lead-in">Le point d'architecture qui evite le piege du couplage a une seule PA.</p>
+        <p>Chaque tenant choisit sa plateforme (Pennylane, SuperPDP, ou une autre agreee). La solution ne doit donc pas etre couplee a une PA unique, mais offrir une <strong>interface commune</strong> avec des <strong>adaptateurs par plateforme</strong>. La PA active est un parametre du tenant.</p>
+      </div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Tronc commun</p>
+          <h3>L'interface PA</h3>
+          <ul>
+            <li>Contrat abstrait : emettre / recevoir / statut</li>
+            <li>Modele de facture structuree (EN 16931)</li>
+            <li>Generateur / parseur Factur-X</li>
+            <li>Cycle de statuts e-invoicing</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Adaptateurs (par PA)</p>
+          <h3>Le raccordement</h3>
+          <ul>
+            <li>Adaptateur Pennylane (API)</li>
+            <li>Adaptateur SuperPDP (API)</li>
+            <li>Autres PA agreees, ajoutables</li>
+            <li>Config PA active par tenant</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Ainsi, ajouter une PA = ecrire un adaptateur, sans toucher au coeur. C'est la meme discipline que le seam Eliot : un coeur agnostique, des adaptateurs a la peripherie.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>Regles de gestion</h2></div>
+      <ol class="rules">
+        <li><strong>Le XML fait foi</strong> — pour une facture structuree, les donnees exploitees sont celles du XML, pas du rendu PDF. Le PDF est l'affichage humain.</li>
+        <li><strong>Conformite EN 16931</strong> — toute facture emise est validee contre la norme avant transmission ; une facture non conforme est rejetee par la PA.</li>
+        <li><strong>Abstraction PA</strong> — aucun couplage a une plateforme unique ; interface commune, adaptateurs par PA, PA active configurable par tenant.</li>
+        <li><strong>Validation humaine a la reception</strong> — une e-facture recue est presentee pour controle avant imputation comptable, comme tout document entrant.</li>
+        <li><strong>Mentions obligatoires</strong> — categorie d'operation, option TVA sur debits, SIREN client, adresse de livraison si differente : posees a l'emission (V2).</li>
+        <li><strong>Archivage</strong> — la facture structuree (PDF/A-3) est archivee en GED, format concu pour l'archivage long terme.</li>
+        <li><strong>Logique versionnee</strong> — generation/lecture du format et imputation vivent dans du code versionne, jamais dans une procedure stockee (regle commune).</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">08</span><h2>INV prealable — bloquant des deux cotes</h2></div>
+      <div class="prose">
+        <p class="lead-in">Anim'Gest etant avance, son INV est surtout un constat de l'existant a consolider ; Cockpit, un constat des dormantes a cabler.</p>
+      </div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">INV Anim'Gest · existant</p>
+          <h3>Dans le projet dedie</h3>
+          <ul>
+            <li>Etat du socle e-invoicing (statuts, format)</li>
+            <li>Raccordement PA deja amorce ?</li>
+            <li>Generation Factur-X existante ?</li>
+            <li>Impact procedure stockee (compta)</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">INV Cockpit'Gest · dormantes</p>
+          <h3>CC-READ, base de dev</h3>
+          <ul>
+            <li>Colonnes FAC_RFE_* : etat, valeurs ENUM</li>
+            <li>Point de cablage a l'emission</li>
+            <li>GED pour archivage PDF/A-3</li>
+            <li>Config tenant pour la PA active</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Le RECAP oriente la convergence tronc : ce qui est agnostique (format, statuts, interface PA) se leve ; ce qui est produit (imputation, config) se reinstancie. <strong>Aucun build avant ces constats.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Ce que l'INV Cockpit a revele (v1.1)</h2></div>
+      <div class="prose">
+        <p class="lead-in">Un inventaire read-only du code Cockpit a corrige deux hypotheses de la v1.0. A lire avant tout build.</p>
+        <p><strong>1. Les colonnes dormantes servent l'EMISSION, pas la reception.</strong> Les 7 champs FAC_RFE_* vivent sur la facture de <em>vente</em> (statuts DEPOSEE_PDP / TRANSMISE / ACCEPTEE... prets, mais 0 cablage). Ils preparent la V2 emission, pas la V1 reception. La V1 ne s'appuie donc PAS dessus.</p>
+        <p><strong>2. Cockpit ne genere aucun PDF de facture aujourd'hui.</strong> Aucune librairie PDF, aucune impression de facture (le FEC est un simple .txt). Or un Factur-X est un PDF/A-3 porteur d'un XML. Il manque donc, cote emission, un <em>prerequis</em> : savoir generer un PDF de facture avant d'y embarquer le XML structure.</p>
+      </div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Deja la (appui)</p>
+          <h3>Sur quoi s'adosser</h3>
+          <ul>
+            <li>GED reutilisable : mime application/pdf deja accepte -> archive un PDF/A-3 sans modif</li>
+            <li>SIREN client derivable de tiers.TIE_SIRET (si renseigne)</li>
+            <li>Categorie operation derivable de ART_TYPE (partiel : lignes libres indeterminees)</li>
+            <li>Dormantes RFE typees, pretes pour l'emission (V2)</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Greenfield (a batir)</p>
+          <h3>Ce qui part de zero</h3>
+          <ul>
+            <li>Generation PDF de facture (prerequis emission, inexistant)</li>
+            <li>Parseur / generateur format structure (Factur-X/UBL/CII)</li>
+            <li>Connecteur PA + config PA du tenant</li>
+            <li>Facture fournisseur entrante (depend d'Achats A2)</li>
+            <li>Adresse de livraison, option TVA debits (mentions manquantes)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p><strong>Consequence sur les dependances</strong> : la <em>V1 reception</em> a besoin d'une table facture fournisseur entrante — qui viendra du chantier <strong>Achats A2</strong>. La <em>V2 emission</em> a besoin d'un <strong>generateur PDF de facture</strong> prealable. Aucune des deux n'est autonome : chacune a un prerequis revele par l'INV.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">10</span><h2>Sequencement (recadre)</h2></div>
+      <p class="table-title">Ordre propose, dependances integrees</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Etape</th><th>Objet</th><th>Depend de</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Pre-V1</td><td>Achats A2 : facture fournisseur entrante (table + rapprochement)</td><td>Achats A1</td></tr>
+            <tr><td class="lbl">V1a</td><td>Socle format : parseur Factur-X/UBL/CII + modele EN 16931</td><td>-</td></tr>
+            <tr><td class="lbl">V1b</td><td>Reception : interface PA + adaptateur Pennylane + validation</td><td>A2 + V1a</td></tr>
+            <tr><td class="lbl">V1c</td><td>2e adaptateur PA (SuperPDP) : prouver l'abstraction</td><td>V1b</td></tr>
+            <tr><td class="lbl">Pre-V2</td><td>Generateur PDF de facture (inexistant aujourd'hui)</td><td>-</td></tr>
+            <tr><td class="lbl">V2</td><td>Emission : generateur Factur-X + mentions + statuts + transmission PA</td><td>Pre-V2 + V1a</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>La reception (V1) reste prioritaire pour l'echeance 2026, mais elle <strong>s'enchaine apres Achats A2</strong> (qui porte la facture fournisseur recue). L'emission (V2) reste 2027, mais exige d'abord un <strong>generateur PDF de facture</strong>. Le socle format (V1a) et l'interface PA sont communs aux deux versions et se levent une fois.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <h2>Une obligation legale transformee en socle commun.</h2>
+        <p>La reforme impose un calendrier ; No Sage's Editor y repond par un module tronc : formats structures, cycle de statuts, et une abstraction plateforme qui accueille Pennylane, SuperPDP et les autres. Anim'Gest apporte l'avance, Cockpit'Gest ses colonnes dormantes ; les deux convergent vers un socle unique, cable une fois, conforme partout.</p>
+        <div class="sigline"><span>editeur</span><span class="at">@</span><span>tronc commun · Facturation electronique</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" width="30" height="30" role="img" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <span class="foot-meta">Note de cadrage · RFE Facturation electronique · v1.0 — <span id="yr">2026</span></span>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La démarche — de l'écoute au logiciel — No Sage's Editor</title>
+<meta name="description" content="Comment un besoin dit a voix haute devient une fonction de logiciel chez No Sage's Editor : ecoute du terrain, retranscription fidele, cadrage trace, et facteur d'experience de l'editeur. Une histoire vraie, de la note de frais au socle des documents entrants.">
+<meta name="theme-color" content="#0F172A">
+<meta property="og:title" content="La démarche — de l'écoute au logiciel — No Sage's Editor">
+<meta property="og:description" content="Un besoin dit a voix haute, un logiciel qui l'ecrit. La methode editeur, prouvee par ses notes de cadrage.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://no-sages-editor.com/demarche/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B; --surface-2:#172033;
+    --line:rgba(148,163,184,.14); --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+    --violet:#4F46E5; --violet-light:#818CF8; --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+    --maxw:1120px; --readw:70ch; --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+  /* --- nav (site) --- */
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .nav-links{display:flex; align-items:center; gap:clamp(10px,2vw,22px); flex-wrap:wrap; justify-content:flex-end}
+  .nav-links a{text-decoration:none; color:var(--text-muted); font-size:.94rem; font-weight:500; white-space:nowrap; transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--text)}
+  .nav-links a.active::after{content:""; display:block; height:2px; margin-top:3px; border-radius:2px; background:var(--grad)}
+  .nav-cta{padding:8px 16px; border-radius:999px; border:1px solid var(--line-strong);
+    background:rgba(30,41,59,.5); color:var(--text)!important}
+  .nav-cta:hover{border-color:var(--cyan-light)}
+  @media(max-width:860px){ .nav-links{display:none} }
+  /* --- buttons --- */
+  .btn{display:inline-flex; align-items:center; gap:9px; text-decoration:none; font-family:var(--display);
+    font-weight:600; font-size:.98rem; padding:12px 20px; border-radius:12px; border:1px solid transparent; transition:transform .15s,border-color .2s,background .2s}
+  .btn svg{width:18px; height:18px}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--grad); color:#fff}
+  .btn-ghost{border-color:var(--line-strong); color:var(--text); background:rgba(30,41,59,.4)}
+  .btn-ghost:hover{border-color:var(--cyan-light)}
+  /* --- hero --- */
+  .hero{padding-block:clamp(52px,8vw,92px) clamp(24px,4vw,36px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.05;
+    font-size:clamp(2.1rem,5.6vw,3.5rem); margin:18px 0 0; max-width:18ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:62ch; margin:22px 0 0; font-size:clamp(1.06rem,2.2vw,1.22rem); color:var(--text-muted)}
+  .hero-cta{display:flex; flex-wrap:wrap; gap:14px; margin-top:30px}
+  /* --- method flow --- */
+  .flow{display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin:28px 0 4px;
+    font-family:var(--mono); font-size:.8rem; letter-spacing:.04em; color:var(--text-muted)}
+  .flow .pill{padding:9px 15px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.hot{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .arw{color:var(--text-dim)}
+  /* --- sections --- */
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,54px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2.05rem); margin:0; line-height:1.14}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+  /* --- editor's note band --- */
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,42px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band .eyebrow{color:var(--cyan-light)}
+  .band .quote{color:var(--text); font-size:clamp(1.12rem,2.2vw,1.4rem); line-height:1.5; max-width:60ch; margin:16px 0 0; font-family:var(--display); font-weight:500; letter-spacing:-.01em}
+  .band p.sub{color:var(--text-muted); max-width:64ch; margin:16px 0 0}
+  .sigline{display:flex; align-items:center; gap:10px; margin-top:24px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+  /* --- timeline --- */
+  .timeline{margin-top:10px; display:flex; flex-direction:column; gap:0}
+  .tl-node{position:relative; padding:0 0 30px 42px}
+  .tl-node::before{content:""; position:absolute; left:12px; top:6px; bottom:-6px; width:2px; background:var(--line-strong)}
+  .tl-node:last-child::before{display:none}
+  .tl-node::after{content:""; position:absolute; left:5px; top:4px; width:16px; height:16px; border-radius:50%;
+    background:var(--bg); border:2px solid var(--cyan-light); box-shadow:0 0 0 4px rgba(34,211,238,.12)}
+  .tl-node.cg::after{border-color:var(--violet-light); box-shadow:0 0 0 4px rgba(129,140,248,.12)}
+  .tl-node.big::after{background:var(--grad); border-color:transparent}
+  .tl-when{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-dim)}
+  .tl-card{display:block; text-decoration:none; margin-top:8px; border:1px solid var(--line-strong); border-radius:14px;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); padding:20px 22px; transition:border-color .2s,transform .15s,box-shadow .2s}
+  .tl-card:hover{border-color:var(--cyan-light); transform:translateY(-2px); box-shadow:0 22px 50px -34px rgba(0,0,0,.8)}
+  .tl-node.cg .tl-card:hover{border-color:var(--violet-light)}
+  .tl-kicker{font-family:var(--mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .tl-node.cg .tl-kicker{color:var(--violet-light)}
+  .tl-card h3{font-family:var(--display); font-weight:600; font-size:clamp(1.16rem,2.2vw,1.36rem); margin:7px 0 0; letter-spacing:-.01em}
+  .tl-card p{color:var(--text-muted); margin:10px 0 0; font-size:.98rem; max-width:64ch}
+  .tl-open{display:inline-flex; align-items:center; gap:7px; margin-top:14px; font-family:var(--mono); font-size:.78rem;
+    letter-spacing:.04em; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+  .tl-open .doc{-webkit-text-fill-color:initial; color:var(--text-dim)}
+  .tl-open svg{width:15px; height:15px; stroke:var(--cyan-light)}
+  /* pivot (insight) inside timeline */
+  .tl-pivot{position:relative; padding:0 0 30px 42px}
+  .tl-pivot::before{content:""; position:absolute; left:12px; top:6px; bottom:-6px; width:2px; background:var(--line-strong)}
+  .tl-pivot::after{content:"?"; position:absolute; left:2px; top:0; width:22px; height:22px; border-radius:50%;
+    display:grid; place-items:center; font-family:var(--mono); font-size:.8rem; font-weight:600; color:#fff; background:var(--grad)}
+  .pivot-box{margin-top:2px; border:1px dashed var(--line-strong); border-radius:14px; padding:18px 22px; background:rgba(129,140,248,.06)}
+  .pivot-box .k{font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--violet-light); margin:0}
+  .pivot-box p{margin:8px 0 0; color:var(--text); font-size:1.05rem; max-width:62ch}
+  /* --- split compare --- */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 10px}
+  .card.old{box-shadow:inset 3px 0 0 var(--text-dim)}
+  .card.new{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.old .role{color:var(--text-dim)}
+  .card.new .role{color:var(--cyan-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:6px 0 6px 18px; font-size:.95rem; color:var(--text-muted)}
+  .card ul li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  /* --- value grid --- */
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:6px}
+  @media(max-width:820px){ .grid3{grid-template-columns:1fr} }
+  .feat{border:1px solid var(--line); border-radius:14px; padding:22px; background:rgba(30,41,59,.4)}
+  .feat .k{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan-light)}
+  .feat h3{font-family:var(--display); font-weight:600; font-size:1.12rem; margin:10px 0 8px}
+  .feat p{color:var(--text-muted); margin:0; font-size:.96rem}
+  /* --- closing --- */
+  .close-cta{display:flex; flex-wrap:wrap; gap:14px; margin-top:22px}
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px; font-size:.86rem; color:var(--text-dim)}
+  .foot-links{display:flex; flex-wrap:wrap; gap:16px}
+  .foot-links a{color:var(--text-muted); text-decoration:none; font-size:.9rem}
+  .foot-links a:hover{color:var(--text)}
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .rise{animation:none; opacity:1; transform:none} }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="../" aria-label="No Sage's Editor — accueil">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="../">Accueil</a>
+      <a href="../anim-gest/">Anim'Gest</a>
+      <a href="../cockpit-gest/">Cockpit'Gest</a>
+      <a href="../socle-commun/">Qualité &amp; fiabilité</a>
+      <a href="./" class="active">Démarche</a>
+      <a href="../a-propos/">À propos</a>
+      <a class="nav-cta" href="../#produit">Nos produits</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">La démarche éditeur</p>
+      <h1 class="rise d2">Un besoin dit à voix haute, un logiciel qui <span class="accent">l'écrit</span>.</h1>
+      <p class="lede rise d3">Chez No Sage's Editor, une fonction ne naît jamais dans un studio. Elle naît d'une phrase — celle d'une utilisatrice qui décrit son quotidien. On l'écoute, on la retranscrit fidèlement, on la cadre par écrit. Puis l'expérience de l'éditeur prend le relais : on ne se contente pas de répondre à la demande, on va plus loin — sans jamais alourdir le logiciel.</p>
+      <div class="hero-cta rise d4">
+        <a class="btn btn-primary" href="#histoire">Suivre l'histoire vraie
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="../#produit">Voir les produits</a>
+      </div>
+      <div class="flow rise d4">
+        <span class="pill">Écoute</span><span class="arw">→</span>
+        <span class="pill">Retranscription</span><span class="arw">→</span>
+        <span class="pill">Cadrage</span><span class="arw">→</span>
+        <span class="pill hot">Expérience</span><span class="arw">→</span>
+        <span class="pill hot">Socle</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band rise d1">
+        <p class="eyebrow">Note de l'éditeur</p>
+        <p class="quote">« Je ne code pas ce que j'imagine. Je code ce qu'on me dit — puis je vais plus loin que la demande. »</p>
+        <p class="sub">La différence d'un éditeur qui vient du terrain, c'est un double réflexe. D'abord <strong>retranscrire</strong> : le besoin exprimé est repris mot pour mot, dans le vocabulaire du métier. Ensuite <strong>anticiper</strong> : là où l'on pourrait empiler une fonction de plus, l'expérience repère le motif commun, refactorise en un socle partagé, et propose ce que l'utilisateur n'avait pas encore demandé. Le tout sans ralentir le produit ni le transformer en usine à gaz.</p>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>No Sage's Editor</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="histoire">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Une histoire vraie : de deux demandes à un socle commun</h2></div>
+      <p class="prose lead-in">Ce qui suit n'est pas une promesse marketing. Chaque étape est une note de cadrage réelle, écrite, datée, que vous pouvez ouvrir et lire.</p>
+      <p class="prose">Elle montre comment deux demandes d'utilisatrices, à quelques jours d'intervalle, ont déclenché une réflexion tous métiers confondus — et débouché sur une refonte qui profite à l'ensemble des logiciels.</p>
+
+      <div class="timeline" style="margin-top:26px">
+
+        <!-- 1 -->
+        <div class="tl-node rise d1">
+          <span class="tl-when">Le déclencheur</span>
+          <a class="tl-card" href="notes/note-cadrage-A3-notes-de-frais.html">
+            <p class="tl-kicker">Demande de Christelle · Anim'Gest</p>
+            <h3>« J'aimerais gérer mes notes de frais dans le logiciel. »</h3>
+            <p>Une dépense engagée par une personne, un justificatif photographié, un remboursement. Retranscrit tel quel — puis conçu <em>agnostique dès l'origine</em>, pour servir de modèle à tous les produits plutôt qu'à un seul métier.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> A3 · Notes de frais
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- 2 -->
+        <div class="tl-node cg rise d1">
+          <span class="tl-when">Fin de semaine dernière · un second signal</span>
+          <a class="tl-card" href="notes/note-cadrage-ocr-eliot-cheques.html">
+            <p class="tl-kicker">Demande de Célia · lecture Eliot</p>
+            <h3>« Est-ce qu'Eliot pourrait lire les chèques ? »</h3>
+            <p>Étendre le moteur d'OCR à la lecture des chèques — et, au passage, acter un principe qui structure tout le B to C : <strong>celui qui paie n'est pas toujours celui qui bénéficie</strong>. Une brique générique, réutilisable par tous les logiciels.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> OCR Eliot · Chèques
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- pivot -->
+        <div class="tl-pivot rise d2">
+          <div class="pivot-box">
+            <p class="k">Le déclic éditeur</p>
+            <p>Deux demandes distinctes, deux métiers différents… mais le <strong>même geste</strong> : un document arrive de l'extérieur, il faut le lire, le vérifier, en tirer une action. Et si ce n'étaient pas deux fonctions à coder, mais <strong>un seul motif à unifier</strong> ? L'objectif change : non plus refactoriser un bout de code, mais <strong>identifier le spectre complet des besoins, tous métiers confondus</strong>.</p>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="tl-node rise d2">
+          <span class="tl-when">Élargir le spectre · chaîne Achats</span>
+          <a class="tl-card" href="notes/note-cadrage-A1-reception-BL.html">
+            <p class="tl-kicker">Besoin identifié · tous métiers</p>
+            <h3>Le bon de livraison, lu puis rapproché</h3>
+            <p>L'OCR extrait les lignes, le moteur les rapproche à la commande, l'opérateur valide avant que le stock ne bouge. Même parcours que le chèque, autre document.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> A1 · Réception BL
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- 4 -->
+        <div class="tl-node rise d2">
+          <span class="tl-when">Élargir le spectre · le maillon comptable</span>
+          <a class="tl-card" href="notes/note-cadrage-A2-facture-achat.html">
+            <p class="tl-kicker">Besoin identifié · tous métiers</p>
+            <h3>La facture d'achat, rapprochée puis comptabilisée</h3>
+            <p>Lue, rapprochée à ses BL et commandes, validée, puis écrite en comptabilité jusqu'au FEC. Le chantier le plus lourd — encore le même parcours, poussé jusqu'au bout.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> A2 · Facture d'achat
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- 5 -->
+        <div class="tl-node cg rise d3">
+          <span class="tl-when">Anticiper la contrainte · réglementaire</span>
+          <a class="tl-card" href="notes/note-cadrage-RFE-facturation-electronique.html">
+            <p class="tl-kicker">Impact identifié · échéance 09/2026</p>
+            <h3>La facture électronique, obligation partagée</h3>
+            <p>La réforme impose de recevoir des factures électroniques structurées dès septembre 2026, puis d'en émettre. Même parcours documentaire — mais imposé par la loi. Autant l'absorber dans le socle plutôt que de le subir.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> RFE · Facturation électronique
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- 6 : synthèse -->
+        <div class="tl-node big rise d3">
+          <span class="tl-when">La synthèse · force de proposition</span>
+          <a class="tl-card" href="notes/note-cadrage-socle-documents-entrants.html">
+            <p class="tl-kicker">Refonte proposée par l'éditeur</p>
+            <h3>Un seul socle pour tous les documents entrants</h3>
+            <p>Chèque, bon de livraison, facture d'achat, note de frais, facture électronique : cinq documents, <strong>un même parcours</strong> — lire, rapprocher, valider, agir, archiver. Plutôt que cinq chantiers verticaux, un socle transverse conçu une fois, décliné par adaptateurs. Personne ne l'avait demandé ; l'expérience l'a proposé.</p>
+            <span class="tl-open"><span class="doc">Note de cadrage</span> Socle · Documents entrants
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Là où d'autres empilent, on unifie</h2></div>
+      <p class="prose">La tentation facile aurait été de livrer cinq fonctions séparées, l'une après l'autre. Le résultat : un logiciel qui grossit, se contredit, ralentit. L'expérience éditeur choisit l'autre voie.</p>
+      <div class="split">
+        <div class="card old">
+          <p class="role">Le réflexe courant</p>
+          <h3>Cinq chantiers verticaux</h3>
+          <ul>
+            <li>Une fonction chèque, une fonction BL, une fonction facture…</li>
+            <li>Du code dupliqué, cinq fois à maintenir</li>
+            <li>Des comportements qui divergent d'un écran à l'autre</li>
+            <li>Un produit qui s'alourdit à chaque ajout</li>
+            <li>La réglementation subie dans l'urgence</li>
+          </ul>
+        </div>
+        <div class="card new">
+          <p class="role">La démarche No Sage's Editor</p>
+          <h3>Un socle transverse</h3>
+          <ul>
+            <li>Un parcours unique : lire, rapprocher, valider, agir, archiver</li>
+            <li>Conçu une fois, décliné par adaptateurs métier</li>
+            <li>Un comportement cohérent partout</li>
+            <li>Un cœur qui reste léger et rapide</li>
+            <li>La conformité 2026 absorbée par construction</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Ce que ça change pour vous</h2></div>
+      <div class="grid3">
+        <div class="feat">
+          <span class="k">Votre voix compte</span>
+          <h3>Rien ne se perd</h3>
+          <p>Ce que vous exprimez est retranscrit, cadré et tracé par écrit. Votre demande d'aujourd'hui devient une fonction demain — pas une promesse orale oubliée.</p>
+        </div>
+        <div class="feat">
+          <span class="k">Effet de mutualisation</span>
+          <h3>Un besoin profite à tous</h3>
+          <p>Une idée née dans un métier améliore l'ensemble des logiciels. Vous bénéficiez aussi des demandes des autres, sans les avoir formulées.</p>
+        </div>
+        <div class="feat">
+          <span class="k">Performance préservée</span>
+          <h3>Plus riche, pas plus lourd</h3>
+          <p>On refactorise plutôt que d'empiler. Le logiciel gagne en fonctions sans perdre en rapidité ni en clarté.</p>
+        </div>
+        <div class="feat">
+          <span class="k">Anticipation</span>
+          <h3>La conformité en avance</h3>
+          <p>La facturation électronique 2026 est déjà cadrée et absorbée par le socle. Vous n'aurez pas à courir après l'échéance.</p>
+        </div>
+        <div class="feat">
+          <span class="k">Transparence</span>
+          <h3>Des décisions lisibles</h3>
+          <p>Nos notes de cadrage sont ouvertes. Vous voyez comment on pense, ce qu'on arbitre, et pourquoi — pas de boîte noire.</p>
+        </div>
+        <div class="feat">
+          <span class="k">Un éditeur, pas un catalogue</span>
+          <h3>Le métier d'abord</h3>
+          <p>Chaque fonction part d'un usage réel et de son vocabulaire. Vous achetez un outil pensé par quelqu'un qui écoute votre terrain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <h2 style="font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.95rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch">Vous avez un besoin métier ? Il a toute sa place dans la prochaine note de cadrage.</h2>
+        <p class="sub" style="margin-top:0">C'est exactement comme ça qu'Anim'Gest et Cockpit'Gest se construisent : une écoute, une retranscription, un cadrage — et l'expérience d'un éditeur pour aller plus loin. Parlons de votre terrain.</p>
+        <div class="close-cta">
+          <a class="btn btn-primary" href="../anim-gest/">Découvrir Anim'Gest
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="../cockpit-gest/">Découvrir Cockpit'Gest</a>
+          <a class="btn btn-ghost" href="mailto:contact@no-sages-editor.com?subject=Un%20besoin%20m%C3%A9tier%20%C3%A0%20cadrer">Nous parler de votre besoin</a>
+        </div>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>on écoute, on retranscrit, on va plus loin</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>© <span id="yr">2026</span> No Sage's Editor — Éditeur de logiciels métier.</span>
+    <div class="foot-links">
+      <a href="../anim-gest/">Anim'Gest</a>
+      <a href="../cockpit-gest/">Cockpit'Gest</a>
+      <a href="../socle-commun/">Qualité &amp; fiabilité</a>
+      <a href="./">Démarche</a>
+      <a href="../a-propos/">À propos</a>
+      <a href="mailto:contact@no-sages-editor.com">Contact</a>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

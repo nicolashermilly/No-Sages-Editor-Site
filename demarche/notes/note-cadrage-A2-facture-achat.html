@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facture d'achat (tronc commun) — No Sage's Editor</title>
+<meta name="description" content="Cadrage tronc commun de la facture d'achat : rapprochement BL/commande, comptabilite achat, FEC, pour Anim'Gest puis Cockpit'Gest.">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B;
+    --surface-2:#172033;
+    --line:rgba(148,163,184,.14);
+    --line-strong:rgba(148,163,184,.24);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --accent:#22D3EE;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+    --maxw:1120px; --readw:70ch;
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60rem 32rem at 82% -8%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(52rem 30rem at 8% 4%, rgba(79,70,229,.12), transparent 62%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:clamp(20px,5vw,48px)}
+  a{color:inherit}
+  .nav{position:sticky; top:0; z-index:20; backdrop-filter:blur(12px);
+    background:rgba(15,23,42,.72); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px}
+  .brand{display:flex; align-items:center; gap:11px; text-decoration:none; font-family:var(--display); font-weight:600; letter-spacing:-.01em}
+  .brand svg{width:34px; height:34px; flex:none}
+  .brand .accent{color:var(--accent)}
+  .doc-tag{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted)}
+  .doc-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--grad)}
+  @media(max-width:620px){ .doc-tag .lbl-full{display:none} }
+  .hero{padding-block:clamp(48px,8vw,86px) clamp(28px,4vw,40px)}
+  .eyebrow{font-family:var(--mono); font-size:.76rem; letter-spacing:.16em; text-transform:uppercase; color:var(--cyan-light); margin:0}
+  .hero h1{font-family:var(--display); font-weight:600; letter-spacing:-.015em; line-height:1.06;
+    font-size:clamp(2.05rem,5.4vw,3.35rem); margin:18px 0 0; max-width:20ch}
+  .hero h1 .accent{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text}
+  .lede{max-width:60ch; margin:20px 0 0; font-size:clamp(1.06rem,2.2vw,1.2rem); color:var(--text-muted)}
+  .meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; padding:0; list-style:none}
+  .meta li{display:flex; flex-direction:column; gap:3px; padding:10px 15px; border:1px solid var(--line);
+    border-radius:11px; background:rgba(30,41,59,.4)}
+  .meta .k{font-family:var(--mono); font-size:.64rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim)}
+  .meta .v{font-family:var(--display); font-weight:600; font-size:.95rem}
+  .meta .v.hot{color:var(--cyan-light)}
+  .readout{margin-top:38px; border:1px solid var(--line-strong); border-radius:var(--r); overflow:hidden;
+    background:linear-gradient(180deg,var(--surface),var(--surface-2)); box-shadow:0 24px 60px -34px rgba(0,0,0,.8)}
+  .readout-head{display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:13px 18px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .readout-head .who{display:flex; align-items:center; gap:9px; color:var(--text-muted)}
+  .readout-head .who b{color:var(--text); font-weight:500}
+  .readout-head .who .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .readout-head .status{color:var(--cyan-light)}
+  .readout-body{display:grid; grid-template-columns:1fr; gap:2px; padding:16px 18px; font-family:var(--mono); font-size:.9rem}
+  .fld{display:grid; grid-template-columns:14ch 1fr auto; gap:12px; align-items:baseline; padding:6px 0}
+  .fld .key{color:var(--text-dim)}
+  .fld .dots{border-bottom:1px dotted var(--line-strong); transform:translateY(-3px)}
+  .fld .val{color:var(--text); text-align:right; white-space:nowrap}
+  .fld .val.amt{color:var(--cyan-light); font-weight:500}
+  @media(max-width:560px){ .fld{grid-template-columns:1fr auto} .fld .dots{display:none} }
+  main{padding-bottom:20px}
+  .sec{padding-block:clamp(30px,5vw,52px); border-top:1px solid var(--line)}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:22px}
+  .sec-num{font-family:var(--mono); font-size:.8rem; letter-spacing:.08em; color:transparent;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; flex:none; padding-top:4px}
+  .sec-head h2{font-family:var(--display); font-weight:600; letter-spacing:-.01em; font-size:clamp(1.5rem,3vw,2rem); margin:0; line-height:1.15}
+  .prose{max-width:var(--readw)}
+  .prose p{color:var(--text-muted); margin:0 0 16px}
+  .prose p:last-child{margin-bottom:0}
+  .prose strong{color:var(--text); font-weight:600}
+  .prose em{color:var(--violet-light); font-style:normal}
+  .lead-in{color:var(--text)!important; font-size:1.08rem}
+  .ticks{list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .ticks li{position:relative; padding:7px 0 7px 26px; color:var(--text-muted); border-bottom:1px solid var(--line)}
+  .ticks li:last-child{border-bottom:none}
+  .ticks li::before{content:""; position:absolute; left:0; top:15px; width:9px; height:9px; border-radius:2px; background:var(--grad)}
+  .ticks li b{color:var(--text); font-weight:600}
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:6px}
+  @media(max-width:720px){ .split{grid-template-columns:1fr} }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:22px 22px 8px}
+  .card.ag{box-shadow:inset 3px 0 0 var(--cyan)}
+  .card.cg{box-shadow:inset 3px 0 0 var(--violet)}
+  .card .role{font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; margin:0 0 4px}
+  .card.ag .role{color:var(--cyan-light)}
+  .card.cg .role{color:var(--violet-light)}
+  .card h3{font-family:var(--display); font-weight:600; font-size:1.2rem; margin:0 0 10px}
+  .card p{color:var(--text-muted); margin:0 0 14px; font-size:.98rem}
+  .card ul{list-style:none; margin:0 0 14px; padding:0}
+  .card ul li{position:relative; padding:5px 0 5px 18px; font-size:.94rem; color:var(--text-muted)}
+  .card ul li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  .flow{display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; margin:22px 0 4px;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.06em; color:var(--text-muted)}
+  .flow .pill{padding:8px 14px; border:1px solid var(--line-strong); border-radius:999px; background:rgba(30,41,59,.5)}
+  .flow .pill.pay{color:var(--violet-light); border-color:rgba(129,140,248,.4)}
+  .flow .pill.ben{color:var(--cyan-light); border-color:rgba(34,211,238,.4)}
+  .flow .link{color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text; font-weight:600}
+  .table-title{font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-muted); margin:26px 0 10px}
+  .tbl-wrap{border:1px solid var(--line); border-radius:14px; overflow:hidden; max-width:var(--readw)}
+  table{width:100%; border-collapse:collapse; font-size:.95rem}
+  thead th{font-family:var(--mono); font-weight:500; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-dim); text-align:left; padding:11px 16px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+  thead th.num, td.num{text-align:right; font-family:var(--mono)}
+  tbody td{padding:12px 16px; border-bottom:1px solid var(--line); color:var(--text-muted)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td.lbl{color:var(--text); font-weight:500}
+  tbody tr.tot td{background:rgba(30,41,59,.5); color:var(--text); font-weight:600}
+  .state{font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; padding:3px 10px; border-radius:999px; white-space:nowrap}
+  .state.ok{color:var(--cyan-light); background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3)}
+  .state.part{color:var(--violet-light); background:rgba(129,140,248,.1); border:1px solid rgba(129,140,248,.3)}
+  .chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; max-width:var(--readw)}
+  .chip{font-family:var(--mono); font-size:.78rem; letter-spacing:.02em; padding:8px 13px; border:1px solid var(--line-strong);
+    border-radius:999px; background:rgba(30,41,59,.5); color:var(--text-muted)}
+  .chip .n{color:var(--cyan-light); margin-right:7px}
+  .rules{counter-reset:r; list-style:none; margin:4px 0 0; padding:0; max-width:var(--readw)}
+  .rules li{counter-increment:r; position:relative; padding:14px 0 14px 52px; border-bottom:1px solid var(--line); color:var(--text)}
+  .rules li:last-child{border-bottom:none}
+  .rules li::before{content:counter(r,decimal-leading-zero); position:absolute; left:0; top:14px;
+    font-family:var(--mono); font-size:.8rem; color:transparent; background:var(--grad); -webkit-background-clip:text; background-clip:text;
+    border:1px solid var(--line-strong); border-radius:8px; width:34px; height:26px; display:grid; place-items:center}
+  .band{margin-top:8px; border:1px solid var(--line); border-radius:var(--r); padding:clamp(24px,4vw,40px);
+    background:linear-gradient(180deg,rgba(30,41,59,.55),rgba(2,6,23,.4)); position:relative; overflow:hidden}
+  .band::before{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--grad)}
+  .band h2{font-family:var(--display); font-weight:600; font-size:clamp(1.4rem,3vw,1.9rem); margin:0 0 14px; letter-spacing:-.01em; max-width:24ch}
+  .band p{color:var(--text-muted); max-width:66ch; margin:0 0 14px}
+  .band .sigline{display:flex; align-items:center; gap:10px; margin-top:20px; font-family:var(--mono); font-size:.78rem; color:var(--text-muted)}
+  .band .sigline .at{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:600}
+  .band .sigline .rule{height:1px; flex:1; background:linear-gradient(90deg,var(--line-strong),transparent)}
+  footer{border-top:1px solid var(--line); background:var(--bg-deep); margin-top:16px}
+  .foot-inner{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-block:26px; font-size:.86rem; color:var(--text-dim)}
+  .foot-inner .brand{font-size:.92rem}
+  .foot-meta{font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase}
+  .rise{opacity:0; transform:translateY(14px); animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.14s} .d3{animation-delay:.23s} .d4{animation-delay:.32s}
+  @keyframes rise{to{opacity:1; transform:none}}
+  :focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+  @media(prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .rise{animation:none; opacity:1; transform:none} }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <div class="doc-tag"><span class="dot" aria-hidden="true"></span><span class="lbl-full">Note de cadrage · A2 · Tronc commun · </span>v1.0</div>
+  </div>
+</header>
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Tronc commun · Achats · Chantier A2</p>
+      <h1 class="rise d2">La facture d'achat, rapprochée puis <span class="accent">comptabilisée</span>.</h1>
+      <p class="lede rise d3">Le maillon comptable de la chaîne Achats. La facture fournisseur est lue, rapprochée à ses BL et commandes, validée, puis écrite en comptabilité — jusqu'au FEC. Le chantier le plus lourd : il rouvre le moteur comptable, dans les deux produits.</p>
+
+      <ul class="meta rise d3">
+        <li><span class="k">Version</span><span class="v">1.0</span></li>
+        <li><span class="k">Statut</span><span class="v">À cadrer · INV + gate</span></li>
+        <li><span class="k">Priorité</span><span class="v hot">Post-bêta</span></li>
+        <li><span class="k">Périmètre</span><span class="v">Tronc + 2 produits</span></li>
+      </ul>
+
+      <div class="readout rise d4" role="img" aria-label="Synthèse du chantier A2">
+        <div class="readout-head">
+          <span class="who">chantier <b>A2 · Facture d'achat</b> <span class="at">@</span> tronc commun</span>
+          <span class="status">✓ cadrage</span>
+        </div>
+        <div class="readout-body">
+          <div class="fld"><span class="key">Document</span><span class="dots"></span><span class="val">Facture fournisseur</span></div>
+          <div class="fld"><span class="key">Rapprochement</span><span class="dots"></span><span class="val">BL + commande(s)</span></div>
+          <div class="fld"><span class="key">Comptabilité</span><span class="dots"></span><span class="val">401 / 44566 / 6xx · AC</span></div>
+          <div class="fld"><span class="key">Sortie</span><span class="dots"></span><span class="val amt">FEC (achats)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enote">
+    <div class="wrap">
+      <div class="band rise d1" style="margin-top:clamp(24px,4vw,40px)">
+        <p class="eyebrow" style="color:var(--cyan-light)">Note de l'éditeur</p>
+        <p style="color:var(--text); font-size:clamp(1.06rem,2vw,1.22rem); line-height:1.6; max-width:62ch; margin:16px 0 0">A2 est le chantier sensible : il touche la comptabilité, aujourd'hui tournée vers les ventes dans les deux produits. On l'isole volontairement en fin de chaîne, avec une règle absolue — l'imputation vit dans du code versionné, jamais dans une procédure stockée — et un contrôle de non-régression obligatoire avant toute livraison.</p>
+        <div class="sigline" style="margin-top:24px"><span>éditeur</span><span class="at">@</span><span>tronc commun · No Sage's Editor</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">01</span><h2>L'intention</h2></div>
+      <div class="prose">
+        <p class="lead-in">La facture fournisseur devient un document rapproché, puis une écriture comptable.</p>
+        <p>La facture d'achat arrive, souvent après la livraison. L'<strong>OCR</strong> en extrait l'entête et les montants, et le moteur la <strong>rapproche du ou des BL</strong> (livrés en A1) <strong>et de la ou des commandes</strong> concernés : contrôle prix commande / prix facturé, quantités livrées / quantités facturées. L'opérateur <em>valide</em>, et la facture validée génère les <strong>écritures comptables d'achat</strong>.</p>
+        <p>C'est ici que le domaine Achats <strong>touche le FEC</strong>. Le même besoin dans les deux produits, mais deux points de départ comptables très différents — c'est tout l'enjeu de cette note.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Les deux produits</h2></div>
+      <p class="prose lead-in">Le rapprochement est commun ; la comptabilité, elle, part de deux situations opposées.</p>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Anim'Gest · premier</p>
+          <h3>Comptabilité en boîte noire</h3>
+          <p>Anim'Gest génère son FEC via une procédure stockée opaque et des vues non versionnées.</p>
+          <ul>
+            <li>FEC produit par une SP (anti-pattern)</li>
+            <li>Ajouter les achats = toucher la SP</li>
+            <li>Gate obligatoire avant tout build compta</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Cockpit'Gest · second</p>
+          <h3>Moteur versionné</h3>
+          <p>Cockpit'Gest impute en service NestJS versionné et testable, mais 100 % orienté ventes.</p>
+          <ul>
+            <li>Imputation versionnée (pas de SP)</li>
+            <li>FEC ventes seul : à étendre aux achats</li>
+            <li>Extension plus sûre, mais structurante</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Conséquence : côté Cockpit, on <strong>étend un moteur propre</strong> ; côté Anim, on doit d'abord <strong>sortir la logique de la procédure stockée</strong> pour la rendre extractible. Le rapprochement (OCR, liens BL/commande) est mutualisable ; l'imputation comptable demande un traitement produit par produit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Le flux</h2></div>
+      <div class="prose">
+        <p class="lead-in">Lire, rapprocher, valider — puis écrire en comptabilité.</p>
+      </div>
+      <div class="flow" aria-hidden="true">
+        <span class="pill pay">Facture reçue</span><span class="link">— OCR →</span><span class="pill ben">Entête + montants</span><span class="link">— rapproché →</span><span class="pill pay">BL + commandes</span><span class="link">— validé →</span><span class="pill ben">Écriture AC + FEC</span>
+      </div>
+      <div class="prose" style="margin-top:8px">
+        <p>Le rapprochement contrôle la cohérence : la facture correspond-elle à ce qui a été commandé et livré ? Les écarts (prix, quantité) sont <em>signalés à l'opérateur</em>, qui tranche. Rien ne s'impute sans sa validation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Le maillon comptable</h2></div>
+      <div class="prose">
+        <p class="lead-in">Ce que A2 ajoute au FEC, aujourd'hui tourné vers les ventes.</p>
+        <p>Une facture d'achat s'impute avec une logique symétrique de la vente : compte <strong>fournisseur (401)</strong> au crédit, <strong>TVA déductible (44566)</strong> et <strong>charges (classe 6)</strong> au débit, dans un <strong>journal d'achat (AC)</strong> distinct des journaux de vente. Cela suppose d'étendre le plan de comptes, la configuration comptable, et le moteur d'imputation.</p>
+      </div>
+      <p class="table-title">Écriture type — facture d'achat</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Compte</th><th>Libellé</th><th>Sens</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">6xx</td><td>Charges (achat)</td><td><span class="state part">Débit HT</span></td></tr>
+            <tr><td class="lbl">44566</td><td>TVA déductible</td><td><span class="state part">Débit TVA</span></td></tr>
+            <tr><td class="lbl">401</td><td>Fournisseur</td><td><span class="state ok">Crédit TTC</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>C'est une <strong>extension structurante</strong> du moteur comptable, à traiter avec la même rigueur de non-régression que la comptabilité de vente. Elle a aussi un impact déclaratif : la TVA déductible (achats) vient en déduction de la TVA collectée (ventes) dans la déclaration — un point à cadrer mais hors du cœur FEC.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Les variantes et le retour</h2></div>
+      <p class="prose lead-in">La facture n'est pas toujours un pour un avec la commande :</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Cas</th><th>Description</th><th>Priorité</th></tr></thead>
+          <tbody>
+            <tr><td class="lbl">Facture simple</td><td>Une facture pour un BL / une commande</td><td><span class="state ok">v1</span></td></tr>
+            <tr><td class="lbl">Multi-BL</td><td>Une facture agrège plusieurs BL d'une même commande</td><td><span class="state ok">v1</span></td></tr>
+            <tr><td class="lbl">Multi-commande</td><td>Une facture couvre des BL de commandes différentes</td><td><span class="state part">P1</span></td></tr>
+            <tr><td class="lbl">Avoir fournisseur</td><td>Remise / retour facturé : contre-passe la compta</td><td><span class="state part">P1</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>L'<strong>avoir fournisseur</strong> est le miroir comptable du bon de retour : là où le retour contre-passe le stock (A1), l'avoir contre-passe l'écriture d'achat. Les deux se répondent.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">06</span><h2>Règles de gestion</h2></div>
+      <ol class="rules">
+        <li><strong>Validation manuelle</strong> — aucun rapprochement OCR ne génère d'écriture comptable sans confirmation humaine explicite.</li>
+        <li><strong>Imputation versionnée</strong> — la logique comptable vit dans un service versionné et testable, jamais dans une procédure stockée. Côté Anim, cela impose d'en sortir la compta achat.</li>
+        <li><strong>Rapprochement traçable</strong> — on sait toujours quelle facture solde quel BL de quelle commande ; l'audit de bout en bout est garanti.</li>
+        <li><strong>Contrôle d'écart</strong> — les écarts prix / quantité entre commande, BL et facture sont signalés à l'opérateur, jamais absorbés en silence.</li>
+        <li><strong>Non-régression compta</strong> — toute extension du moteur FEC est précédée d'un test de non-régression sur la comptabilité de vente existante.</li>
+        <li><strong>Équilibre</strong> — chaque écriture d'achat est équilibrée (débit = crédit), contrôlée à la génération comme pour les ventes.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">07</span><h2>INV préalable + gate SP-FEC — bloquant</h2></div>
+      <div class="prose">
+        <p class="lead-in">Le point le plus critique de toute la chaîne Achats.</p>
+        <p>Avant tout build comptable, un inventaire par produit, et surtout un <strong>gate sur la comptabilité existante</strong> : on doit savoir exactement ce que le moteur FEC consomme avant d'y ajouter les achats.</p>
+      </div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">INV Anim'Gest · gate SP</p>
+          <h3>Inspecter la boîte noire</h3>
+          <ul>
+            <li>SHOW CREATE de la SP FEC + vues</li>
+            <li>Quelles sources, quels journaux ?</li>
+            <li>Le FEC traite-t-il déjà des achats ?</li>
+            <li>Facture fournisseur existante ?</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">INV Cockpit'Gest</p>
+          <h3>Étendre le moteur versionné</h3>
+          <ul>
+            <li>Contrat d'imputation ventes actuel</li>
+            <li>Point d'extension (journal AC, comptes)</li>
+            <li>Config comptable (param_compta)</li>
+            <li>CAT_CPT_ACHAT dormant (déjà posé)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p><strong>Gate absolu</strong> : aucun build compta-achat, dans aucun des deux produits, avant d'avoir inspecté la structure que le moteur FEC consomme. Modifier l'imputation sans ce constat risque une non-conformité FEC — le coût est légal, pas seulement technique.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">08</span><h2>Ce qui est tronc, ce qui est produit</h2></div>
+      <div class="split">
+        <div class="card ag">
+          <p class="role">Tronc commun</p>
+          <h3>Se lève tel quel</h3>
+          <ul>
+            <li>Modèle facture d'achat + lignes</li>
+            <li>Moteur de rapprochement facture / BL / commande</li>
+            <li>Contrôles d'écart (prix, quantité)</li>
+            <li>Cœur OCR Eliot</li>
+          </ul>
+        </div>
+        <div class="card cg">
+          <p class="role">Produit</p>
+          <h3>Se réinstancie</h3>
+          <ul>
+            <li>Imputation comptable (plan de comptes propre)</li>
+            <li>Branchement au moteur FEC du produit</li>
+            <li>Adaptateur OCR &rarr; facture</li>
+            <li>Écrans</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:18px">
+        <p>Le rapprochement est le grand mutualisable ; l'imputation reste produit (chaque produit a son plan de comptes et, côté Anim, sa dette SP à résorber). C'est cohérent avec la ligne tenue depuis les chèques : cœur agnostique, branchement comptable produit.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="band">
+        <h2>Le maillon qui ferme la chaîne — et rouvre la comptabilité.</h2>
+        <p>A2 transforme la facture fournisseur en écriture comptable, rapprochée de ses BL et commandes, validée par une personne. C'est le chantier le plus lourd : il étend le FEC aux achats, avec un gate obligatoire sur la comptabilité existante et une non-régression stricte. Le rapprochement se lève dans le tronc ; l'imputation se réinstancie, produit par produit.</p>
+        <div class="sigline"><span>éditeur</span><span class="at">@</span><span>tronc commun · Achats A2</span><span class="rule"></span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top" aria-label="No Sage's Editor">
+      <svg viewBox="0 0 40 40" width="30" height="30" role="img" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <span class="foot-meta">Note de cadrage · A2 Facture d'achat · v1.0 — <span id="yr">2026</span></span>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

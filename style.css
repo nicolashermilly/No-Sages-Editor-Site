@@ -1,4 +1,4 @@
-/* No Sage's Editor — design system partagé (violet/cyan sur navy) */
+/* No Sage's Editor - design system partagé (violet/cyan sur navy) */
 :root{
   --navy:#0F172A;
   --navy-800:#1E293B;
@@ -77,7 +77,7 @@ header.nav{
   transition:border-color .15s,background .15s,color .15s;
 }
 .nav-cta:hover{border-color:var(--cyan-light);background:rgba(79,70,229,.12)}
-/* CTA "Accéder à mon espace" — acces app depuis la vitrine (UX.6, mission 164).
+/* CTA "Accéder à mon espace" - acces app depuis la vitrine (UX.6, mission 164).
    Rempli au gradient charte pour etre clairement identifiable. Focus visible herite
    de la regle globale :focus-visible. Reste visible sur mobile (classe .nav-cta). */
 .nav-login{background:var(--grad);color:#fff;border-color:transparent;box-shadow:0 6px 20px -8px rgba(79,70,229,.7)}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actualit&eacute;s - No Sage's Editor</title>
+<meta name="description" content="Les avancees d'Anim'Gest, de Cockpit'Gest et du tronc commun. Ce qu'on livre, et pourquoi on l'a livre.">
+<meta name="theme-color" content="#0F172A">
+<meta property="og:title" content="Actualit&eacute;s - No Sage's Editor">
+<meta property="og:description" content="Les avancees de nos produits, sprint apres sprint. Nees du terrain, pas d'une roadmap.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://no-sages-editor.com/actualites/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>
+  /* --- actualites --- */
+  .rule-box{border:1px solid var(--line); border-left:3px solid var(--cyan);
+    border-radius:14px; padding:20px 24px; background:rgba(6,182,212,.05); margin-top:6px}
+  .rule-box p{color:var(--text-muted); margin:0; font-size:.96rem; max-width:70ch}
+  .filters{display:flex; flex-wrap:wrap; gap:10px; margin:24px 0 6px}
+  .filters button{font-family:var(--mono); font-size:.82rem; padding:8px 15px; border-radius:999px;
+    border:1px solid var(--line); background:rgba(30,41,59,.4); color:var(--text-muted); cursor:pointer;
+    transition:border-color .15s,color .15s,background .15s}
+  .filters button:hover{color:var(--text)}
+  .filters button[aria-pressed="true"]{color:var(--text); border-color:var(--cyan-light); background:rgba(6,182,212,.1)}
+  .feed{margin-top:26px; display:flex; flex-direction:column; gap:0}
+  .post{position:relative; padding:0 0 32px 42px}
+  .post::before{content:""; position:absolute; left:12px; top:8px; bottom:-8px; width:2px; background:var(--line)}
+  .post:last-child::before{display:none}
+  .post::after{content:""; position:absolute; left:5px; top:6px; width:16px; height:16px; border-radius:50%;
+    background:var(--navy); border:2px solid var(--cyan-light)}
+  .post[data-track="cockpit"]::after{border-color:var(--mauve-light)}
+  .post[data-track="socle"]::after{border-color:var(--violet-light)}
+  .post-when{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-dim)}
+  .post-card{margin-top:8px; border:1px solid var(--line); border-radius:14px;
+    background:rgba(30,41,59,.4); padding:22px 24px}
+  .post-track{display:inline-block; font-family:var(--mono); font-size:.7rem; letter-spacing:.1em;
+    text-transform:uppercase; padding:4px 11px; border-radius:999px; margin-bottom:12px;
+    border:1px solid rgba(6,182,212,.35); color:var(--cyan-light); background:rgba(6,182,212,.08)}
+  .post[data-track="cockpit"] .post-track{border-color:rgba(168,85,247,.35); color:var(--mauve-light); background:rgba(168,85,247,.08)}
+  .post[data-track="socle"] .post-track{border-color:rgba(79,70,229,.4); color:var(--violet-light); background:rgba(79,70,229,.1)}
+  .post-card h3{font-family:var(--display); font-weight:600; font-size:clamp(1.14rem,2.2vw,1.34rem);
+    margin:0 0 12px; letter-spacing:-.01em}
+  .post-card ul{list-style:none; margin:0; padding:0}
+  .post-card li{position:relative; padding:7px 0 7px 20px; font-size:.97rem; color:var(--text-muted); line-height:1.55}
+  .post-card li::before{content:"\2014"; position:absolute; left:0; color:var(--text-dim)}
+  .post-card li b{color:var(--text); font-weight:600}
+  .post-origin{margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+    font-size:.9rem; color:var(--text-dim)}
+  .post-origin b{color:var(--cyan-light); font-weight:500}
+  .empty{border:1px dashed var(--line); border-radius:14px; padding:22px 24px; color:var(--text-dim); font-size:.95rem}
+</style>
+</head>
+<body>
+
+<!-- Regle de publication : voir RUNBOOK_MAINTENANCE_SITE-EDITEUR.md, section 8. -->
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="../" aria-label="No Sage's Editor - accueil">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
+        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
+      </svg>
+      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="../">Accueil</a>
+      <a href="../anim-gest/">Anim'Gest</a>
+      <a href="../cockpit-gest/">Cockpit'Gest</a>
+      <a href="../socle-commun/">Qualité &amp; fiabilité</a>
+      <a href="../demarche/">Démarche</a>
+      <a href="./" class="active">Actualités</a>
+      <a href="../a-propos/">À propos</a>
+      <a class="nav-cta nav-login" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à mon espace</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow rise d1">Actualit&eacute;s</p>
+      <h1 class="rise d2">Ce qu'on livre, et <span class="accent">pourquoi</span>.</h1>
+      <p class="lede rise d3">Les avanc&eacute;es d'Anim'Gest, de Cockpit'Gest et du tronc commun qui les porte. Chaque entr&eacute;e dit ce qui a chang&eacute; et, quand c'est le cas, quelle phrase d'utilisatrice l'a d&eacute;clench&eacute;.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Comment on &eacute;crit ici</p>
+        <h2>Transparent, mais pas bavard.</h2>
+      </div>
+      <div class="rule-box">
+        <p>On publie ce qui est <strong>livr&eacute; et actif</strong>. On ne d&eacute;taille jamais notre infrastructure, on ne nomme jamais un client, et on n'annonce jamais une protection avant qu'elle ne soit en place : le dire d'avance reviendrait &agrave; signaler ce qui ne l'est pas encore. Nos notes de cadrage d&eacute;taill&eacute;es, elles, restent ouvertes sur la page <a href="../demarche/" style="color:var(--cyan-light)">D&eacute;marche</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Le fil</p>
+        <h2>Du plus r&eacute;cent au plus ancien.</h2>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filtrer par produit">
+        <button data-f="all" aria-pressed="true">Tout</button>
+        <button data-f="animgest" aria-pressed="false">Anim'Gest</button>
+        <button data-f="cockpit" aria-pressed="false">Cockpit'Gest</button>
+        <button data-f="socle" aria-pressed="false">Tronc commun</button>
+      </div>
+
+      <div class="feed" id="feed">
+      <article class="post" data-track="animgest">
+        <div class="post-when">Juillet 2026</div>
+        <div class="post-card">
+          <span class="post-track">Anim'Gest</span>
+          <h3>La b&ecirc;ta est ouverte, et elle pilote la feuille de route</h3>
+          <ul>
+          <li><b>Premi&egrave;res structures en conditions r&eacute;elles.</b> Des professionnelles du soin animal utilisent Anim'Gest sur leur activit&eacute; quotidienne. Leurs retours passent avant notre feuille de route.</li>
+          <li><b>Cr&eacute;dits de l'assistant Eliot.</b> Un bandeau affiche en permanence la consommation, le quota et les seuils d'alerte. On sait toujours o&ugrave; l'on en est avant d'&ecirc;tre bloqu&eacute;.</li>
+          <li><b>Achats : bons de livraison.</b> R&eacute;ception, rapprochement avec la commande, validation, entr&eacute;e en stock. Valider deux fois par erreur n'incr&eacute;mente pas le stock deux fois.</li>
+          <li><b>Avoirs et bons de retour : &eacute;criture d'un seul bloc.</b> Un incident en cours d'enregistrement ne laisse jamais de pi&egrave;ce &agrave; moiti&eacute; cr&eacute;&eacute;e. La conformit&eacute; NF525 tient sur cette garantie.</li>
+          <li><b>Plus de quarante corrections</b> issues directement de la recette : ergonomie, libell&eacute;s, ancrage de l'agenda, &eacute;ditions PDF.</li>
+          </ul>
+        <div class="post-origin">Origine : usage r&eacute;el. Aucune de ces lignes ne vient d'une r&eacute;union de roadmap.</div>
+        </div>
+      </article>
+      <article class="post" data-track="socle">
+        <div class="post-when">Juillet 2026</div>
+        <div class="post-card">
+          <span class="post-track">Tronc commun</span>
+          <h3>Le socle partag&eacute; se renforce, les deux produits en profitent</h3>
+          <ul>
+          <li><b>Cloisonnement strict des espaces.</b> Chaque organisation ne voit que ses propres donn&eacute;es et ses propres &eacute;crans. Les fonctions r&eacute;serv&eacute;es &agrave; l'&eacute;diteur sont refus&eacute;es c&ocirc;t&eacute; serveur, pas seulement masqu&eacute;es &agrave; l'affichage.</li>
+          <li><b>S&eacute;curit&eacute; des sessions renforc&eacute;e.</b> Transmission chiffr&eacute;e obligatoire, port&eacute;e des jetons r&eacute;duite au strict n&eacute;cessaire, limitation des tentatives de connexion, journalisation des &eacute;checs d'authentification.</li>
+          <li><b>Sauvegardes quotidiennes v&eacute;rifi&eacute;es.</b> La sauvegarde ne se contente plus de s'ex&eacute;cuter : elle valide son propre r&eacute;sultat et alerte si le volume attendu n'est pas atteint.</li>
+          <li><b>Dates normalis&eacute;es.</b> Une date saisie est la date lue, quel que soit le fuseau horaire du poste. Corrig&eacute; &agrave; la racine, sur tout le socle.</li>
+          </ul>
+        <div class="post-origin">Une correction faite sur un produit b&eacute;n&eacute;ficie imm&eacute;diatement &agrave; l'autre. C'est le principe du <b>socle commun</b>.</div>
+        </div>
+      </article>
+      <article class="post" data-track="animgest">
+        <div class="post-when">Juin 2026</div>
+        <div class="post-card">
+          <span class="post-track">Anim'Gest</span>
+          <h3>Douze m&eacute;tiers repris en profondeur, sur sources officielles</h3>
+          <ul>
+          <li>Chaque verticale a &eacute;t&eacute; reprise sur quatorze axes : vocabulaire de la profession, cadre r&eacute;glementaire fran&ccedil;ais, objets m&eacute;tier, d&eacute;roul&eacute; r&eacute;el d'une journ&eacute;e, livrable cl&eacute;, r&egrave;gles bloquantes.</li>
+          <li>M&eacute;thode : on source, on n'invente pas. Chaque affirmation r&eacute;glementaire renvoie &agrave; un texte officiel.</li>
+          <li><b>Terminologie corrig&eacute;e.</b> La douzi&egrave;me verticale s'intitule d&eacute;sormais <b>Intervenant en M&eacute;diation Animale</b>, conform&eacute;ment au vocabulaire de la profession. Le lexique du domaine (animal m&eacute;diateur, s&eacute;ance de m&eacute;diation) est pr&eacute;serv&eacute; partout dans le logiciel.</li>
+          <li><b>Gardes m&eacute;tier non n&eacute;gociables.</b> L'assistant Eliot ne calcule jamais une posologie, une dose ou une ration, et ne pose jamais de diagnostic. Ces valeurs viennent de tables valid&eacute;es par le praticien, avec double confirmation.</li>
+          </ul>
+        <div class="post-origin">Une professionnelle nous a dit que le terme employ&eacute; n'&eacute;tait pas le sien. On l'a chang&eacute; partout, en une semaine.</div>
+        </div>
+      </article>
+      <article class="post" data-track="animgest">
+        <div class="post-when">Juin 2026</div>
+        <div class="post-card">
+          <span class="post-track">Anim'Gest</span>
+          <h3>Eliot passe &agrave; l'action</h3>
+          <ul>
+          <li>L'assistant ne se contente plus de lire : il cr&eacute;e un client, un animal, planifie une s&eacute;ance, sur simple demande en fran&ccedil;ais.</li>
+          <li><b>Toute &eacute;criture demande une confirmation explicite.</b> Eliot pr&eacute;pare, vous validez. Jamais l'inverse.</li>
+          <li><b>Tout est refus&eacute; par d&eacute;faut.</b> Une action n'est possible que si votre r&ocirc;le l'autorise express&eacute;ment. Un utilisateur en consultation ne peut rien &eacute;crire, m&ecirc;me en le demandant.</li>
+          </ul>
+        </div>
+      </article>
+      </div>
+
+      <div class="empty" id="empty" hidden>Aucune publication pour ce produit pour l'instant.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Vous avez rep&eacute;r&eacute; quelque chose</p>
+        <h2>Une remont&eacute;e, une correction.</h2>
+        <p>La majorit&eacute; des lignes ci-dessus vient d'un usage r&eacute;el. Si un comportement vous surprend, dites-le nous : c'est comme &ccedil;a que le logiciel avance.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="mailto:contact@no-sages-editor.com?subject=Retour%20produit">&Eacute;crire &agrave; l'&eacute;diteur</a>
+        <a class="btn btn-ghost" href="https://animgest-docs.no-sages-editor.com/changelog.html">Journal d&eacute;taill&eacute; Anim'Gest</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>&copy; <span id="yr">2026</span> No Sage's Editor - &Eacute;diteur de logiciels m&eacute;tier.</span>
+    <div class="foot-links">
+      <a href="../anim-gest/">Anim'Gest</a>
+      <a href="../cockpit-gest/">Cockpit'Gest</a>
+      <a href="../socle-commun/">Qualit&eacute; &amp; fiabilit&eacute;</a>
+      <a href="../demarche/">D&eacute;marche</a>
+      <a href="./">Actualit&eacute;s</a>
+      <a href="../a-propos/">&Agrave; propos</a>
+      <a href="mailto:contact@no-sages-editor.com">Contact</a>
+    </div>
+  </div>
+</footer>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function () {
+  var btns = document.querySelectorAll('.filters button');
+  var posts = document.querySelectorAll('.post');
+  var empty = document.getElementById('empty');
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.dataset.f;
+      btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      var shown = 0;
+      posts.forEach(function (p) {
+        var ok = (f === 'all' || p.dataset.track === f);
+        p.hidden = !ok;
+        if (ok) shown++;
+      });
+      empty.hidden = shown > 0;
+    });
+  });
+})();
+</script>
+</body>
+</html>

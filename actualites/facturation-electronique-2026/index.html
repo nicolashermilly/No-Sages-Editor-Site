@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  PUBLICATION COMMUNAUTÉ - Facturation électronique au 1er septembre 2026
+  Site éditeur : no-sages-editor.com
+  Emplacement PRÉVU : /actualites/facturation-electronique-2026.html
+  ---------------------------------------------------------------------
+  HYPOTHÈSE DE PLACEMENT (à confirmer) : cette page est traitée comme une
+  SOUS-PAGE de /actualites/. Les liens de nav remontent donc d'un cran
+  (../). Si elle est posée ailleurs, corriger les 8 liens de <nav> et le
+  lien de retour en pied de page.
+
+  STYLE EMBARQUÉ, ET C'EST DÉLIBÉRÉ : les pages du site consomment
+  style.css à la racine, mais demarche/index.html embarque déjà son
+  propre <style> pour une mise en page qui lui est propre. Même cas ici
+  (axe des dates, cartes Q/R). Les jetons repris de la charte éditeur
+  sont identiques à ceux du modèle de note de cadrage.
+
+  TYPOGRAPHIE : aucun tiret cadratin (U+2014) ni demi-cadratin (U+2013)
+  dans ce fichier. Règle non négociable. Accents français complets :
+  c'est une rédaction publiée, pas un script.
+  =====================================================================
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facturation électronique : ce qui vous attend vraiment au 1er septembre | No Sage's Editor</title>
+<meta name="description" content="Au 1er septembre 2026, la quasi-totalité des entreprises doit seulement pouvoir RECEVOIR ses factures au format électronique. Le point, sans jargon, sources officielles à l'appui.">
+<meta name="theme-color" content="#0F172A">
+<meta property="og:title" content="Facturation électronique : ce qui vous attend vraiment au 1er septembre">
+<meta property="og:description" content="Deux dates, pas dix. Et pour la plupart d'entre vous, une seule compte en 2026.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Jetons de charte : No Sage's Editor ===== */
+  :root{
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+
+    --bg:#0F172A; --bg-deep:#020617; --surface:#1E293B; --surface-2:#172033;
+    --line:rgba(148,163,184,.14); --line-strong:rgba(148,163,184,.26);
+    --text:#F1F5F9; --text-muted:#94A3B8; --text-dim:#64748B;
+
+    --violet:#4F46E5; --violet-light:#818CF8;
+    --cyan:#06B6D4; --cyan-light:#22D3EE;
+    --green:#10B981; --amber:#F59E0B;
+    --grad:linear-gradient(135deg,#4F46E5 0%,#06B6D4 100%);
+
+    --maxw:1120px; --readw:68ch; --r:16px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--body); font-size:1.02rem; line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  .read{max-width:var(--readw)}
+
+  a{color:var(--cyan-light); text-decoration:none}
+  a:hover{color:var(--cyan)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px; border-radius:4px}
+
+  /* ===== Navigation ===== */
+  nav{
+    position:sticky; top:0; z-index:60;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:14px 24px; background:rgba(15,23,42,.94);
+    backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:11px; font-family:var(--display); font-weight:700; font-size:1.02rem; color:var(--text)}
+  .brand .mark{
+    width:34px; height:34px; border-radius:9px; background:var(--grad);
+    display:grid; place-items:center; font-family:var(--mono); font-size:1.05rem; color:#fff;
+  }
+  .brand em{font-style:normal; color:var(--cyan-light)}
+  .nav-links{display:flex; gap:20px; align-items:center; flex-wrap:wrap}
+  .nav-links a{font-size:.83rem; color:var(--text-muted); font-weight:500}
+  .nav-links a:hover,.nav-links a.active{color:var(--cyan-light)}
+  .nav-cta{
+    font-size:.83rem; font-weight:600; color:#fff !important;
+    background:var(--grad); padding:8px 16px; border-radius:9px;
+  }
+  .nav-toggle{display:none}
+
+  /* ===== Hero ===== */
+  header.hero{padding:64px 0 8px; border-bottom:1px solid var(--line)}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:12px;
+    font-family:var(--mono); font-size:.76rem; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--cyan-light);
+    border:1px solid rgba(6,182,212,.32); background:rgba(6,182,212,.09);
+    padding:6px 14px; border-radius:999px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--cyan-light)}
+  h1{
+    font-family:var(--display); font-weight:700; font-size:clamp(2rem,5.2vw,3.3rem);
+    line-height:1.1; letter-spacing:-.025em; margin:22px 0 0; max-width:19ch;
+  }
+  h1 .hl{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .dateline{
+    font-family:var(--mono); font-size:.82rem; color:var(--text-dim);
+    margin-top:18px; letter-spacing:.02em;
+  }
+  .lead{font-size:1.14rem; color:var(--text-muted); margin:26px 0 0; max-width:62ch}
+  .lead strong{color:var(--text); font-weight:600}
+  header.hero .wrap{padding-bottom:52px}
+
+  /* ===== Sections ===== */
+  section{padding:56px 0; border-bottom:1px solid var(--line)}
+  section:last-of-type{border-bottom:0}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:10px; flex-wrap:wrap}
+  .sec-num{font-family:var(--mono); font-size:.8rem; font-weight:700; color:var(--violet-light); letter-spacing:.08em}
+  h2{
+    font-family:var(--display); font-weight:600; font-size:clamp(1.45rem,3vw,2rem);
+    letter-spacing:-.02em; margin:0; line-height:1.22;
+  }
+  h3{font-family:var(--display); font-weight:600; font-size:1.12rem; margin:0 0 8px; letter-spacing:-.01em}
+  p{margin:16px 0}
+  .muted{color:var(--text-muted)}
+
+  /* ===== SIGNATURE : l'axe des deux dates ===== */
+  .axis{margin:38px 0 8px; display:grid; gap:18px}
+  .axis-row{
+    display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:stretch;
+    border:1px solid var(--line-strong); border-radius:var(--r);
+    background:var(--surface-2); overflow:hidden;
+  }
+  .axis-date{
+    font-family:var(--mono); font-weight:700; padding:26px 24px;
+    display:flex; flex-direction:column; justify-content:center; gap:4px;
+    min-width:180px; border-right:1px solid var(--line-strong);
+  }
+  .axis-date .d{font-size:1.9rem; line-height:1; letter-spacing:-.03em}
+  .axis-date .m{font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-dim)}
+  .axis-body{padding:24px}
+  .axis-body h3{margin-bottom:4px}
+  .axis-body p{margin:6px 0 0; font-size:.95rem; color:var(--text-muted)}
+  .axis-row.now{border-color:rgba(6,182,212,.42); background:linear-gradient(180deg,rgba(6,182,212,.09),transparent 70%)}
+  .axis-row.now .axis-date{color:var(--cyan-light); border-right-color:rgba(6,182,212,.32)}
+  .axis-row.later{opacity:.86}
+  .axis-row.later .axis-date{color:var(--violet-light)}
+  .who{
+    display:inline-block; font-family:var(--mono); font-size:.72rem; font-weight:700;
+    letter-spacing:.1em; text-transform:uppercase; padding:4px 10px; border-radius:6px;
+    background:rgba(148,163,184,.12); color:var(--text-muted); margin-bottom:10px;
+  }
+  .axis-row.now .who{background:rgba(6,182,212,.14); color:var(--cyan-light)}
+  .axis-row.later .who{background:rgba(79,70,229,.16); color:var(--violet-light)}
+  .verdict{
+    margin-top:26px; padding:20px 24px; border-radius:var(--r);
+    border:1px solid rgba(16,185,129,.3); background:rgba(16,185,129,.08);
+    font-size:1.02rem;
+  }
+  .verdict strong{color:var(--green)}
+
+  /* ===== Cartes ===== */
+  .cards{display:grid; gap:16px; margin-top:28px}
+  .card{
+    border:1px solid var(--line); border-radius:var(--r);
+    background:var(--surface-2); padding:24px 26px;
+  }
+  .card.warn{border-color:rgba(245,158,11,.32); background:rgba(245,158,11,.07)}
+  .card.warn h3{color:var(--amber)}
+  .card.tip{border-color:rgba(6,182,212,.36); background:linear-gradient(135deg,rgba(6,182,212,.11),rgba(79,70,229,.08))}
+  .card.tip h3{color:var(--cyan-light)}
+  .tip-brand{
+    display:inline-block; font-family:var(--display); font-weight:700;
+    font-size:1.32rem; letter-spacing:-.02em; margin:2px 0 4px;
+  }
+  .tip-free{
+    display:inline-block; font-family:var(--mono); font-weight:700; font-size:.78rem;
+    letter-spacing:.08em; text-transform:uppercase; padding:5px 12px; border-radius:6px;
+    background:rgba(16,185,129,.14); color:var(--green); margin-left:10px; vertical-align:middle;
+  }
+  .disclosure{
+    margin-top:18px; padding-top:16px; border-top:1px solid var(--line-strong);
+    font-size:.86rem; color:var(--text-dim); line-height:1.6;
+  }
+  .disclosure strong{color:var(--text-muted); font-weight:600}
+  .accent{
+    color:var(--cyan-light); font-family:var(--display); font-weight:600;
+    font-size:.95rem; display:block; margin:10px 0;
+  }
+  .qa{border-left:3px solid var(--violet)}
+  .qa .q{
+    font-family:var(--display); font-weight:600; font-size:1.06rem;
+    color:var(--text); margin:0 0 6px; line-height:1.35;
+  }
+  .qa .q::before{content:'\201C'; color:var(--violet-light); margin-right:2px}
+  .qa .q::after{content:'\201D'; color:var(--violet-light); margin-left:2px}
+  .verdict-inline{
+    display:inline-block; font-family:var(--display); font-weight:700;
+    font-size:1rem; margin:10px 0 2px;
+  }
+  .v-no{color:var(--green)}
+  .v-yes{color:var(--amber)}
+  .qa p{font-size:.96rem; color:var(--text-muted); margin:8px 0 0}
+  .qa p strong{color:var(--text)}
+
+  /* ===== Liste des étapes ===== */
+  ol.steps{list-style:none; counter-reset:s; padding:0; margin:28px 0 0; display:grid; gap:14px}
+  ol.steps li{
+    counter-increment:s; position:relative; padding:20px 24px 20px 66px;
+    border:1px solid var(--line); border-radius:var(--r); background:var(--surface-2);
+  }
+  ol.steps li::before{
+    content:counter(s); position:absolute; left:22px; top:20px;
+    font-family:var(--mono); font-weight:700; font-size:1.1rem; color:var(--cyan-light);
+  }
+  ol.steps strong{color:var(--text)}
+  ol.steps span{display:block; color:var(--text-muted); font-size:.95rem; margin-top:5px}
+
+  ul.plain{margin:16px 0; padding-left:0; list-style:none; display:grid; gap:10px}
+  ul.plain li{padding-left:26px; position:relative; color:var(--text-muted)}
+  ul.plain li::before{
+    content:''; position:absolute; left:6px; top:.72em; width:7px; height:7px;
+    border-radius:2px; background:var(--grad);
+  }
+  ul.plain strong{color:var(--text)}
+
+  /* ===== Tableau ===== */
+  .tbl-wrap{overflow-x:auto; margin-top:26px; border:1px solid var(--line); border-radius:var(--r)}
+  table{border-collapse:collapse; width:100%; min-width:520px; font-size:.94rem}
+  th,td{padding:14px 18px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+  th{
+    font-family:var(--mono); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--text-dim); background:rgba(2,6,23,.4);
+  }
+  tbody tr:last-child td{border-bottom:0}
+  td .amount{font-family:var(--mono); font-weight:700; color:var(--text); white-space:nowrap}
+  td .ref{font-family:var(--mono); font-size:.78rem; color:var(--text-dim); display:block; margin-top:4px}
+
+  /* ===== Bloc aide ===== */
+  .help{
+    margin-top:30px; display:grid; gap:18px; grid-template-columns:1fr;
+    border:1px solid var(--line-strong); border-radius:var(--r);
+    background:linear-gradient(135deg,rgba(79,70,229,.14),rgba(6,182,212,.1));
+    padding:28px 30px;
+  }
+  .tel{font-family:var(--mono); font-weight:700; font-size:clamp(1.5rem,4vw,2.1rem); letter-spacing:.02em; color:var(--cyan-light); line-height:1.1}
+  .tel-sub{font-size:.85rem; color:var(--text-muted); margin-top:6px}
+
+  /* ===== Sources ===== */
+  .sources{font-size:.9rem}
+  .sources ol{padding-left:20px; margin:20px 0 0; display:grid; gap:16px; color:var(--text-muted)}
+  .sources li strong{color:var(--text); font-weight:600}
+  .sources .note{display:block; color:var(--text-dim); font-size:.85rem; margin-top:3px}
+  .sources a{word-break:break-word; font-family:var(--mono); font-size:.8rem}
+
+  /* ===== Pied ===== */
+  footer{padding:44px 0 60px; color:var(--text-dim); font-size:.86rem; border-top:1px solid var(--line)}
+  footer .fwrap{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:center}
+  .back{font-family:var(--mono); font-size:.82rem}
+
+  @media (max-width:720px){
+    .nav-links{display:none}
+    .nav-links.open{display:flex; position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:flex-start; gap:14px; padding:18px 24px; background:var(--bg-deep); border-bottom:1px solid var(--line)}
+    .nav-toggle{
+      display:block; background:none; border:1px solid var(--line-strong); color:var(--text);
+      border-radius:8px; padding:7px 12px; font-family:var(--mono); font-size:.8rem; cursor:pointer;
+    }
+    .axis-row{grid-template-columns:1fr}
+    .axis-date{border-right:0; border-bottom:1px solid var(--line-strong); flex-direction:row; align-items:baseline; gap:12px; padding:18px 22px}
+    .axis-row.now .axis-date{border-right-color:transparent; border-bottom-color:rgba(6,182,212,.32)}
+    .axis-date .d{font-size:1.5rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none !important; animation:none !important}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="../">
+    <span class="mark" aria-hidden="true">@</span>
+    <span>No Sage's <em>Editor</em></span>
+  </a>
+  <button class="nav-toggle" aria-expanded="false" aria-controls="navlinks">Menu</button>
+  <div class="nav-links" id="navlinks">
+    <a href="../">Accueil</a>
+    <a href="../anim-gest/">Anim'Gest</a>
+    <a href="../cockpit-gest/">Cockpit'Gest</a>
+    <a href="../socle-commun/">Qualité &amp; fiabilité</a>
+    <a href="../demarche/">Démarche</a>
+    <a href="./" class="active">Actualités</a>
+    <a href="../a-propos/">À propos</a>
+    <a class="nav-cta" href="mailto:contact@no-sages-editor.com">Nous écrire</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot" aria-hidden="true"></span><span id="jmoins">J-31</span> avant le 1er septembre</span>
+    <h1>Facturation électronique : ce qui vous attend <span class="hl">vraiment</span></h1>
+    <p class="dateline">Publié le 1er août 2026 &middot; lecture 7 min</p>
+    <p class="lead">
+      Vous êtes nombreux à nous poser des questions, et souvent avec une pointe d'inquiétude.
+      C'est légitime : on parle d'une réforme qui touche plus de 10 millions d'entreprises et
+      qui change la façon dont vos factures circulent.
+      <strong>La situation est beaucoup moins brutale que ce qu'on lit parfois.</strong>
+      L'administration a publié en juillet un guide de démarrage qui clarifie énormément de
+      choses, et sur plusieurs points elle est nettement plus souple qu'annoncé. On fait le
+      point, sans jargon.
+    </p>
+  </div>
+</header>
+
+<main>
+
+<section id="dates">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Les deux dates à retenir, et rien d'autre</h2>
+    </div>
+    <p class="read muted">
+      Toute la confusion vient de là : on mélange deux obligations qui n'ont ni la même date,
+      ni le même contenu. Recevoir n'est pas émettre, et un an les sépare.
+    </p>
+
+    <div class="axis">
+      <div class="axis-row now">
+        <div class="axis-date">
+          <span class="d">01.09.2026</span>
+          <span class="m" id="delai2026">dans 31 jours</span>
+        </div>
+        <div class="axis-body">
+          <span class="who">Toutes les entreprises</span>
+          <h3>Recevoir vos factures fournisseurs au format électronique</h3>
+          <p>C'est la seule obligation qui vous concerne au 1er septembre 2026, quelle que soit
+          votre taille. Vos plus gros fournisseurs, eux, basculent en émission à cette même date :
+          c'est pour cela que vous devez être en mesure de recevoir.</p>
+        </div>
+      </div>
+
+      <div class="axis-row later">
+        <div class="axis-date">
+          <span class="d">01.09.2027</span>
+          <span class="m" id="delai2027">dans 13 mois</span>
+        </div>
+        <div class="axis-body">
+          <span class="who">TPE, PME, micro, artisans</span>
+          <h3>Émettre vos factures au format électronique, pour vos clients professionnels</h3>
+          <p>Vous continuez à facturer exactement comme aujourd'hui pendant encore un an. Et vos
+          factures à des particuliers, elles, resteront hors de ce circuit.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict read">
+      <strong>Pour la très grande majorité d'entre vous :</strong> au 1er septembre 2026, vous devez
+      seulement être capables de <strong>recevoir</strong>. Le calendrier a été confirmé, il n'y a pas
+      de nouveau report.
+    </div>
+
+    <div class="cards read">
+      <div class="card tip">
+        <h3>Vous facturez surtout des particuliers ? Lisez ceci avant tout le reste.</h3>
+        <p><strong>Vos factures à des particuliers ne passeront jamais par la facturation
+        électronique.</strong> La réforme ne couvre que les échanges entre entreprises assujetties
+        à la TVA. Un particulier n'étant pas assujetti, les factures que vous lui adressez sortent
+        du dispositif. Vous continuerez à les établir comme aujourd'hui.</p>
+        <p>Ce qui vous concerne, en revanche, se lit en deux temps :</p>
+        <ul class="plain">
+          <li><strong>Au 1er septembre 2026, la réception.</strong> Vous achetez, vous aussi, et
+          plus que vous ne le pensez : électricité, téléphone, accès internet, licences et
+          abonnements logiciels, honoraires de votre expert-comptable, matériel et consommables,
+          carburant. Toutes ces factures arriveront en électronique, parce que ces
+          fournisseurs-là basculent en émission les premiers. Vous devez pouvoir les recevoir, et
+          <strong>cette obligation ne dépend pas du tout de vos clients</strong>.</li>
+          <li><strong>Au 1er septembre 2027, l'e-reporting.</strong> À la place de la facture
+          électronique, vous transmettrez à l'administration les <strong>données</strong> de vos
+          ventes aux particuliers : montants et TVA, sous forme agrégée, pas facture par facture.
+          Cela passe par la même plateforme agréée.</li>
+        </ul>
+        <p class="muted">Autrement dit : le choix d'une plateforme agréée vous sert deux fois,
+        d'abord pour recevoir en 2026, ensuite pour déclarer en 2027. C'est la même décision, et
+        elle se prend une seule fois.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="franchise">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Le point qui crée le plus de confusion</h2>
+    </div>
+
+    <div class="cards read">
+      <div class="card warn">
+        <h3>&laquo;&nbsp;Je suis en micro, en franchise en base : je ne suis pas concerné&nbsp;&raquo;</h3>
+        <p><strong>Si, vous êtes concerné.</strong> C'est l'erreur la plus répandue en ce moment,
+        et elle est compréhensible.</p>
+      </div>
+    </div>
+
+    <div class="read">
+      <p>
+        Le raisonnement est le suivant : être en franchise en base de TVA veut dire que vous ne
+        <strong>facturez</strong> pas la TVA. Mais vous restez <strong>assujetti</strong> à la TVA
+        au sens fiscal. Et c'est le fait d'être assujetti qui déclenche la réforme.
+      </p>
+      <p>
+        Le ministère de l'Économie est explicite : les entreprises en franchise en base,
+        micro-entrepreneurs compris, sont soumises à la facturation électronique en réception
+        <strong>et</strong> en émission, selon le calendrier ci-dessus.
+      </p>
+      <p>
+        Les seuls réellement hors du dispositif sont les personnes <strong>non assujetties</strong>
+        à la TVA. Et les <strong>opérations</strong> exonérées de TVA (santé, formation) ne sont pas
+        soumises à l'émission électronique, mais l'entreprise qui les réalise doit tout de même
+        pouvoir recevoir les factures de ses fournisseurs.
+      </p>
+      <p>
+        En clair : si vous achetez du matériel à un fournisseur, vous êtes concerné par la
+        réception au 1er septembre 2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="inchange">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Ce qui ne change pas, et c'est beaucoup</h2>
+    </div>
+    <p class="read muted">C'est là que la plupart des inquiétudes tombent.</p>
+    <ul class="plain read">
+      <li><strong>Vos règles de facturation ne changent pas.</strong> Acomptes, échéanciers,
+      forfaits, abonnements, remises : tout continue exactement comme aujourd'hui. Ce qui change,
+      c'est le <strong>canal</strong> de transmission et le <strong>format</strong> du fichier,
+      pas la logique métier.</li>
+      <li><strong>Vos délais et conditions de paiement ne changent pas.</strong></li>
+      <li><strong>Votre droit à déduction de la TVA ne change pas.</strong></li>
+      <li><strong>La réforme ne modifie ni la réalité de l'opération, ni la dette commerciale,
+      ni la comptabilisation.</strong> C'est écrit noir sur blanc dans le guide de la DGFiP.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="inquietudes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Vos cinq inquiétudes, et ce que dit réellement l'administration</h2>
+    </div>
+
+    <div class="cards">
+      <div class="card qa">
+        <p class="q">Le 1er septembre, si je ne suis pas prêt, je suis sanctionné</p>
+        <span class="verdict-inline v-no">Non.</span>
+        <p>Le ministre de l'Action et des Comptes publics a annoncé une approche de tolérance et
+        de bienveillance pour la phase de démarrage, et la DGFiP l'a formalisée dans son guide de
+        juillet 2026. Le principe : <strong>pas de sanction pour une entreprise qui rencontre des
+        difficultés réelles mais qui est engagée dans une trajectoire sérieuse de mise en
+        conformité.</strong> L'administration fera la différence entre une entreprise qui galère
+        de bonne foi et une entreprise qui refuse durablement d'entrer dans le dispositif.</p>
+        <p>À retenir : ce n'est ni un report ni une suspension. L'obligation existe. Mais on ne
+        vous tombera pas dessus le 2 septembre.</p>
+      </div>
+
+      <div class="card qa">
+        <p class="q">Si mon fournisseur m'envoie une facture papier ou PDF après le 1er septembre, je fais quoi ?</p>
+        <span class="verdict-inline v-no">Vous la traitez, vous la payez, vous déduisez la TVA.</span>
+        <p>La DGFiP est très claire : une facture reçue par mail, PDF ou papier ne doit pas être
+        écartée au seul motif qu'elle n'est pas passée par le circuit électronique, dès lors
+        qu'elle correspond à une opération réelle et comporte les informations nécessaires. Le
+        seul fait de ne pas être passée par le bon canal ne vous prive pas automatiquement de
+        votre droit à déduction.</p>
+        <p><strong>Aucun risque de blocage d'activité ou de trésorerie le 1er septembre.</strong></p>
+      </div>
+
+      <div class="card qa">
+        <p class="q">Un gros client va m'obliger à passer à l'électronique dès maintenant</p>
+        <span class="verdict-inline v-no">Il ne peut pas.</span>
+        <p>La réforme ne donne à aucun client le pouvoir d'imposer l'émission électronique à une
+        entreprise dont l'échéance est fixée à septembre 2027. Et un client ne doit pas refuser de
+        traiter ou de payer une facture au seul motif qu'elle n'est pas électronique.</p>
+        <p>Si un donneur d'ordre vous met la pression, vous pouvez lui rappeler ce point : c'est
+        dans le guide officiel, question 20.</p>
+      </div>
+
+      <div class="card qa">
+        <p class="q">Ça va me coûter cher</p>
+        <span class="verdict-inline v-yes">Il faut être honnête sur ce point.</span>
+        <p><strong>Un passage par une plateforme agréée est obligatoire</strong>, y compris pour la
+        seule réception. L'État avait prévu un portail public gratuit, mais ce projet a été
+        abandonné en octobre 2024 ; le portail public ne sert plus qu'à l'annuaire et à la
+        remontée des données.</p>
+        <p>L'ordre de grandeur reste modeste pour une petite structure, et il y a plusieurs façons
+        de ne rien payer de plus : votre logiciel de gestion ou votre expert-comptable peut déjà
+        inclure l'accès à une plateforme agréée dans votre abonnement ou vos honoraires ; votre
+        banque professionnelle peut le proposer ; certaines plateformes agréées ont des offres
+        gratuites pour les besoins simples.</p>
+        <p>La question à poser en priorité : <strong>&laquo;&nbsp;mon logiciel actuel est-il raccordé à
+        une plateforme agréée, et laquelle ?&nbsp;&raquo;</strong> Dans beaucoup de cas, la réponse est
+        annoncée oui et vous n'avez presque rien à faire. <strong>N'oubliez pas d'en demander la
+        preuve.</strong></p>
+      </div>
+
+      <div class="card qa">
+        <p class="q">Je ne suis pas informaticien</p>
+        <span class="verdict-inline v-no">Vous n'avez pas besoin de l'être.</span>
+        <p>Votre travail se résume à <strong>désigner une plateforme agréée</strong>. C'est elle
+        qui s'occupe du reste, y compris de vous inscrire dans l'annuaire national. Vous n'avez
+        aucune démarche à faire directement auprès de l'administration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="etapes">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>Ce qu'il faut faire d'ici le 1er septembre</h2>
+    </div>
+    <p class="read muted">Quatre étapes, dans cet ordre. La première règle souvent tout le reste,
+    à condition de ne pas se contenter d'une parole rassurante : demandez la preuve.</p>
+    <ol class="steps read">
+      <li>
+        <strong>Exigez de votre éditeur de logiciel ou de votre expert-comptable une réponse
+        écrite.</strong>
+        <span>La question : &laquo;&nbsp;par quelle plateforme agréée vais-je recevoir mes
+        factures, sous quel numéro d'immatriculation DGFiP, et à partir de quelle date&nbsp;?&nbsp;&raquo;
+        Un nom, un numéro, une date. &laquo;&nbsp;On s'en occupe&nbsp;&raquo; n'est pas une réponse.</span>
+        <span><strong>Et gardez ce courriel.</strong> On ne parle pas d'un service de confort mais
+        d'une obligation réglementaire assortie d'amendes, et <strong>c'est vous qui en êtes
+        redevable, pas votre prestataire</strong>. Une promesse orale ne vous couvre de rien.
+        Un écrit, si : il devient votre preuve de démarche
+        (<a href="#sanctions">voir les montants plus bas</a>).</span>
+      </li>
+      <li>
+        <strong>Si personne ne vous couvre, choisissez une plateforme agréée.</strong>
+        <span>La liste officielle est publiée et mise à jour sur impots.gouv.fr.</span>
+      </li>
+      <li>
+        <strong>Communiquez votre adresse de facturation électronique à vos fournisseurs.</strong>
+        <span>Ce n'est pas une adresse mail : c'est un identifiant basé sur votre SIREN, fourni
+        par votre plateforme. Un conseil : faites-la figurer sur vos bons de commande.</span>
+      </li>
+      <li>
+        <strong>Gardez une trace écrite de vos démarches.</strong>
+        <span>Échanges avec l'éditeur, devis, dates de raccordement. C'est exactement ce que
+        l'administration considère comme une &laquo;&nbsp;trajectoire sérieuse de mise en conformité&nbsp;&raquo;
+        en cas de difficulté.</span>
+      </li>
+    </ol>
+
+    <div class="cards read">
+      <div class="card tip">
+        <h3>Notre conseil du jour, pour l'étape 2</h3>
+        <p class="muted">Si vous devez choisir une plateforme agréée vous-même, en voici une qui
+        nous semble taillée pour les petites structures.</p>
+        <p>
+          <a class="tip-brand" href="https://www.superpdp.tech/" rel="noopener">SUPER PDP</a>
+          <span class="tip-free">1 000 factures / mois offertes</span>
+        </p>
+        <p>Plateforme Agréée française, immatriculée par la DGFiP, hébergement des données en
+        France. Le compte en ligne est gratuit jusqu'à 1 000 factures par mois : pour une simple
+        obligation de réception, <strong>vous serez large</strong>. Formats Factur-X, UBL et CII
+        pris en charge.</p>
+        <div class="disclosure">
+          <strong>Transparence :</strong> SUPER PDP n'est pas sponsor de No Sage's Editor et ne
+          nous verse rien, ni commission, ni affiliation.
+          <span class="accent">Si nous la citons, c'est que c'est la plateforme agréée que nous
+          avons retenue pour nos propres produits.</span>
+          Vérifiez la page tarifs et les conditions sur leur site avant de vous engager : les
+          offres évoluent. La liste complète des plateformes agréées reste consultable sur
+          impots.gouv.fr (source 6 ci-dessous).
+        </div>
+      </div>
+
+      <div class="card warn">
+        <h3>Et si votre éditeur vous répond « oui, oui, on sera prêts »</h3>
+        <p>C'est la réponse la plus fréquente, et c'est aussi la moins informative. Entre annoncer
+        un raccordement et l'avoir éprouvé, il y a un écart que vous ne verrez pas depuis votre
+        écran, et vous ne le découvrirez qu'au moment où une facture devra réellement passer.</p>
+        <p><strong>Trois questions qui font la différence</strong>, et dont les réponses tiennent
+        en une phrase chacune :</p>
+        <ul class="plain">
+          <li><strong>Quelle plateforme agréée, nommément ?</strong> Si le nom ne vient pas, le
+          raccordement n'existe pas encore.</li>
+          <li><strong>Est-elle déjà immatriculée par la DGFiP,</strong> ou seulement « sous
+          réserve » ? Les deux listes ne sont pas la même.</li>
+          <li><strong>Une facture est-elle déjà passée de bout en bout par ce raccordement ?</strong>
+          Émise, transmise, acceptée. Une intention n'est pas un flux.</li>
+        </ul>
+        <p class="muted">Ces trois questions valent pour nous comme pour les autres. Posez-les.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="details">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>Deux détails à ne pas rater</h2>
+    </div>
+
+    <div class="cards read">
+      <div class="card">
+        <h3>Quatre nouvelles mentions obligatoires</h3>
+        <p class="muted">Elles apparaissent à compter du 1er septembre 2026 sur les factures
+        adressées à des <strong>professionnels</strong>. Vos factures à des particuliers ne sont
+        pas concernées : un particulier n'a pas de SIREN.</p>
+        <ul class="plain">
+          <li>le numéro <strong>SIREN du client</strong> ;</li>
+          <li>la <strong>catégorie de l'opération</strong> (vente de biens, prestation de services,
+          ou les deux) ;</li>
+          <li>la mention de l'<strong>option pour le paiement de la TVA sur les débits</strong>,
+          le cas échéant ;</li>
+          <li>l'<strong>adresse de livraison</strong> du bien, si elle diffère de l'adresse de
+          facturation.</li>
+        </ul>
+        <p class="muted">En pratique, votre logiciel de gestion s'en charge. Vérifiez simplement
+        que la mise à jour a bien été faite.</p>
+      </div>
+
+      <div class="card warn">
+        <h3>Un PDF envoyé par mail n'est pas une facture électronique</h3>
+        <p>Pas au sens de la réforme. Une vraie facture électronique est un fichier structuré
+        (Factur-X, UBL ou CII) transmis via une plateforme agréée. C'est le malentendu le plus
+        fréquent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sanctions">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">07</span>
+      <h2>Et les sanctions, alors ?</h2>
+    </div>
+    <p class="read muted">
+      Pour information, sans dramatiser : rappelez-vous la tolérance de démarrage décrite plus
+      haut. Les montants ont été relevés par la loi de finances pour 2026.
+    </p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Situation</th>
+            <th scope="col">Montant</th>
+            <th scope="col">Plafond annuel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Défaut d'émission électronique, quand vous y êtes tenu
+              <span class="ref">CGI, art. 1737</span></td>
+            <td><span class="amount">50 €</span> par facture</td>
+            <td><span class="amount">15 000 €</span></td>
+          </tr>
+          <tr>
+            <td>Défaut de e-reporting
+              <span class="ref">CGI, art. 1788 D</span>
+              <span class="ref">Transmission des données de vos ventes aux particuliers et
+              à l'étranger. Vous concerne à partir du 01.09.2027.</span></td>
+            <td><span class="amount">500 €</span> par transmission manquante</td>
+            <td><span class="amount">15 000 €</span></td>
+          </tr>
+          <tr>
+            <td>Absence de plateforme agréée pour la réception
+              <span class="ref">CGI, art. 1737 IV bis</span></td>
+            <td colspan="2"><strong>Pas d'amende immédiate.</strong> L'administration doit d'abord
+            vous adresser une mise en demeure vous laissant <strong>trois mois</strong> pour
+            régulariser.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict read">
+      Ce dernier point est important : sur l'obligation qui vous concerne tous au 1er septembre,
+      la réception, <strong>la loi elle-même prévoit un filet de sécurité de trois mois</strong>.
+    </div>
+  </div>
+</section>
+
+<section id="aide">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">08</span>
+      <h2>Où trouver de l'aide</h2>
+    </div>
+
+    <div class="help">
+      <div>
+        <a class="tel" href="tel:0806807807">0 806 807 807</a>
+        <p class="tel-sub">Numéro national d'assistance (service gratuit + prix d'un appel).
+        Il répond à toutes les questions sur le calendrier et le champ d'application.</p>
+      </div>
+    </div>
+
+    <ul class="plain read">
+      <li>Votre <strong>expert-comptable</strong>, votre <strong>fédération professionnelle</strong>,
+      votre <strong>chambre de métiers</strong>.</li>
+      <li>Nos équipes :
+        <a href="mailto:contact@no-sages-editor.com">contact@no-sages-editor.com</a></li>
+    </ul>
+
+    <div class="cards read" style="margin-top:34px">
+      <div class="card tip">
+        <h3>Pourquoi nos logiciels sont faits comme ça</h3>
+        <p>Cette réforme n'est qu'un exemple de plus : la charge administrative d'un
+        indépendant ne cesse d'augmenter, et elle se prend sur le temps du métier. C'est
+        exactement pour cela que la société a été créée.</p>
+        <ul class="plain">
+          <li><strong>La comptabilité est tenue automatiquement.</strong> Vos factures et vos
+          règlements alimentent vos écritures sans que vous ayez à les ressaisir.</li>
+          <li><strong>Un plan comptable simplifié est fourni d'origine</strong>, et vous pouvez
+          lui substituer le vôtre si vous en avez un.</li>
+          <li><strong>Pour ceux qui travaillent avec un cabinet comptable, l'export FEC</strong>
+          (Fichier des Écritures Comptables) est généré depuis l'application, avec son empreinte
+          d'intégrité.</li>
+        </ul>
+        <p class="accent" style="display:block">Vous vouliez qu'on vous facilite la vie. C'est
+        précisément le métier.</p>
+      </div>
+    </div>
+
+    <div class="read">
+      <h3 style="margin-top:34px">Le mot de la fin</h3>
+      <p>
+        Il reste un mois, et l'échéance de septembre 2026 est, pour la plupart d'entre vous, une
+        échéance de <strong>réception</strong>, pas un bouleversement de votre façon de facturer.
+        La vraie bascule, pour les TPE et PME, c'est septembre 2027 : vous avez donc une année
+        entière pour la préparer sereinement.
+      </p>
+      <p>
+        Ce délai n'est pas du temps mort. C'est l'occasion de tester, de former vos équipes et de
+        faire un choix éclairé plutôt que de subir. Prenez-le.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="sources" class="sources">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">09</span>
+      <h2>Sources</h2>
+    </div>
+    <p class="read muted">
+      Toutes les informations de cette publication proviennent de sources officielles,
+      consultées le 1er août 2026.
+    </p>
+    <ol>
+      <li>
+        <strong>Ministère de l'Économie</strong>, Tout savoir sur la facturation électronique
+        pour les entreprises.
+        <span class="note">Calendrier, champ d'application, franchise en base, 4 nouvelles
+        mentions obligatoires, numéro d'assistance.</span>
+        <a href="https://www.economie.gouv.fr/tout-savoir-sur-la-facturation-electronique-pour-les-entreprises" rel="noopener">economie.gouv.fr</a>
+      </li>
+      <li>
+        <strong>DGFiP</strong>, Facturation électronique : guide pratique de démarrage au
+        1er septembre 2026, juillet 2026.
+        <span class="note">Tolérance de démarrage, traitement des factures papier ou PDF après le
+        1er septembre, impossibilité pour un client d'imposer l'émission anticipée, trajectoire
+        de mise en conformité.</span>
+        <a href="https://www.impots.gouv.fr/sites/default/files/media/1_metier/2_professionnel/EV/2_gestion/290_facturation_electronique/guide_pratique_facturation_electronique.pdf" rel="noopener">guide_pratique_facturation_electronique.pdf</a>
+      </li>
+      <li>
+        <strong>Communiqué de presse du ministère</strong>, annonce de l'approche de tolérance et
+        de bienveillance par David Amiel, ministre de l'Action et des Comptes publics.
+        <span class="note">Accessible depuis la page economie.gouv.fr ci-dessus.</span>
+      </li>
+      <li>
+        <strong>Service Public Entreprendre</strong>, Facturation électronique : c'est pour
+        bientôt !
+        <a href="https://entreprendre.service-public.gouv.fr/actualites/A15683" rel="noopener">entreprendre.service-public.gouv.fr</a>
+      </li>
+      <li>
+        <strong>Légifrance</strong>, Code général des impôts, articles 1737 et 1788 D.
+        <span class="note">Montants des amendes, mécanisme de mise en demeure, modifiés par la
+        loi de finances pour 2026.</span>
+        <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000046869201" rel="noopener">legifrance.gouv.fr</a>
+      </li>
+      <li>
+        <strong>impots.gouv.fr</strong>, liste officielle des plateformes agréées immatriculées.
+        <a href="https://www.impots.gouv.fr/liste-des-plateformes-agreees-immatriculees-sous-reserve" rel="noopener">impots.gouv.fr</a>
+      </li>
+      <li>
+        <strong>Communiqué du ministère de l'Économie du 15 octobre 2024</strong>, recentrage du
+        Portail Public de Facturation sur les fonctions d'annuaire et de concentrateur de données.
+      </li>
+    </ol>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fwrap">
+    <span>No Sage's Editor &middot; On édite les logiciels qui font tourner les métiers.</span>
+    <a class="back" href="./">&larr; Toutes les actualités</a>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.nav-toggle');
+    var links = document.getElementById('navlinks');
+    if (btn && links) {
+      btn.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    /* Les échéances se CALCULENT : figées en dur, elles seraient fausses dès le
+       lendemain de la publication. Le HTML porte une valeur de repli, affichée si
+       le script ne tourne pas. */
+    function jours(cible) {
+      var j = new Date(); j.setHours(0, 0, 0, 0);
+      return Math.ceil((cible - j) / 86400000);
+    }
+    function pose(id, texte) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = texte;
+    }
+    var d2026 = new Date(2026, 8, 1), d2027 = new Date(2027, 8, 1);
+    var n = jours(d2026);
+
+    if (n > 1)       { pose('jmoins', 'J-' + n);   pose('delai2026', 'dans ' + n + ' jours'); }
+    else if (n === 1){ pose('jmoins', 'J-1');      pose('delai2026', 'demain'); }
+    else if (n === 0){ pose('jmoins', 'Jour J');   pose('delai2026', "c'est aujourd'hui"); }
+    else             { pose('jmoins', 'En vigueur depuis le 1er septembre');
+                       pose('delai2026', 'en vigueur'); }
+
+    var m = jours(d2027);
+    if (m > 60)       pose('delai2027', 'dans ' + Math.round(m / 30.44) + ' mois');
+    else if (m > 1)   pose('delai2027', 'dans ' + m + ' jours');
+    else if (m >= 0)  pose('delai2027', "c'est imminent");
+    else              pose('delai2027', 'en vigueur');
+  })();
+</script>
+
+</body>
+</html>

@@ -51,6 +51,31 @@
     font-size:.9rem; color:var(--text-dim)}
   .post-origin b{color:var(--cyan-light); font-weight:500}
   .empty{border:1px dashed var(--line); border-radius:14px; padding:22px 24px; color:var(--text-dim); font-size:.95rem}
+
+  /* --- [S161_ACTU_BLOC_PUBLICATION_V1] bloc publication --- */
+  .pub{border:1px solid var(--line); border-left:3px solid var(--violet-light);
+    border-radius:14px; padding:26px 28px; margin-top:6px;
+    background:linear-gradient(135deg,rgba(79,70,229,.10),rgba(6,182,212,.06))}
+  .pub-when{font-family:var(--mono); font-size:.7rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--text-dim)}
+  .pub h3{font-family:var(--display); font-weight:600;
+    font-size:clamp(1.2rem,2.4vw,1.5rem); letter-spacing:-.015em; margin:10px 0 12px}
+  .pub .pub-lede{color:var(--text-muted); margin:0; font-size:1rem; max-width:66ch}
+  .pub ul{list-style:none; margin:18px 0 0; padding:0}
+  .pub li{position:relative; padding:7px 0 7px 22px; font-size:.96rem;
+    color:var(--text-muted); line-height:1.55}
+  .pub li::before{content:""; position:absolute; left:2px; top:1.05em;
+    width:7px; height:7px; border-radius:2px;
+    background:linear-gradient(135deg,#4F46E5,#06B6D4)}
+  .pub li b{color:var(--text); font-weight:600}
+  .pub-go{display:inline-flex; align-items:center; gap:9px; margin-top:22px;
+    font-family:var(--display); font-weight:600; font-size:.97rem;
+    color:var(--cyan-light); text-decoration:none;
+    border:1px solid rgba(6,182,212,.34); border-radius:10px; padding:11px 20px;
+    background:rgba(6,182,212,.07); transition:background .15s, border-color .15s}
+  .pub-go:hover{background:rgba(6,182,212,.14); border-color:var(--cyan-light)}
+  .pub-go:focus-visible{outline:2px solid var(--cyan-light); outline-offset:3px}
+
 </style>
 </head>
 <body>
@@ -98,6 +123,42 @@
       <div class="rule-box">
         <p>On publie ce qui est <strong>livr&eacute; et actif</strong>. On ne d&eacute;taille jamais notre infrastructure, on ne nomme jamais un client, et on n'annonce jamais une protection avant qu'elle ne soit en place : le dire d'avance reviendrait &agrave; signaler ce qui ne l'est pas encore. Nos notes de cadrage d&eacute;taill&eacute;es, elles, restent ouvertes sur la page <a href="../demarche/" style="color:var(--cyan-light)">D&eacute;marche</a>.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Publication</p>
+        <h2>Ce qu'on &eacute;crit pour vous, pas sur nous.</h2>
+        <p>De temps en temps, un sujet touche tous nos utilisateurs en m&ecirc;me temps.
+        On prend alors le temps de l'&eacute;crire au clair, sources officielles &agrave;
+        l'appui, sans jargon et sans vous vendre quoi que ce soit.</p>
+      </div>
+
+      <article class="pub">
+        <div class="pub-when">1er ao&ucirc;t 2026 &middot; lecture 7 min</div>
+        <h3>Facturation &eacute;lectronique : ce qui vous attend vraiment au 1er septembre</h3>
+        <p class="pub-lede">La r&eacute;forme inqui&egrave;te, et souvent pour de mauvaises
+        raisons. L'administration a publi&eacute; en juillet un guide de d&eacute;marrage
+        nettement plus souple qu'annonc&eacute;. On fait le point.</p>
+        <ul>
+        <li><b>Deux dates, pas dix.</b> Au 1er septembre 2026 vous devez seulement pouvoir
+        <b>recevoir</b>. L'&eacute;mission attend septembre 2027 pour les TPE et PME.</li>
+        <li><b>Vous facturez surtout des particuliers ?</b> Ces factures-l&agrave; ne
+        passeront jamais par la facturation &eacute;lectronique. Mais vous restez
+        concern&eacute; d&egrave;s 2026, et pas &agrave; cause de vos clients.</li>
+        <li><b>Micro-entreprise, franchise en base :</b> vous &ecirc;tes concern&eacute;.
+        C'est l'erreur la plus r&eacute;pandue en ce moment.</li>
+        <li><b>Une plateforme agr&eacute;&eacute;e est obligatoire</b>, m&ecirc;me pour la
+        seule r&eacute;ception. On vous dit laquelle nous avons retenue, et pourquoi &ccedil;a
+        ne nous rapporte rien.</li>
+        <li><b>Votre &eacute;diteur vous r&eacute;pond &laquo;&nbsp;on sera pr&ecirc;ts&nbsp;&raquo; ?</b>
+        Trois questions pour v&eacute;rifier. Elles valent pour nous comme pour les autres.</li>
+        </ul>
+        <a class="pub-go" href="facturation-electronique-2026/">Lire la publication
+          <span aria-hidden="true">&rarr;</span></a>
+      </article>
     </div>
   </section>
 

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guide des nouvelles fonctionnalités — Anim'Gest</title>
+<meta name="description" content="Anim'Gest — montée 5-6 (S170-REL) : les nouvelles fonctionnalités déployées et leur mode d'emploi, avec amorces de FAQ pour le sprint S171.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f4f6fb; --surface:#ffffff; --surface-2:#eef1f8;
+    --fg:#1a2238; --fg-soft:#4a5578; --fg-faint:#8891ad; --border:#d9deec;
+    --navy:#2b2f77; --violet:#5a4fcf; --cyan:#18b4c9; --accent:#5a4fcf;
+    --ok:#1f9d6b; --warn:#c98a16; --crit:#cc3d55;
+    --ok-bg:#e4f5ee; --warn-bg:#faf0db; --crit-bg:#fae5e9;
+    --code-bg:#1a1f36; --code-fg:#e5e9f5;
+    --shadow:0 1px 2px rgba(26,34,56,.06), 0 4px 16px rgba(26,34,56,.05);
+    --font-display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+    --font-body:"Inter","Segoe UI",system-ui,sans-serif;
+    --font-mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#0f1324; --surface:#171c32; --surface-2:#1f2540;
+    --fg:#e9ecf7; --fg-soft:#b3bbd6; --fg-faint:#7a84a6; --border:#2c3454;
+    --navy:#8e94e8; --violet:#9a90f0; --cyan:#3dd0e4; --accent:#9a90f0;
+    --ok:#4cc999; --warn:#e3ad4e; --crit:#f0738a;
+    --ok-bg:#11312492; --warn-bg:#3a2e1180; --crit-bg:#3a1a2180;
+    --code-bg:#0b0f1f; --code-fg:#d7defa;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 18px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1324; --surface:#171c32; --surface-2:#1f2540;
+    --fg:#e9ecf7; --fg-soft:#b3bbd6; --fg-faint:#7a84a6; --border:#2c3454;
+    --navy:#8e94e8; --violet:#9a90f0; --cyan:#3dd0e4; --accent:#9a90f0;
+    --ok:#4cc999; --warn:#e3ad4e; --crit:#f0738a;
+    --ok-bg:#113124; --warn-bg:#3a2e11; --crit-bg:#3a1a21;
+    --code-bg:#0b0f1f; --code-fg:#d7defa;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 18px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.6;}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 18px 80px;}
+  header.hero{background:linear-gradient(135deg,var(--violet),var(--cyan));border-radius:18px;padding:30px 28px;color:#fff;box-shadow:var(--shadow);}
+  header.hero h1{font-family:var(--font-display);font-size:clamp(1.7rem,4vw,2.5rem);font-weight:700;margin:0 0 6px;letter-spacing:-.02em;}
+  header.hero p{margin:0;opacity:.95;font-size:1.02rem;}
+  header.hero .meta{font-family:var(--font-mono);font-size:.8rem;opacity:.85;margin-top:12px;}
+  h2{font-family:var(--font-display);font-size:1.5rem;font-weight:700;letter-spacing:-.01em;margin:40px 0 6px;padding-top:10px;}
+  h2 .n{display:inline-flex;align-items:center;justify-content:center;width:1.7em;height:1.7em;border-radius:9px;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;font-size:.8em;margin-right:10px;vertical-align:middle;}
+  h3.sub{display:flex;align-items:baseline;gap:9px;font-size:1.18rem;color:var(--fg);margin:26px 0 4px;padding-left:14px;border-left:3px solid var(--violet);}
+  h3.sub .sn{font-family:var(--font-mono);font-size:.82rem;color:var(--violet);font-weight:600;}
+  h3{font-family:var(--font-display);font-size:1.12rem;font-weight:600;margin:22px 0 4px;color:var(--navy);}
+  p{margin:8px 0;}
+  a{color:var(--accent);}
+  .lead{color:var(--fg-soft);font-size:1.02rem;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:14px 0;box-shadow:var(--shadow);}
+  .card.accent{border-left:4px solid var(--violet);}
+  .section-group{margin-top:34px;padding:4px 0;border-top:2px solid var(--border);}
+  .section-group .label{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-faint);margin-top:14px;}
+  ol.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0;}
+  ol.steps li{counter-increment:s;position:relative;padding:8px 0 8px 40px;border-bottom:1px solid var(--border);}
+  ol.steps li:last-child{border-bottom:none;}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:26px;height:26px;border-radius:7px;background:var(--surface-2);color:var(--violet);font-family:var(--font-mono);font-weight:500;display:flex;align-items:center;justify-content:center;font-size:.85rem;border:1px solid var(--border);}
+  ul.feat{padding-left:20px;margin:8px 0;}
+  ul.feat li{margin:5px 0;}
+  code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);padding:1px 6px;border-radius:5px;}
+  .callout{border-radius:12px;padding:12px 16px;margin:14px 0;border:1px solid transparent;font-size:.96rem;}
+  .callout.ok{background:var(--ok-bg);border-color:var(--ok);}
+  .callout.warn{background:var(--warn-bg);border-color:var(--warn);}
+  .callout.tip{background:var(--surface-2);border-color:var(--border);}
+  .pill{display:inline-block;font-size:.72rem;font-family:var(--font-mono);padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--fg-soft);border:1px solid var(--border);margin-left:6px;vertical-align:middle;}
+  .pill.new{background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;border:none;}
+  .pill.opt{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);}
+  .credit{display:inline-block;font-size:.78rem;color:var(--fg-faint);font-style:italic;margin-left:4px;}
+  .linkrow{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;}
+  .linkrow a{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:7px 13px;text-decoration:none;font-size:.9rem;font-weight:500;}
+  .linkrow a:hover{border-color:var(--violet);}
+  .toc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin:22px 0;box-shadow:var(--shadow);}
+  .toc h2{margin:0 0 10px;font-size:1.1rem;padding:0;}
+  .toc ol{margin:0;padding-left:20px;}
+  .toc .grp{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-faint);margin:10px 0 2px;}
+  .toc a{color:var(--accent);text-decoration:none;}
+  .toc a:hover{text-decoration:underline;}
+  .faq{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:8px 0;}
+  .faq .q{font-weight:600;color:var(--navy);}
+  .faq .a{color:var(--fg-soft);margin-top:3px;}
+  footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--border);color:var(--fg-faint);font-size:.82rem;font-family:var(--font-mono);}
+  .theme-toggle{position:fixed;top:14px;right:14px;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:6px 12px;font-family:var(--font-mono);font-size:.78rem;color:var(--fg-soft);cursor:pointer;box-shadow:var(--shadow);z-index:10;}
+</style>
+</head>
+<body>
+<button class="theme-toggle" onclick="(function(){var r=document.documentElement;var d=r.getAttribute('data-theme')==='dark';r.setAttribute('data-theme',d?'light':'dark');})()">☾ / ☀</button>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Guide des nouvelles fonctionnalités</h1>
+    <p>Anim'Gest — Montée de version 5-6 (sprint S170-REL). Ce qui change pour vous, et comment vous en servir.</p>
+    <p class="meta">No Sage's Editor · document rédigé le 2026-10-04</p>
+  </header>
+
+  <nav class="toc">
+    <h2>Sommaire</h2>
+    <ol>
+      <li><a href="#parametrage">Guide de paramétrage interactif</a></li>
+      <li><a href="#assistance">Assistance à distance</a></li>
+      <li><a href="#faq">FAQ — amorces pour le sprint S171</a></li>
+      <li><a href="#ocr">OCR des chèques (assistant Eliot)</a></li>
+      <li><a href="#ursaff">URSSAF (option Comptabilité)</a></li>
+      <li><a href="#calendrier">Calendrier partagé &amp; réservation en ligne (Option)</a>
+        <ol>
+          <li><a href="#resa">Réservation de rendez-vous en ligne</a></li>
+          <li><a href="#devis">Devis automatique à l'acceptation</a></li>
+          <li><a href="#notif">E-mails enrichis</a></li>
+        </ol>
+      </li>
+      <li><a href="#creneaux">Créneaux au quart d'heure</a></li>
+      <li><a href="#agenda">Agenda — heure exacte</a></li>
+      <li><a href="#forfait">Séance sur forfait (ligne à 0 €)</a></li>
+    </ol>
+  </nav>
+
+  <p class="lead">Ce guide couvre la <strong>prise en main et l'accompagnement</strong>, les <strong>options</strong> (Comptabilité, Calendrier partagé &amp; réservation en ligne) et les <strong>améliorations</strong> livrées par cette montée.</p>
+
+  <!-- 1 -->
+  <h2 id="parametrage"><span class="n">1</span>Guide de paramétrage interactif <span class="pill new">NOUVEAU</span></h2>
+  <p class="credit">Évolution réalisée suite au retour d'expérience vu avec Emmanuel.</p>
+  <p><strong>À quoi ça sert.</strong> À la première connexion, on ne sait pas par où commencer. Le guide de paramétrage est le <strong>fil conducteur de prise en main</strong> : il déroule, dans le bon ordre, tout ce qu'il faut configurer pour être opérationnel — créer sa société, choisir son métier, créer son intervenant, ses types de séance, ses catégories d'articles puis son catalogue, un premier client et son animal, jusqu'à dérouler un cycle complet. Les configurations avancées (charte, modèles PDF, GED, SMTP/SMS, paiement, signature…) viennent ensuite, marquées « optionnel ».</p>
+  <h3>Comment ça fonctionne</h3>
+  <ul class="feat">
+    <li><strong>Parcours par priorité</strong> : un niveau « essentiel » pour être opérationnel rapidement, puis un niveau « avancé » différable.</li>
+    <li><strong>Checklist de progression</strong> : chaque étape se coche, l'avancement est mémorisé.</li>
+    <li><strong>Captures d'écran</strong> par étape et <strong>vidéo A→Z</strong> pour suivre en images.</li>
+    <li><strong>Liens directs vers l'écran concerné</strong> de l'application à chaque étape.</li>
+  </ul>
+  <h3>Où le trouver</h3>
+  <p>Le guide est accessible <strong>en permanence depuis l'application, via le lien en bas à gauche</strong> de l'écran. Deux ressources le composent :</p>
+  <div class="linkrow">
+    <a href="https://animgest-docs.no-sages-editor.com/aide/demarrage.guide-parametrage.html">📘 Guide de paramétrage (premiers pas)</a>
+    <a href="https://animgest-docs.no-sages-editor.com/video/guide-parametrage.html">🎬 Vidéo du guide de paramétrage</a>
+  </div>
+  <div class="callout tip">Le guide suit exactement la même séquence que la checklist d'amorçage affichée dans l'application : vous retrouvez le même ordre à l'écran et dans le guide.</div>
+
+  <!-- 2 -->
+  <h2 id="assistance"><span class="n">2</span>Assistance à distance</h2>
+  <p><strong>À quoi ça sert.</strong> L'assistance à distance permet de <strong>vous aider en prise de main à distance</strong>, dans le cadre d'une <strong>formation</strong> ou d'un <strong>accompagnement spécifique</strong> si besoin. Un intervenant du support peut, avec votre accord, voir votre écran et vous guider en direct.</p>
+  <ol class="steps">
+    <li>Ouvrez l'écran <strong>Assistance</strong> dans l'application.</li>
+    <li>Lancez l'outil de prise en main (téléchargement proposé — versions ordinateur et Android).</li>
+    <li>Communiquez le code affiché à votre interlocuteur du support, qui peut alors vous accompagner.</li>
+  </ol>
+  <div class="callout ok">L'outil est <strong>entièrement gratuit</strong> : c'est un service d'accompagnement, jamais une option payante. La session ne démarre qu'avec votre accord explicite.</div>
+
+  <!-- 3 : FAQ -->
+  <h2 id="faq"><span class="n">3</span>FAQ — amorces pour le sprint S171</h2>
+  <p class="lead">Questions fréquentes à embarquer dans l'aide en ligne au prochain sprint. À relire et compléter.</p>
+  <div class="faq"><div class="q">Par où commencer quand je découvre Anim'Gest&nbsp;?</div><div class="a">Ouvrez le guide de paramétrage (lien en bas à gauche) et suivez le parcours essentiel dans l'ordre : il vous rend opérationnel étape par étape.</div></div>
+  <div class="faq"><div class="q">Comment me faire aider en direct&nbsp;?</div><div class="a">Via l'écran Assistance : la prise en main à distance permet un accompagnement ou une formation, gratuitement et avec votre accord.</div></div>
+  <div class="faq"><div class="q">Un client peut-il réserver sans être déjà dans ma base&nbsp;?</div><div class="a">Oui. Un prospect inconnu peut demander un rendez-vous ; ses coordonnées sont conservées et vous décidez de l'accepter ou non. Aucune fiche animal n'est créée automatiquement.</div></div>
+  <div class="faq"><div class="q">Pourquoi je ne peux pas accepter une demande&nbsp;?</div><div class="a">Le type de séance exige probablement un animal identifié. Rattachez d'abord l'animal du client (ou créez sa fiche), puis acceptez.</div></div>
+  <div class="faq"><div class="q">Le devis créé à l'acceptation est à 0 €, est-ce normal&nbsp;?</div><div class="a">Oui si la prestation n'a pas encore de tarif au catalogue, ou si la séance est couverte par un forfait prépayé. Vous pouvez ajuster le montant dans le devis (brouillon).</div></div>
+  <div class="faq"><div class="q">Puis-je proposer des rendez-vous à 11h45&nbsp;?</div><div class="a">Oui. Les créneaux en ligne avancent au quart d'heure, et vous pouvez saisir des horaires au quart d'heure à la création d'une séance.</div></div>
+
+  <!-- 4 : OCR -->
+  <h2 id="ocr"><span class="n">4</span>OCR des chèques (assistant Eliot)</h2>
+  <p><strong>À quoi ça sert.</strong> L'assistant Eliot peut <strong>lire automatiquement les informations d'un chèque</strong> (montant, tireur…) pour accélérer la saisie d'un règlement.</p>
+  <ol class="steps">
+    <li>Au moment d'enregistrer un règlement par chèque, importez l'image du chèque.</li>
+    <li>Eliot propose les valeurs lues (montant, émetteur).</li>
+    <li><strong>Vérifiez toujours</strong> les valeurs proposées, corrigez si besoin, puis enregistrez.</li>
+  </ol>
+
+  <!-- 5 : URSSAF -->
+  <h2 id="ursaff"><span class="n">5</span>URSSAF <span class="pill opt">OPTION COMPTABILITÉ</span></h2>
+  <p class="credit">Demande d'évolution faite par Mika.</p>
+  <p><strong>À quoi ça sert.</strong> Le suivi URSSAF / cotisations est <strong>inclus dans l'option Comptabilité</strong>. Anim'Gest centralise votre chiffre d'affaires encaissé pour vous aider à <strong>préparer</strong> vos déclarations de cotisations.</p>
+  <h3>Comment ça fonctionne</h3>
+  <ul class="feat">
+    <li>Les règlements encaissés alimentent votre chiffre d'affaires par période.</li>
+    <li>L'option Comptabilité vous donne les <strong>totaux à déclarer</strong> sur la période concernée, prêts à être reportés.</li>
+    <li>Vous reportez ensuite ces montants dans votre déclaration habituelle.</li>
+  </ul>
+  <div class="callout warn"><strong>Où l'on s'arrête :</strong> Anim'Gest vous aide à <strong>calculer et préparer</strong> les montants, mais <strong>n'effectue aucune télétransmission</strong> à l'URSSAF. La déclaration elle-même reste à faire de votre côté, sur votre espace URSSAF.</div>
+
+  <!-- 6 : Calendrier partagé + réservation (Option) avec sous-chapitres 6.1 / 6.2 / 6.3 -->
+  <h2 id="calendrier"><span class="n">6</span>Calendrier partagé &amp; réservation en ligne <span class="pill opt">OPTION</span></h2>
+  <p class="credit">Demande d'évolution faite par Emmanuel.</p>
+  <p><strong>Un même sujet, une même option.</strong> Le <strong>calendrier partagé</strong> et la <strong>réservation de rendez-vous en ligne</strong> relèvent de la même brique et sont proposés dans le cadre d'une <strong>Option</strong>. Le calendrier partagé donne une vision commune de l'activité (par intervenant, par type de prestation, par métier) ; la réservation en ligne permet à vos clients de demander eux-mêmes un créneau. Les trois volets ci-dessous (<strong>6.1</strong> réservation, <strong>6.2</strong> devis automatique, <strong>6.3</strong> e-mails) font partie de cette option.</p>
+
+  <!-- 6.1 -->
+  <h3 class="sub" id="resa"><span class="sn">6.1</span>Réservation de rendez-vous en ligne</h3>
+  <p>Vos clients (et de nouveaux prospects) peuvent demander un rendez-vous directement depuis une page web, sans vous téléphoner. La demande arrive dans votre agenda au statut <strong>« Demandée »</strong> ; vous gardez la main : vous <strong>acceptez</strong> ou vous <strong>refusez</strong>.</p>
+  <div class="card accent">
+    <h3>Votre lien de réservation</h3>
+    <p>La page est accessible à l'adresse : <code>&lt;votre-domaine&gt;/reservation/&lt;votre-identifiant&gt;</code>. Partagez-la sur votre site, votre fiche Google, vos réseaux ou votre signature d'e-mail.</p>
+    <div class="callout ok">La page fonctionne dès que, de votre côté : un intervenant est coché <strong>« Réservable en ligne »</strong>, qu'il a des <strong>horaires</strong> saisis, et qu'au moins un <strong>type de séance</strong> existe.</div>
+  </div>
+  <p><strong>Côté client :</strong></p>
+  <ol class="steps">
+    <li>Il ouvre votre lien, choisit l'<strong>intervenant</strong> et le <strong>type de prestation</strong>.</li>
+    <li>Il choisit un <strong>créneau libre</strong> (désormais au quart d'heure — voir chapitre 7).</li>
+    <li>Il renseigne ses <strong>coordonnées</strong>, le <strong>nom de son animal</strong>, un éventuel <strong>message</strong> ; il peut se déclarer « nouveau client ».</li>
+    <li>Il valide : il reçoit un <strong>e-mail d'accusé de réception</strong>, et vous une <strong>notification</strong>.</li>
+  </ol>
+  <p><strong>Côté vous — traiter une demande :</strong></p>
+  <ol class="steps">
+    <li>Dans l'<strong>Agenda</strong> (vue Liste ou sur la séance « Demandée », repérée par ⏳), ouvrez la demande.</li>
+    <li>Le nom de l'animal arrive en <strong>note interne</strong>. <strong>Rattachez l'animal</strong> : sélectionnez-le s'il existe, sinon créez d'abord sa fiche. <em>(Aucune fiche animal créée automatiquement.)</em></li>
+    <li>Cliquez <strong>Accepter</strong> (séance « Planifiée ») ou <strong>Refuser</strong> (avec motif).</li>
+    <li>Le client est informé par e-mail de votre décision.</li>
+  </ol>
+  <div class="callout warn"><strong>Pourquoi rattacher un animal&nbsp;?</strong> Certains types de séance exigent un animal identifié ; tant qu'aucun n'est rattaché, l'acceptation peut être bloquée.</div>
+
+  <!-- 6.2 -->
+  <h3 class="sub" id="devis"><span class="sn">6.2</span>Devis automatique à l'acceptation</h3>
+  <p>Quand vous <strong>acceptez</strong> une demande de rendez-vous en ligne, Anim'Gest crée un <strong>devis en brouillon</strong>, déjà rattaché à la séance, avec une <strong>ligne reprenant la prestation</strong> choisie (libellé et, si l'article est tarifé, son prix).</p>
+  <ol class="steps">
+    <li>Acceptez la demande : la séance passe « Planifiée ».</li>
+    <li>Ouvrez la fiche de la séance : un lien <strong>« Devis »</strong> y apparaît.</li>
+    <li>Ouvrez le devis (statut <strong>Brouillon</strong>), ajustez lignes, quantité, prix, puis validez-le quand vous le souhaitez.</li>
+  </ol>
+  <div class="callout tip">Type de séance <strong>non facturable</strong> → aucun devis n'est créé. Prestation sans tarif au catalogue → ligne à 0 € à compléter.</div>
+
+  <!-- 6.3 -->
+  <h3 class="sub" id="notif"><span class="sn">6.3</span>E-mails enrichis</h3>
+  <p>Les e-mails liés à la réservation (accusé de réception, confirmation, refus, et notification qui vous est adressée) ont été <strong>corrigés (accents &amp; apostrophes)</strong> et <strong>enrichis</strong> : ils redonnent l'<strong>animal</strong>, la <strong>prestation</strong>, la <strong>date</strong>, l'<strong>heure de début</strong>, la <strong>durée</strong> et le <strong>nom de votre société</strong>, avec une formule de politesse soignée.</p>
+  <div class="callout warn"><strong>En préparation (sprint suivant) :</strong> la notification du client par <strong>SMS</strong> et <strong>WhatsApp</strong> en plus de l'e-mail, activable canal par canal. Par défaut, seul l'e-mail est actif.</div>
+
+  <!-- 7 -->
+  <h2 id="creneaux"><span class="n">7</span>Créneaux au quart d'heure <span class="pill new">NOUVEAU</span></h2>
+  <p>Les créneaux proposés à la réservation en ligne avancent désormais <strong>toutes les 15 minutes</strong> (9:00, 9:15, 9:30, 9:45…), et non plus par bonds égaux à la durée de la prestation. Vos clients trouvent plus facilement une heure qui leur convient (par ex. 11:45), tout en respectant la durée réelle de la prestation et vos séances déjà posées.</p>
+  <div class="callout tip">Rien à paramétrer : le pas de 15 minutes s'applique automatiquement. La durée d'un créneau reste celle du type de séance ; seul l'horaire de départ proposé est plus fin.</div>
+
+  <!-- 8 -->
+  <h2 id="agenda"><span class="n">8</span>Agenda — l'heure affichée est l'heure exacte</h2>
+  <p>L'agenda affiche désormais chaque séance <strong>exactement à son heure</strong> : une séance à 13:45 apparaît bien sur la ligne 13:45, et l'heure saisie correspond à l'heure enregistrée. Vous pouvez saisir des horaires au quart d'heure (par ex. 11:45) à la création d'une séance.</p>
+
+  <!-- 9 -->
+  <h2 id="forfait"><span class="n">9</span>Séance couverte par un forfait</h2>
+  <p>Lorsqu'une séance est rattachée à un <strong>forfait prépayé</strong> encore valide, elle est facturée <strong>0,00 €</strong> sur le devis : la prestation a déjà été réglée à l'achat du forfait. Vous évitez tout double comptage tout en gardant la trace de la séance.</p>
+
+  <footer>
+    Anim'Gest · No Sage's Editor — Guide des nouvelles fonctionnalités, montée 5-6 (S170-REL). URSSAF : option Comptabilité, sans télétransmission. Calendrier partagé &amp; réservation en ligne : même sujet, sous Option.
+  </footer>
+
+</div>
+</body>
+</html>

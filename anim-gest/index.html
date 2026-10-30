@@ -1,203 +1,165 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Anim'Gest — l'ERP du soin animalier · No Sage's Editor</title>
-<meta name="description" content="Anim'Gest : un seul logiciel pour 11 métiers du soin animalier. Facturation conforme, signature électronique, registres réglementaires, IA Eliot.">
-<meta name="theme-color" content="#0F172A">
+<meta name="description" content="Anim'Gest : un seul logiciel pour 12 métiers du soin animalier. Facturation conforme, signature électronique, registres réglementaires, IA Eliot.">
+<meta name="theme-color" content="#0B1020">
 <meta property="og:title" content="Anim'Gest — l'ERP du soin animalier">
-<meta property="og:description" content="Un seul outil. Votre métier. Zéro ressaisie. 11 métiers du soin animalier, conformité française intégrée, IA opérationnelle.">
+<meta property="og:description" content="Un seul outil. Votre métier. Zéro ressaisie. 12 métiers du soin animalier, conformité française intégrée, IA opérationnelle.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://no-sages-editor.com/anim-gest/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../editeur.css">
+<style>
+  .navlinks{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .navlinks a{color:var(--muted);font-size:14px;white-space:nowrap}
+  .navlinks a:hover,.navlinks a.active{color:#fff}
+  @media(max-width:1040px){.navlinks a:not(.cta-nav){display:none}}
+</style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="../" aria-label="No Sage's Editor — accueil">
-      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
-        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
-        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
-      </svg>
-      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
-    </a>
-    <nav class="nav-links" aria-label="Navigation principale">
-      <a href="../">Accueil</a>
-      <a href="./" class="active">Anim'Gest</a>
-      <a href="../cockpit-gest/">Cockpit'Gest</a>
-      <a href="../socle-commun/">Qualité &amp; fiabilité</a>
-      <a href="../demarche/">Démarche</a>
-      <a href="../actualites/">Actualités</a>
-      <a href="../a-propos/">À propos</a>
-      <a class="nav-cta nav-login" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à mon espace</a>
-    </nav>
+<header><nav class="wrap">
+  <div class="brand"><a href="../" style="color:inherit">No&nbsp;Sage's&nbsp;<span>Editor</span></a></div>
+  <div class="navlinks">
+    <a href="../">Accueil</a>
+    <a href="./" class="active">Anim'Gest</a>
+    <a href="../cockpit-gest/">Cockpit'Gest</a>
+    <a href="../socle-commun/">Qualité&nbsp;&amp;&nbsp;fiabilité</a>
+    <a href="../demarche/">Démarche</a>
+    <a href="../actualites/">Actualités</a>
+    <a href="../a-propos/">À&nbsp;propos</a>
+    <a class="cta-nav" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à mon espace</a>
   </div>
-</header>
+</nav></header>
 
-<main>
-
-  <section class="hero compact">
-    <div class="wrap">
-      <p class="eyebrow rise d1">Le produit · No Sage's Editor</p>
-      <h1 class="rise d2">Un seul outil. <span class="accent">Votre métier.</span> Zéro ressaisie.</h1>
-      <p class="lede rise d3">Du premier contact client à la facture archivée, Anim'Gest couvre toute votre activité et reste conforme à la réglementation française — sans que vous ayez à y penser.</p>
-      <div class="hero-cta rise d4">
-        <a class="btn btn-primary" href="https://animgest-site.no-sages-editor.com">Voir le site produit
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à l'application</a>
-      </div>
+<!-- HERO -->
+<section class="hero hero-m">
+  <div class="fx"><div class="aurora"></div><div class="gridfx"></div></div>
+  <div class="wrap">
+    <p class="eyebrow reveal">Le produit · No Sage's Editor</p>
+    <h1 class="reveal">Un seul outil. <em>Votre métier.</em> Zéro ressaisie.</h1>
+    <p class="lede reveal">Du premier contact client à la facture archivée, Anim'Gest couvre toute votre activité et reste conforme à la réglementation française — sans que vous ayez à y penser.</p>
+    <div class="proofs reveal">
+      <span class="proof"><span class="pdot"></span><b>12</b> métiers natifs</span>
+      <span class="proof"><span class="pdot"></span>Conformité FR intégrée</span>
+      <span class="proof"><span class="pdot"></span>Signature Yousign</span>
+      <span class="proof"><span class="pdot"></span>IA opérationnelle</span>
     </div>
-  </section>
-
-  <section class="block" id="probleme">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Le problème</p>
-        <h2>Cinq à huit outils, et une charge réglementaire qui s'alourdit.</h2>
-        <p>Un agenda ici, un éditeur de factures là, un cahier client papier, un cloud pour les ordonnances, un Excel pour les tarifs, un site pour les rendez-vous. Plus chaque année des registres sanitaires, la traçabilité carnivore, la facturation électronique, le RGPD. Trop d'outils, trop de double saisie, trop de temps perdu loin des animaux.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="fonctions">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">La promesse</p>
-        <h2>Six fonctions cœur, un seul logiciel.</h2>
-        <p>De la première fiche client à la facture archivée, chaque étape est couverte — et conforme à la réglementation française.</p>
-      </div>
-      <div class="fnlist">
-        <div class="fn">
-          <span class="n">01</span>
-          <h4>Facturation conforme</h4>
-          <p>Devis et factures inaltérables, chaînage NF525, export Factur-X pour la réforme de la facturation électronique.</p>
-        </div>
-        <div class="fn">
-          <span class="n">02</span>
-          <h4>Signature électronique</h4>
-          <p>Yousign intégré, valeur probante, suivi des statuts en temps réel.</p>
-        </div>
-        <div class="fn">
-          <span class="n">03</span>
-          <h4>Fiches clients &amp; animaux</h4>
-          <p>Historique complet par animal et par propriétaire : antécédents, séances, documents, notes.</p>
-        </div>
-        <div class="fn">
-          <span class="n">04</span>
-          <h4>Planning &amp; rendez-vous</h4>
-          <p>Vue jour / semaine / mois, glisser-déposer, couleurs par type, pensé multi-métier.</p>
-        </div>
-        <div class="fn">
-          <span class="n">05</span>
-          <h4>Documents centralisés</h4>
-          <p>Contrats, comptes-rendus, ordonnances reliés à la bonne fiche, avec pipeline antivirus.</p>
-        </div>
-        <div class="fn">
-          <span class="n">06</span>
-          <h4>Données protégées</h4>
-          <p>Hébergement isolé par professionnel, chiffrement, sauvegardes quotidiennes.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="metiers">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">La preuve · 12 verticales natives</p>
-        <h2>Un socle unique, natif pour chaque métier.</h2>
-        <p>Là où les concurrents proposent soit un outil mono-vertical, soit un outil générique qui force le pro à plier son vocabulaire, Anim'Gest livre une expérience native pour douze verticales sur une seule base technique, jusqu'à l'Intervenant en Médiation Animale (MA), désormais disponible.</p>
-      </div>
-      <div class="pills">
-        <span class="pill"><b>Éducateur / Comportementaliste</b></span>
-        <span class="pill"><b>Toiletteur</b></span>
-        <span class="pill"><b>Pet-sitter</b></span>
-        <span class="pill"><b>Éleveur</b></span>
-        <span class="pill"><b>Pension / Chenil</b></span>
-        <span class="pill"><b>Centre équestre</b></span>
-        <span class="pill"><b>Vétérinaire</b></span>
-        <span class="pill"><b>Ostéopathe animalier</b></span>
-        <span class="pill"><b>Sport canin</b></span>
-        <span class="pill"><b>Naturopathe / Nutritionniste</b></span>
-        <span class="pill"><b>Associations (loi 1901)</b></span>
-        <span class="pill"><b>Intervenant en Médiation Animale (MA)</b></span>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="conformite">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Conformité française · intégrée par défaut</p>
-        <h2>En règle, sans y penser.</h2>
-        <p>Quand l'État vote une réforme, c'est l'éditeur qui absorbe le coût — pas vous. La conformité est dans le produit, mise à jour à chaque sprint.</p>
-      </div>
-      <div class="complist">
-        <div class="comprow">
-          <span class="tag">NF525</span>
-          <p>Facturation et encaissements inaltérables (les 4 piliers ISCA : inaltérabilité, sécurisation, conservation, archivage).</p>
-        </div>
-        <div class="comprow">
-          <span class="tag">Factur-X / RFE</span>
-          <p>Réforme de la facturation électronique : réception dès septembre 2026, émission en juin 2027. Anim'Gest, solution compatible, s'interconnecte à une plateforme agréée.</p>
-        </div>
-        <div class="comprow">
-          <span class="tag">Registres</span>
-          <p>Registre sanitaire (arrêté du 3 avril 2014), entrées/sorties de carnivores (arrêté du 9 novembre 2023), carnivores domestiques (arrêté du 19 juin 2025, dématérialisation 2029).</p>
-        </div>
-        <div class="comprow">
-          <span class="tag">RGPD &amp; I-CAD</span>
-          <p>Protection des données par conception, lien avec l'identification des carnivores domestiques.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="eliot">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Eliot · l'IA opérationnelle</p>
-        <h2>Une IA qui agit, pas qui bavarde.</h2>
-        <p>Eliot n'est pas un chatbot d'aide : c'est un agent embarqué qui cherche une fiche, crée une séance ou un devis, facture et planifie directement dans l'ERP — avec vos permissions et des garde-fous de sécurité. Le travail répétitif lui revient ; votre temps revient à vos clients et à leurs animaux.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="cta">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>Prêt à voir Anim'Gest sur votre activité ?</h2>
-        <p>On configure l'outil sur votre métier réel avec vos documents, puis on en parle.</p>
-      </div>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="mailto:contact@no-sages-editor.com?subject=Demande%20de%20d%C3%A9mo%20Anim'Gest">Demander une démo
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="https://animgest-docs.no-sages-editor.com">Lire la documentation</a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <div class="wrap foot-inner">
-    <span>© <span id="yr">2026</span> No Sage's Editor — Anim'Gest est édité par No Sage's Editor.</span>
-    <div class="foot-links">
-      <a href="../">Accueil</a>
-      <a href="../a-propos/">À propos</a>
-      <a href="https://animgest-docs.no-sages-editor.com">Docs</a>
-      <a href="mailto:contact@no-sages-editor.com">Contact</a>
+    <div class="cta-row reveal">
+      <a class="btn btn-primary" href="https://animgest-site.no-sages-editor.com">Voir le site produit</a>
+      <a class="btn btn-ghost" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à l'application</a>
     </div>
   </div>
-</footer>
-<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLÈME -->
+<section id="probleme"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Le problème</p>
+    <h2 class="big">Cinq à huit outils, et une charge réglementaire qui s'alourdit.</h2>
+    <p>Un agenda ici, un éditeur de factures là, un cahier client papier, un cloud pour les ordonnances, un Excel pour les tarifs, un site pour les rendez-vous. Plus chaque année des registres sanitaires, la traçabilité carnivore, la facturation électronique, le RGPD. Trop d'outils, trop de double saisie, trop de temps perdu loin des animaux.</p>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<!-- FONCTIONS -->
+<section id="fonctions"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">La promesse</p>
+    <h2 class="big">Six fonctions cœur, un seul logiciel.</h2>
+    <p>De la première fiche client à la facture archivée, chaque étape est couverte — et conforme à la réglementation française.</p>
+  </div>
+  <div class="pillars">
+    <div class="live pillar reveal"><span class="k">01</span><h3>Facturation conforme</h3><p>Devis et factures inaltérables, chaînage NF525, export Factur-X pour la réforme de la facturation électronique.</p></div>
+    <div class="live pillar reveal"><span class="k">02</span><h3>Signature électronique</h3><p>Yousign intégré, valeur probante, suivi des statuts en temps réel.</p></div>
+    <div class="live pillar reveal"><span class="k">03</span><h3>Fiches clients &amp; animaux</h3><p>Historique complet par animal et par propriétaire : antécédents, séances, documents, notes.</p></div>
+    <div class="live pillar reveal"><span class="k">04</span><h3>Planning &amp; rendez-vous</h3><p>Vue jour / semaine / mois, glisser-déposer, couleurs par type, pensé multi-métier.</p></div>
+    <div class="live pillar reveal"><span class="k">05</span><h3>Documents centralisés</h3><p>Contrats, comptes-rendus, ordonnances reliés à la bonne fiche, avec pipeline antivirus.</p></div>
+    <div class="live pillar reveal"><span class="k">06</span><h3>Données protégées</h3><p>Hébergement isolé par professionnel, chiffrement, sauvegardes quotidiennes.</p></div>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<!-- MÉTIERS -->
+<section id="metiers"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">La preuve · 12 verticales natives</p>
+    <h2 class="big">Un socle unique, natif pour chaque métier.</h2>
+    <p>Là où les concurrents proposent soit un outil mono-vertical, soit un outil générique qui force le pro à plier son vocabulaire, Anim'Gest livre une expérience native pour douze verticales sur une seule base technique, jusqu'à l'Intervenant en Médiation Animale, désormais disponible.</p>
+  </div>
+  <div class="mgrid">
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/educateur-comportementaliste.html"><div class="top"><span class="emo">🐕</span><span class="num">01</span></div><div class="name">Éducateur / Comportementaliste</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/toiletteur.html"><div class="top"><span class="emo">✂️</span><span class="num">02</span></div><div class="name">Toiletteur</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/pet-sitter.html"><div class="top"><span class="emo">🏠</span><span class="num">03</span></div><div class="name">Pet-sitter</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/eleveur.html"><div class="top"><span class="emo">🐾</span><span class="num">04</span></div><div class="name">Éleveur</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/pension.html"><div class="top"><span class="emo">🛏️</span><span class="num">05</span></div><div class="name">Pension / Chenil</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/centre-equestre.html"><div class="top"><span class="emo">🐴</span><span class="num">06</span></div><div class="name">Centre équestre</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/sport-canin.html"><div class="top"><span class="emo">🏅</span><span class="num">07</span></div><div class="name">Sport canin</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/mediation.html"><div class="top"><span class="emo">✨</span><span class="num">08</span></div><div class="name">Médiation animale (MA)</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/sante.html#veterinaire"><div class="top"><span class="emo">🩺</span><span class="num">09</span></div><div class="name">Vétérinaire</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/sante.html#osteopathe"><div class="top"><span class="emo">💆</span><span class="num">10</span></div><div class="name">Ostéopathe animalier</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/sante.html#nutritionniste"><div class="top"><span class="emo">🥗</span><span class="num">11</span></div><div class="name">Naturopathe / Nutritionniste</div><div class="go">Découvrir →</div></a>
+    <a class="live mtile reveal" href="https://animgest-site.no-sages-editor.com/metiers/associations.html"><div class="top"><span class="emo">🤝</span><span class="num">12</span></div><div class="name">Associations (loi 1901)</div><div class="go">Découvrir →</div></a>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<!-- CONFORMITÉ -->
+<section style="background:var(--bg2)"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Conformité française · intégrée par défaut</p>
+    <h2 class="big">En règle, sans y penser.</h2>
+    <p>Quand l'État vote une réforme, c'est l'éditeur qui absorbe le coût — pas vous. La conformité est dans le produit, mise à jour à chaque sprint.</p>
+  </div>
+  <div class="pillars">
+    <div class="live pillar reveal"><span class="k">NF525</span><h3>Encaissements inaltérables</h3><p>Les 4 piliers ISCA : inaltérabilité, sécurisation, conservation, archivage.</p></div>
+    <div class="live pillar reveal"><span class="k">Factur-X / RFE</span><h3>Facturation électronique</h3><p>Réception dès septembre 2026, émission en juin 2027. Anim'Gest, Solution Compatible, s'interconnecte à une plateforme agréée.</p></div>
+    <div class="live pillar reveal"><span class="k">Registres</span><h3>Traçabilité réglementaire</h3><p>Registre sanitaire (3 avril 2014), entrées/sorties de carnivores (9 novembre 2023), carnivores domestiques (19 juin 2025, dématérialisation 2029).</p></div>
+    <div class="live pillar reveal"><span class="k">RGPD &amp; I-CAD</span><h3>Données &amp; identification</h3><p>Protection des données par conception, lien avec l'identification des carnivores domestiques.</p></div>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<!-- ELIOT -->
+<section id="eliot"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Eliot · l'IA opérationnelle</p>
+    <h2 class="big">Une IA qui agit, pas qui bavarde.</h2>
+    <p>Eliot n'est pas un chatbot d'aide : c'est un agent embarqué qui cherche une fiche, compose une fiche client-animal, rédige un devis, facture et planifie directement dans l'ERP — avec vos permissions et des garde-fous de sécurité. Le travail répétitif lui revient ; votre temps revient à vos clients et à leurs animaux.</p>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section id="cta"><div class="wrap">
+  <div class="sec-head reveal">
+    <h2 class="big">Prêt à voir Anim'Gest sur votre activité ?</h2>
+    <p>On configure l'outil sur votre métier réel avec vos documents, puis on en parle.</p>
+  </div>
+  <div class="cta-row reveal">
+    <a class="btn btn-primary" href="mailto:contact@no-sages-editor.com?subject=Demande%20de%20d%C3%A9mo%20Anim'Gest">Demander une démo</a>
+    <a class="btn btn-ghost" href="https://animgest-docs.no-sages-editor.com">Lire la documentation</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center">
+  <span>&copy; <span id="yr">2026</span> No Sage's Editor &middot; Anim'Gest est édité par No Sage's Editor</span>
+  <span style="display:flex;gap:18px;flex-wrap:wrap">
+    <a href="../">Accueil</a>
+    <a href="../a-propos/">À propos</a>
+    <a href="https://animgest-docs.no-sages-editor.com">Docs</a>
+    <a href="mailto:contact@no-sages-editor.com">Contact</a>
+  </span>
+</div></footer>
+<script src="../editeur.js"></script>
 </body>
 </html>

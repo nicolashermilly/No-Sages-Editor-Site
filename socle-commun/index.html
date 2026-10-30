@@ -1,114 +1,112 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qualité &amp; fiabilité — un socle commun · No Sage's Editor</title>
-<meta name="description" content="Les logiciels No Sage's Editor reposent sur un socle commun eprouve : fiabilite testee en continu, coherence d'ergonomie, securite multi-tenant, evolutions partagees.">
-<meta name="theme-color" content="#0F172A">
+<meta name="description" content="Les logiciels No Sage's Editor reposent sur un socle commun éprouvé : fiabilité testée en continu, cohérence d'ergonomie, sécurité multi-tenant, évolutions partagées.">
+<meta name="theme-color" content="#0B1020">
 <meta property="og:title" content="Qualité & fiabilité — un socle commun">
-<meta property="og:description" content="Un meme coeur applicatif, eprouve et maintenu en continu, sous Anim'Gest et Cockpit'Gest.">
+<meta property="og:description" content="Un même cœur applicatif, éprouvé et maintenu en continu, sous Anim'Gest et Cockpit'Gest.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://no-sages-editor.com/socle-commun/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../editeur.css">
+<style>
+  .navlinks{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .navlinks a{color:var(--muted);font-size:14px;white-space:nowrap}
+  .navlinks a:hover,.navlinks a.active{color:#fff}
+  @media(max-width:1040px){.navlinks a:not(.cta-nav){display:none}}
+</style>
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="../" aria-label="No Sage's Editor — accueil">
-      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4F46E5"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
-        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="url(#g)" stroke-width="2"/>
-        <text x="20" y="20" font-family="'JetBrains Mono',monospace" font-size="22" font-weight="500" fill="url(#g)" text-anchor="middle" dominant-baseline="central">@</text>
-      </svg>
-      <span>No&nbsp;Sage's&nbsp;<span class="accent">Editor</span></span>
+<header><nav class="wrap">
+  <div class="brand"><a href="../" style="color:inherit">No&nbsp;Sage's&nbsp;<span>Editor</span></a></div>
+  <div class="navlinks">
+    <a href="../">Accueil</a>
+    <a href="../anim-gest/">Anim'Gest</a>
+    <a href="../cockpit-gest/">Cockpit'Gest</a>
+    <a href="./" class="active">Qualité&nbsp;&amp;&nbsp;fiabilité</a>
+    <a href="../demarche/">Démarche</a>
+    <a href="../actualites/">Actualités</a>
+    <a href="../a-propos/">À&nbsp;propos</a>
+    <a class="cta-nav" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à mon espace</a>
+  </div>
+</nav></header>
+
+<section class="hero hero-m">
+  <div class="fx"><div class="aurora"></div><div class="gridfx"></div></div>
+  <div class="wrap">
+    <p class="eyebrow reveal">Notre socle · No Sage's Editor</p>
+    <h1 class="reveal">Un <em>socle commun</em>, une qualité partagée.</h1>
+    <p class="lede reveal">Nos logiciels ne sont pas conçus isolément. Ils reposent sur un même cœur applicatif, éprouvé et maintenu en continu — pour vous offrir la même fiabilité, la même ergonomie et le même niveau de sécurité, quel que soit le produit.</p>
+    <div class="proofs reveal">
+      <span class="proof"><span class="pdot"></span>Fiabilité testée</span>
+      <span class="proof"><span class="pdot"></span>Ergonomie cohérente</span>
+      <span class="proof"><span class="pdot"></span>Sécurité multi-tenant</span>
+      <span class="proof"><span class="pdot"></span>Évolutions partagées</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="principe"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Le principe</p>
+    <h2 class="big">Un cœur partagé, les métiers par-dessus.</h2>
+    <p>Plutôt que de réinventer chaque logiciel de zéro, No Sage's Editor construit ses produits sur un socle commun : la connexion, la gestion de votre espace, la personnalisation de l'interface, les paramètres, la sécurité des données. Chaque produit ajoute ensuite ses fonctionnalités métier par-dessus ce cœur partagé. Résultat : ce qui a été éprouvé sur un logiciel bénéficie à tous les autres.</p>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<section id="apports" style="background:var(--bg2)"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Ce que ça vous apporte</p>
+    <h2 class="big">Quatre garanties, sur chaque produit.</h2>
+  </div>
+  <div class="pillars">
+    <div class="live pillar reveal"><span class="k">01</span><h3>Fiabilité</h3><p>Le socle commun est testé en continu par une recette de non-régression automatisée. Une correction validée une fois protège tous les produits.</p></div>
+    <div class="live pillar reveal"><span class="k">02</span><h3>Cohérence</h3><p>Même ergonomie, mêmes repères d'un logiciel à l'autre. Vous retrouvez vos habitudes sans réapprendre.</p></div>
+    <div class="live pillar reveal"><span class="k">03</span><h3>Sécurité</h3><p>Authentification et cloisonnement des données (multi-tenant) sont gérés au niveau du socle, avec un journal d'audit.</p></div>
+    <div class="live pillar reveal"><span class="k">04</span><h3>Évolutions partagées</h3><p>Une amélioration du cœur — accessibilité, performance, confort — se propage à l'ensemble des logiciels.</p></div>
+  </div>
+</div></section>
+
+<div class="divider"></div>
+
+<section id="logiciels"><div class="wrap">
+  <div class="sec-head reveal">
+    <p class="eyebrow">Nos logiciels</p>
+    <h2 class="big">Deux produits, un même socle.</h2>
+  </div>
+  <div class="prodgrid">
+    <a class="live prod reveal" href="../anim-gest/" style="text-decoration:none">
+      <span class="badge">Métiers animaliers</span>
+      <h3>Anim'Gest</h3>
+      <p>La gestion complète pour les professionnels du soin animal : clients, prestations, facturation et conformité — sur les mêmes fondations.</p>
+      <div class="chips"><span class="chip lead">Découvrir →</span></div>
     </a>
-    <nav class="nav-links" aria-label="Navigation principale">
-      <a href="../">Accueil</a>
-      <a href="../anim-gest/">Anim'Gest</a>
-      <a href="../cockpit-gest/">Cockpit'Gest</a>
-      <a href="./" class="active">Qualité &amp; fiabilité</a>
-      <a href="../demarche/">Démarche</a>
-      <a href="../actualites/">Actualités</a>
-      <a href="../a-propos/">À propos</a>
-      <a class="nav-cta nav-login" href="https://animgest-app-saas.no-sages-editor.com/login">Accéder à mon espace</a>
-    </nav>
+    <a class="live prod reveal" href="../cockpit-gest/" style="text-decoration:none">
+      <span class="badge">Comm &amp; Marketing</span>
+      <h3>Cockpit'Gest</h3>
+      <p>Le cockpit de traction marketing et commerciale : pilotage par indicateurs, pipeline de prospects, leviers d'acquisition, contenus et partenariats.</p>
+      <div class="chips"><span class="chip lead">Découvrir →</span></div>
+    </a>
   </div>
-</header>
+</div></section>
 
-<main>
-
-  <section class="hero compact">
-    <div class="wrap">
-      <p class="eyebrow rise d1">Notre socle · No Sage's Editor</p>
-      <h1 class="rise d2">Un <span class="accent">socle commun</span>, une qualité partagée.</h1>
-      <p class="lede rise d3">Nos logiciels ne sont pas conçus isolément. Ils reposent sur un même cœur applicatif, éprouvé et maintenu en continu — pour vous offrir la même fiabilité, la même ergonomie et le même niveau de sécurité, quel que soit le produit.</p>
-    </div>
-  </section>
-
-  <section class="block" id="principe">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Le principe</p>
-        <h2>Un cœur partagé, les métiers par-dessus.</h2>
-        <p>Plutôt que de réinventer chaque logiciel de zéro, No Sage's Editor construit ses produits sur un socle commun : la connexion, la gestion de votre espace, la personnalisation de l'interface, les paramètres, la sécurité des données. Chaque produit ajoute ensuite ses fonctionnalités métier par-dessus ce cœur partagé.</p>
-        <p>Résultat : ce qui a été éprouvé sur un logiciel bénéficie à tous les autres.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="apports">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Ce que ça vous apporte</p>
-        <h2>Quatre garanties, sur chaque produit.</h2>
-      </div>
-      <div class="fnlist">
-        <div class="fn"><span class="n">01</span><h4>Fiabilité</h4><p>Le socle commun est testé en continu par une recette de non-régression automatisée. Une correction validée une fois protège tous les produits.</p></div>
-        <div class="fn"><span class="n">02</span><h4>Cohérence</h4><p>Même ergonomie, mêmes repères d'un logiciel à l'autre. Vous retrouvez vos habitudes sans réapprendre.</p></div>
-        <div class="fn"><span class="n">03</span><h4>Sécurité</h4><p>Authentification et cloisonnement des données (multi-tenant) sont gérés au niveau du socle, avec un journal d'audit.</p></div>
-        <div class="fn"><span class="n">04</span><h4>Évolutions partagées</h4><p>Une amélioration du cœur — accessibilité, performance, confort — se propage à l'ensemble des logiciels.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="logiciels">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Nos logiciels</p>
-        <h2>Deux produits, un même socle.</h2>
-      </div>
-      <div class="fnlist">
-        <a class="fn" href="../anim-gest/"><span class="n">Métiers animaliers</span><h4>Anim'Gest</h4><p>La gestion complète pour les professionnels du soin animal : clients, prestations, facturation et conformité — sur les mêmes fondations.</p></a>
-        <a class="fn" href="../cockpit-gest/"><span class="n">Comm &amp; Marketing</span><h4>Cockpit'Gest</h4><p>Le cockpit de traction marketing et commerciale : pilotage par indicateurs, pipeline de prospects, leviers d'acquisition, contenus et partenariats.</p></a>
-      </div>
-      <div class="hero-cta" style="margin-top:28px">
-        <a class="btn btn-primary" href="../anim-gest/">Découvrir Anim'Gest
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <a class="btn btn-ghost" href="../cockpit-gest/">Découvrir Cockpit'Gest</a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <div class="wrap foot-inner">
-    <span>© <span id="yr">2026</span> No Sage's Editor — un socle commun pour des logiciels fiables.</span>
-    <div class="foot-links">
-      <a href="../">Accueil</a>
-      <a href="../anim-gest/">Anim'Gest</a>
-      <a href="../cockpit-gest/">Cockpit'Gest</a>
-      <a href="../a-propos/">À propos</a>
-      <a href="mailto:contact@no-sages-editor.com">Contact</a>
-    </div>
-  </div>
-</footer>
-<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+<footer><div class="wrap" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center">
+  <span>&copy; <span id="yr">2026</span> No Sage's Editor &middot; un socle commun pour des logiciels fiables</span>
+  <span style="display:flex;gap:18px;flex-wrap:wrap">
+    <a href="../">Accueil</a>
+    <a href="../anim-gest/">Anim'Gest</a>
+    <a href="../cockpit-gest/">Cockpit'Gest</a>
+    <a href="../a-propos/">À propos</a>
+    <a href="mailto:contact@no-sages-editor.com">Contact</a>
+  </span>
+</div></footer>
+<script src="../editeur.js"></script>
 </body>
 </html>

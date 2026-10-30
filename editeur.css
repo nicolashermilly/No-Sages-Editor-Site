@@ -116,7 +116,8 @@
   .axe-col h3{font-size:21px;margin:8px 0 8px;color:#fff}
   .axe-col p{color:rgba(255,255,255,.92);font-size:15px}
 
-  .live{position:relative;border-radius:18px;background:linear-gradient(180deg,var(--surface),#0d1730);border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .3s}
+  .live{position:relative;border-radius:18px;background:linear-gradient(180deg,var(--surface),#0d1730);border:1px solid var(--line);overflow:hidden;transition:transform .25s,box-shadow .3s}
+  a.live,.live[href]{cursor:pointer}
   .live::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:0;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(34,211,238,.18),transparent 60%)}
   .live::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;z-index:0;background:conic-gradient(from var(--a),transparent 0 62%,var(--cyan),var(--purple),transparent 86% 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.35;animation:spin 6s linear infinite}
   .live:hover{transform:translateY(-6px) scale(1.012);box-shadow:0 30px 60px -26px rgba(34,211,238,.5)}

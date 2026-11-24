@@ -25,6 +25,15 @@
 
   header{position:sticky;top:0;z-index:50;background:rgba(7,12,28,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  /* === Header : barre unique propre (fix troncature nav) === */
+  header nav.wrap{gap:22px;height:64px;max-width:1240px;margin:0 auto;padding:0 28px;flex-wrap:nowrap}
+  header .brand{flex:0 0 auto;white-space:nowrap}
+  header .navlinks{display:flex;align-items:center;flex:1 1 auto;justify-content:flex-end;gap:clamp(10px,1.2vw,18px);flex-wrap:nowrap;min-width:0;overflow-x:auto;scrollbar-width:none}
+  header .navlinks::-webkit-scrollbar{display:none}
+  header .navlinks a{flex:0 0 auto;font-size:14px}
+  header .cta-nav{flex:0 0 auto;margin-left:4px}
+  @media(max-width:1180px){header .navlinks{gap:12px}header .navlinks a{font-size:13.5px}}
+  @media(max-width:1040px){header .navlinks a:not(.cta-nav){display:inline-flex}}
   .brand{font-family:var(--display);font-weight:700;font-size:22px}
   .brand span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .cta-nav{position:relative;overflow:hidden;background:var(--grad);background-size:200% 200%;color:#fff;padding:11px 20px;border-radius:10px;font-weight:600;font-size:14px;animation:grad 7s ease infinite;transition:transform .15s,box-shadow .2s}
